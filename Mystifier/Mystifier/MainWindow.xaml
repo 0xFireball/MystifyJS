@@ -110,7 +110,7 @@
             FontFamily="Consolas"
             SyntaxHighlighting="JavaScript"
             FontSize="10pt"
-            Margin="10,10,10,38"
+            Margin="10,27,10,38"
             Background="#FF2F2F2F"
             Grid.Column="0"
             Foreground="#FFE5E5E5" />
@@ -125,10 +125,11 @@
         	FontFamily="Consolas"
         	SyntaxHighlighting="JavaScript"
         	FontSize="10pt"
-        	Margin="10,10,10.8,38"
+        	Margin="10,27,10.8,38"
         	Background="#FF2F2F2F"
         	Grid.Column="1"
         	Foreground="#FFE5E5E5" />
+        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="27,6,0,0" TextWrapping="Wrap" Text="[New File]" VerticalAlignment="Top" Width="371" Grid.Column="0"/>
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,8 @@ namespace Mystifier
         private readonly MystifierActivation _activationProvider;
         private CompletionWindow _completionWindow;
         private readonly bool _enableCodeCompletion;
+        private string _currentFile;
+        private bool _isUnsaved = false;
 
         public MainWindow()
         {
@@ -46,12 +49,29 @@ namespace Mystifier
             TextEditor.TextArea.TextEntering += TextAreaOnTextEntering;
             TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
             TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
+            UpdateTitle();
         }
 
-        private void TextAreaOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        private void TextAreaOnKeyDown(object sender, KeyEventArgs e)
         {
             //Keyboard shortcuts
-            
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (e.Key == Key.S)
+                {
+                    OnSave(null, null);
+                }
+            }
+        }
+
+        private void OnSave(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_currentFile != null)
+                TextEditor.Save(_currentFile);
+            else
+            {
+                
+            }
         }
 
         private void TextAreaOnTextEntered(object sender, TextCompositionEventArgs e)
@@ -97,6 +117,16 @@ namespace Mystifier
                     TextEditor.Document.Insert(editorCaret.Offset, "\"");
                     editorCaret.Offset--; //Go back one char
                     break;
+            }
+            _isUnsaved = true;
+            UpdateTitle();
+        }
+
+        private void UpdateTitle()
+        {
+            if (_currentFile == null)
+            {
+                tbFileName.Text = _isUnsaved ? "[New File*]" : "[New File]";
             }
         }
 
