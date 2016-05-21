@@ -5,15 +5,22 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:Mystifier"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      Loaded="MainWindow_OnLoaded"
                       mc:Ignorable="d"
-                      Title="Mystifier Studio" Height="509.256" Width="823.512">
+                      Title="Mystifier Studio" Height="509.256" Width="823.512" Icon="icon.ico">
     <Grid>
         <avalonEdit:TextEditor
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             Name="TextEditor"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"
+            LineNumbersForeground="{DynamicResource AccentColorBrush}"
+            ShowLineNumbers="True"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto"
             FontFamily="Consolas"
-            SyntaxHighlighting="C#"
-            FontSize="10pt" Margin="27,29,26,38" Background="#FFF7F7F7" />
+            SyntaxHighlighting="JavaScript"
+            FontSize="10pt" Margin="27,29,26,38" Background="#FF2F2F2F" />
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
