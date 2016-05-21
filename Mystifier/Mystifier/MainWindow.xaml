@@ -36,7 +36,7 @@
                                     <!-- FindNext button -->
                                     <Button Margin="0,1,1,1" Height="30" Width="30"
                                             Command="avalonedit:SearchCommands.FindNext"
-                                            ToolTip="{Binding Localization.FindNextText, 
+                                            ToolTip="{Binding Localization.FindNextText,
                                   RelativeSource={RelativeSource TemplatedParent}}"
                                             Padding="1" Style="{DynamicResource MetroAccentButton}"
                                             BorderThickness="0" BorderBrush="Transparent">
@@ -47,7 +47,7 @@
                                     <!-- FindPrevious (set visibility if required) button -->
                                     <Button Margin="1" Height="30" Width="30"
                                             Command="avalonedit:SearchCommands.FindPrevious"
-                                            ToolTip="{Binding Localization.FindPreviousText, 
+                                            ToolTip="{Binding Localization.FindPreviousText,
                           RelativeSource={RelativeSource TemplatedParent}}"
                                             Padding="1" Style="{DynamicResource AccentedSquareButtonStyle}"
                                             BorderThickness="0" BorderBrush="Transparent" Visibility="Collapsed">

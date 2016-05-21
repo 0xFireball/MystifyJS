@@ -112,7 +112,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Obfuscator\" />
+    <ProjectReference Include="..\Mystifier.DarkMagic\Mystifier.DarkMagic.csproj">
+      <Project>{692ae1b4-19ec-4ea6-b56f-592813fa4982}</Project>
+      <Name>Mystifier.DarkMagic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
