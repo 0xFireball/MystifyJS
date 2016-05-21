@@ -150,7 +150,7 @@
                     Background="#FF2F2F2F"
                     Grid.Column="2"
                     Foreground="#FFE5E5E5" />
-                    <Button Content="Copy" Name="btnCopyObfuscatedCode" Margin="0,419,10.8,0" HorizontalAlignment="Right" Width="57" Height="25" VerticalAlignment="Top" Click="BtnCopyObfuscatedCode_OnClick" />
+                    <Button Content="Copy" Name="btnCopyObfuscatedCode" Margin="0,0,10.8,10.4" HorizontalAlignment="Right" Width="57" Height="25" VerticalAlignment="Bottom" Click="BtnCopyObfuscatedCode_OnClick" />
                 </Grid>
             </TabItem>
             <TabItem Name="ConsoleTab">
