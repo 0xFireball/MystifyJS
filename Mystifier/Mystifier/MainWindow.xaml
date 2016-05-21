@@ -137,7 +137,7 @@
             Foreground="#FFE5E5E5" />
         <Button x:Name="btnObfuscate" Grid.Column="0" Content="Obfuscate" HorizontalAlignment="Left"
                 Margin="432,447,0,0" VerticalAlignment="Top" Width="75" />
-        <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute (Local VM)" HorizontalAlignment="Left"
+        <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute (ZetaJS)" HorizontalAlignment="Left"
                 Margin="10,447,0,0" VerticalAlignment="Top" Width="116" />
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
