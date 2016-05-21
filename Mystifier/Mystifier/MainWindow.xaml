@@ -165,7 +165,7 @@
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="btnVersion" Content="v0.1.2" />
+            <Button Name="btnVersion" Content="v0.1.3" />
             <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
             <Button Name="btnActivate" Content="Unlicensed" Click="BtnActivate_OnClick" />
         </controls:WindowCommands>
