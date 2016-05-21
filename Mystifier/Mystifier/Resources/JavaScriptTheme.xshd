@@ -1,17 +1,15 @@
 ﻿<?xml version="1.0"?>
-
-<!-- syntaxdefinition for JavaScript 2.0 by Svante Lidman -->
-<!-- converted to AvalonEdit format by Siegfried Pammer in 2010 -->
 <SyntaxDefinition name="JavaScript" extensions=".js" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-  <Color name="Digits" foreground="DarkBlue" exampleText="3.14" />
-  <Color name="Comment" foreground="Green" exampleText="// comment" />
-  <Color name="String" foreground="Sienna" exampleText="var text = &quot;Hello, World!&quot;;" />
-  <Color name="Character" foreground="Sienna" exampleText="var char = 'a';" />
-  <Color name="Regex" foreground="Sienna" exampleText="/abc/m" />
-  <Color name="JavaScriptKeyWords" foreground="Blue" exampleText="return myVariable;" />
-  <Color name="JavaScriptIntrinsics" foreground="Blue" exampleText="Math.random()" />
-  <Color name="JavaScriptLiterals" foreground="Blue" exampleText="return false;" />
-  <Color name="JavaScriptGlobalFunctions" foreground="Blue" exampleText="escape(myString);" />
+  <Color name="Digits" foreground="#ae81ff" exampleText="3.14" />
+  <Color name="Comment" foreground="#75715E" exampleText="// comment" />
+  <Color name="String" foreground="#E6DB74" exampleText="var text = &quot;Hello, World!&quot;;" />
+  <Color name="Character" foreground="#E6DB74" exampleText="var char = 'a';" />
+  <Color name="Regex" foreground="#E6DB74" exampleText="/abc/m" />
+  <Color name="JavaScriptKeyWords" foreground="#F92672" exampleText="return myVariable;" />
+  <Color name="JavaScriptGlobals" foreground="#66d9ef" exampleText="JSON.stringify(fruit)" />
+  <Color name="JavaScriptIntrinsics" foreground="#66d9ef" exampleText="Math.random()" />
+  <Color name="JavaScriptLiterals" foreground="#AE81FF" exampleText="return false;" />
+  <Color name="JavaScriptGlobalFunctions" foreground="#66d9ef" exampleText="escape(myString);" />
   <RuleSet ignoreCase="false">
     <Keywords color="JavaScriptKeyWords">
       <Word>break</Word>
@@ -98,6 +96,13 @@
       <Word>unescape</Word>
       <Word>isNaN</Word>
       <Word>isFinite</Word>
+      <!--Browser Specific-->
+      <Word>atob</Word>
+      <Word>btoa</Word>
+    </Keywords>
+    <Keywords color="JavaScriptGlobals">
+      <Word>JSON</Word>
+      <Word>window</Word>
     </Keywords>
     <Span color="Comment">
       <Begin>//</Begin>
