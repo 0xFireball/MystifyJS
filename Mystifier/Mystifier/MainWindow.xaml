@@ -94,6 +94,10 @@
                 </Setter>
             </Style>
         </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
         <avalonEdit:TextEditor
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             Name="TextEditor"
@@ -105,11 +109,31 @@
             VerticalScrollBarVisibility="Auto"
             FontFamily="Consolas"
             SyntaxHighlighting="JavaScript"
-            FontSize="10pt" Margin="27,29,26,38" Background="#FF2F2F2F" Foreground="#FFE5E5E5" />
+            FontSize="10pt"
+            Margin="10,10,10,38"
+            Background="#FF2F2F2F"
+            Grid.Column="0"
+            Foreground="#FFE5E5E5" />
+        <avalonedit:TextEditor
+        	x:Name="OutputEditor"
+        	HorizontalAlignment="Stretch"
+        	VerticalAlignment="Stretch"
+        	LineNumbersForeground="{DynamicResource AccentColorBrush}"
+        	ShowLineNumbers="True"
+        	HorizontalScrollBarVisibility="Auto"
+        	VerticalScrollBarVisibility="Auto"
+        	FontFamily="Consolas"
+        	SyntaxHighlighting="JavaScript"
+        	FontSize="10pt"
+        	Margin="10,10,10.8,38"
+        	Background="#FF2F2F2F"
+        	Grid.Column="1"
+        	Foreground="#FFE5E5E5" />
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Content="ZetaPhase Technologies" FontSize="14" />
+            <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
+            <Button Name="btnActivate" Content="Activate [Trial]" Click="BtnActivate_OnClick" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 </controls:MetroWindow>
