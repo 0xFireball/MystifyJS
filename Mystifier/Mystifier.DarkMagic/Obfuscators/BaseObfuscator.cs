@@ -2,13 +2,18 @@
 {
     public abstract class BaseObfuscator
     {
-        protected BaseObfuscator(string inputCode)
-        {
-            InputSource = inputCode;
-        }
+        #region Public Properties
 
         public string InputSource { get; set; }
 
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public void LoadCode(string code) => InputSource = code;
+
         public abstract string ObfuscateCode();
+
+        #endregion Public Methods
     }
 }

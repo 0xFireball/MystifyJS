@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Obfuscators\BaseObfuscator.cs" />
-    <Compile Include="Obfuscators\RgnxScrambler.cs" />
+    <Compile Include="Obfuscators\JImgHideScrambler.cs" />
+    <Compile Include="Obfuscators\PackingScrambler.cs" />
+    <Compile Include="Obfuscators\RenamingScrambler.cs" />
     <Compile Include="Obfuscators\UnicodeEncodingScrambler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

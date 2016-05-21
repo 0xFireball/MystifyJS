@@ -120,7 +120,7 @@
             Grid.Column="0"
             Foreground="#FFE5E5E5" />
         <Button x:Name="btnObfuscate" Grid.Column="0" Content="Obfuscate"
-                Margin="0,0,9.8,7" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" />
+                Margin="0,0,9.8,7" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="BtnObfuscate_OnClick" />
         <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute (ZetaJS)" HorizontalAlignment="Left"
                 Margin="10,0,0,7" Width="116" Height="26" VerticalAlignment="Bottom" />
         <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5"
@@ -132,7 +132,8 @@
                         <TextBlock Text="Output Source" />
                     </StackPanel>
                 </TabItem.Header>
-                <avalonedit:TextEditor
+                <Grid>
+                    <avalonedit:TextEditor
                     x:Name="OutputEditor"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -144,10 +145,13 @@
                     SyntaxHighlighting="JavaScript"
                     FontSize="10pt"
                     IsReadOnly="True"
+                    WordWrap="True"
                     Margin="10,27,10.8,38"
                     Background="#FF2F2F2F"
                     Grid.Column="2"
                     Foreground="#FFE5E5E5" />
+                    <Button Content="Copy" Name="btnCopyObfuscatedCode" Margin="0,419,10.8,0" HorizontalAlignment="Right" Width="57" Height="25" VerticalAlignment="Top" Click="BtnCopyObfuscatedCode_OnClick" />
+                </Grid>
             </TabItem>
             <TabItem Name="ConsoleTab">
                 <TabItem.Header>
@@ -155,7 +159,7 @@
                         <TextBlock Text="[Commands]" />
                     </StackPanel>
                 </TabItem.Header>
-                
+
             </TabItem>
         </TabControl>
     </Grid>

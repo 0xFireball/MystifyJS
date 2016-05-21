@@ -6,15 +6,11 @@ namespace Mystifier.DarkMagic.Obfuscators
 {
     public class UnicodeEncodingScrambler : BaseObfuscator
     {
-        public UnicodeEncodingScrambler(string inputCode) : base(inputCode)
-        {
-        }
-
         public override string ObfuscateCode()
         {
-            var obfuscsatedCode = new StringBuilder(InputSource);
+            var obfuscatedCode = new StringBuilder(InputSource);
             //Scrambler level 1
-            obfuscsatedCode = UnicodeEscapeString(obfuscsatedCode);
+            obfuscatedCode = UnicodeEscapeString(obfuscatedCode);
             var decodingJS = new StringBuilder(@"
 var e = ""$$$""
 var r = /\\u([\d\w]{4})/gi;
@@ -23,8 +19,8 @@ e = e.replace(r, function (match, grp) {
 e = unescape(e);
 eval(e);
 ");
-            obfuscsatedCode = decodingJS.Replace("$$$", obfuscsatedCode.ToString());
-            return obfuscsatedCode.ToString();
+            obfuscatedCode = decodingJS.Replace("$$$", obfuscatedCode.ToString());
+            return obfuscatedCode.ToString();
         }
 
         private static StringBuilder UnicodeEscapeString(StringBuilder value)
@@ -32,7 +28,7 @@ eval(e);
             var sb = new StringBuilder();
             foreach (var c in value.ToString())
             {
-                var encodedValue = "\\u" + ((int) c).ToString("x4");
+                var encodedValue = "\\u" + ((int)c).ToString("x4");
                 sb.Append(encodedValue);
             }
             return sb;
@@ -43,7 +39,7 @@ eval(e);
             return Regex.Replace(
                 value,
                 @"\\u(?<Value>[a-zA-Z0-9]{4})",
-                m => ((char) int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
+                m => ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
         }
     }
 }

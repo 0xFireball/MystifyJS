@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -11,6 +12,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using Mystifier.Activation;
+using Mystifier.DarkMagic.Obfuscators;
 using Mystifier.IntelliJS.CodeCompletion;
 
 namespace Mystifier
@@ -213,6 +215,26 @@ namespace Mystifier
 
         private void BtnActivate_OnClick(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
+        {
+            string obfuscatedSource = TextEditor.Text;
+            List<BaseObfuscator> obfuscators = new List<BaseObfuscator>();
+            obfuscators.Add(new PackingScrambler());
+            //obfuscators.Add(new RenamingScrambler());
+            //obfuscators.Add(new UnicodeEncodingScrambler());
+            foreach (var obfuscationEngine in obfuscators)
+            {
+                obfuscationEngine.LoadCode(obfuscatedSource);
+                obfuscatedSource = obfuscationEngine.ObfuscateCode();
+            }
+            OutputEditor.Text = obfuscatedSource;
+        }
+
+        private void BtnCopyObfuscatedCode_OnClick(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(OutputEditor.Text);
         }
     }
 }

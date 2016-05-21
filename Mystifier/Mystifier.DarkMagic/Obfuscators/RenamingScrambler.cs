@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Mystifier.DarkMagic.Obfuscators
 {
-    public class RgnxScrambler : BaseObfuscator
+    public class RenamingScrambler : BaseObfuscator
     {
         private static readonly string[] IgnoreNames =
             @"sin,cos,order,min,max,join,round,pow,abs,PI,floor,random,index,http,
@@ -18,10 +18,7 @@ namespace Mystifier.DarkMagic.Obfuscators
             StringSplitOptions.RemoveEmptyEntries);
 
         private readonly Dictionary<string, string> _names = new Dictionary<string, string>();
-
-        public RgnxScrambler(string inputCode) : base(inputCode)
-        {
-        }
+        
 
         public override string ObfuscateCode()
         {
