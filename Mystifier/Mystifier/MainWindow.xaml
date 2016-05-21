@@ -82,7 +82,8 @@
                                             Background="Transparent" Cursor="Hand"
                                             VerticalAlignment="Top"
                                             Command="avalonedit:SearchCommands.CloseSearchPanel"
-                                            VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White">
+                                            VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                            Foreground="White">
                                         <Path
                                             Data="F1M54.0573,47.8776L38.1771,31.9974 54.0547,16.1198C55.7604,14.4141 55.7604,11.6511 54.0573,9.94531 52.3516,8.23962 49.5859,8.23962 47.8802,9.94531L32.0026,25.8229 16.1224,9.94531C14.4167,8.23962 11.6511,8.23962 9.94794,9.94531 8.24219,11.6511 8.24219,14.4141 9.94794,16.1198L25.8255,32 9.94794,47.8776C8.24219,49.5834 8.24219,52.3477 9.94794,54.0534 11.6511,55.7572 14.4167,55.7585 16.1224,54.0534L32.0026,38.1745 47.8802,54.0534C49.5859,55.7585 52.3516,55.7572 54.0573,54.0534 55.7604,52.3477 55.763,49.5834 54.0573,47.8776z"
                                             Height="10" Width="10" Stretch="Uniform" Fill="Red" Margin="0" />
@@ -97,9 +98,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="40*" />
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="27,6,0,0" TextWrapping="Wrap" Text="[New File]" VerticalAlignment="Top" Width="371" Grid.Column="0"/>
+        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="27,6,0,0" TextWrapping="Wrap"
+                   Text="[New File]" VerticalAlignment="Top" Width="371" Grid.Column="0" />
         <avalonEdit:TextEditor
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             Name="TextEditor"
@@ -116,24 +118,27 @@
             Background="#FF2F2F2F"
             Grid.Column="0"
             Foreground="#FFE5E5E5" />
-        <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5" Background="#FF222222"/>
+        <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5"
+                      Background="#FF222222" />
         <avalonedit:TextEditor
-        	x:Name="OutputEditor"
-        	HorizontalAlignment="Stretch"
-        	VerticalAlignment="Stretch"
-        	LineNumbersForeground="{DynamicResource AccentColorBrush}"
-        	ShowLineNumbers="True"
-        	HorizontalScrollBarVisibility="Auto"
-        	VerticalScrollBarVisibility="Auto"
-        	FontFamily="Consolas"
-        	SyntaxHighlighting="JavaScript"
-        	FontSize="10pt"
-        	Margin="10,27,10.8,38"
-        	Background="#FF2F2F2F"
-        	Grid.Column="2"
-        	Foreground="#FFE5E5E5" />
-        <Button x:Name="btnObfuscate" Grid.Column="0"  Content="Obfuscate" HorizontalAlignment="Left" Margin="432,447,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btnLocalVmExecute" Content="Execute (Local VM)" HorizontalAlignment="Left" Margin="10,447,0,0" VerticalAlignment="Top" Width="116"/>
+            x:Name="OutputEditor"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            LineNumbersForeground="{DynamicResource AccentColorBrush}"
+            ShowLineNumbers="True"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto"
+            FontFamily="Consolas"
+            SyntaxHighlighting="JavaScript"
+            FontSize="10pt"
+            Margin="10,27,10.8,38"
+            Background="#FF2F2F2F"
+            Grid.Column="2"
+            Foreground="#FFE5E5E5" />
+        <Button x:Name="btnObfuscate" Grid.Column="0" Content="Obfuscate" HorizontalAlignment="Left"
+                Margin="432,447,0,0" VerticalAlignment="Top" Width="75" />
+        <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute (Local VM)" HorizontalAlignment="Left"
+                Margin="10,447,0,0" VerticalAlignment="Top" Width="116" />
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>

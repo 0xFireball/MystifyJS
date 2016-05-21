@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0"?>
+
 <SyntaxDefinition name="JavaScript" extensions=".js" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
   <Color name="Digits" foreground="#ae81ff" exampleText="3.14" />
   <Color name="Comment" foreground="#75715E" exampleText="// comment" />

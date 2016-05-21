@@ -16,15 +16,15 @@ using Mystifier.IntelliJS.CodeCompletion;
 namespace Mystifier
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
         private readonly MystifierActivation _activationProvider;
-        private CompletionWindow _completionWindow;
         private readonly bool _enableCodeCompletion;
+        private CompletionWindow _completionWindow;
         private string _currentFile;
-        private bool _isUnsaved = false;
+        private bool _isUnsaved;
 
         public MainWindow()
         {
@@ -36,7 +36,7 @@ namespace Mystifier
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadEditorTheme();
-            var isActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
+            var isActivated = await Task.Run((Func<bool>) _activationProvider.CheckActivation);
             if (isActivated)
             {
                 btnActivate.Visibility = Visibility.Hidden;
@@ -77,7 +77,8 @@ namespace Mystifier
 
         private void OnLoadFile()
         {
-            string newFile = MystifierUtil.BrowseForOpenFile("JavaScript Source Files (*.js)|*.js|All Files (*.*)|*.*", "Load File");
+            var newFile = MystifierUtil.BrowseForOpenFile("JavaScript Source Files (*.js)|*.js|All Files (*.*)|*.*",
+                "Load File");
             if (newFile != null)
             {
                 _currentFile = newFile;
@@ -88,7 +89,7 @@ namespace Mystifier
 
         private void OnSaveFileAs()
         {
-            string previousFile = _currentFile;
+            var previousFile = _currentFile;
             _currentFile = null;
             OnSaveFile();
             if (_currentFile == null)
@@ -129,10 +130,7 @@ namespace Mystifier
                     data.Add(completionData);
                 }
                 _completionWindow.Show();
-                _completionWindow.Closed += delegate
-                {
-                    _completionWindow = null;
-                };
+                _completionWindow.Closed += delegate { _completionWindow = null; };
             }
             //Auto-pair characters
             var editorCaret = TextEditor.TextArea.Caret;
@@ -173,7 +171,7 @@ namespace Mystifier
             }
             else
             {
-                string fn = Path.GetFileName(_currentFile);
+                var fn = Path.GetFileName(_currentFile);
                 tbFileName.Text = _isUnsaved ? fn + "*" : fn;
             }
         }
@@ -195,7 +193,10 @@ namespace Mystifier
 
         private void LoadEditorTheme()
         {
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Mystifier.Resources.JavaScriptTheme.xshd"))
+            using (
+                var stream =
+                    Assembly.GetExecutingAssembly()
+                        .GetManifestResourceStream("Mystifier.Resources.JavaScriptTheme.xshd"))
             {
                 using (var reader = new XmlTextReader(stream))
                 {

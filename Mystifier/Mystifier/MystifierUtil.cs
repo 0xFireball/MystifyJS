@@ -12,7 +12,7 @@ namespace Mystifier
                 Title = title
             };
             var showDialog = sfd.ShowDialog();
-            if (showDialog != null && (bool)showDialog)
+            if (showDialog != null && (bool) showDialog)
             {
                 return sfd.FileName;
             }
@@ -28,7 +28,7 @@ namespace Mystifier
                 Multiselect = false
             };
             var showDialog = ofd.ShowDialog();
-            if (showDialog != null && (bool)showDialog)
+            if (showDialog != null && (bool) showDialog)
             {
                 return ofd.FileName;
             }

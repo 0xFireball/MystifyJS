@@ -12,10 +12,10 @@ namespace Mystifier.DarkMagic.Obfuscators
 
         public override string ObfuscateCode()
         {
-            StringBuilder obfuscsatedCode = new StringBuilder(InputSource);
+            var obfuscsatedCode = new StringBuilder(InputSource);
             //Scrambler level 1
             obfuscsatedCode = UnicodeEscapeString(obfuscsatedCode);
-            StringBuilder decodingJS = new StringBuilder(@"
+            var decodingJS = new StringBuilder(@"
 var e = ""$$$""
 var r = /\\u([\d\w]{4})/gi;
 e = e.replace(r, function (match, grp) {
@@ -32,7 +32,7 @@ eval(e);
             var sb = new StringBuilder();
             foreach (var c in value.ToString())
             {
-                var encodedValue = "\\u" + ((int)c).ToString("x4");
+                var encodedValue = "\\u" + ((int) c).ToString("x4");
                 sb.Append(encodedValue);
             }
             return sb;
@@ -43,7 +43,7 @@ eval(e);
             return Regex.Replace(
                 value,
                 @"\\u(?<Value>[a-zA-Z0-9]{4})",
-                m => ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
+                m => ((char) int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
         }
     }
 }
