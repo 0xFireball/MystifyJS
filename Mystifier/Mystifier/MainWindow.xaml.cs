@@ -221,9 +221,9 @@ namespace Mystifier
         {
             string obfuscatedSource = TextEditor.Text;
             List<BaseObfuscator> obfuscators = new List<BaseObfuscator>();
+            obfuscators.Add(new RenamingScrambler());
             obfuscators.Add(new PackingScrambler());
-            //obfuscators.Add(new RenamingScrambler());
-            //obfuscators.Add(new UnicodeEncodingScrambler());
+            obfuscators.Add(new UnicodeEncodingScrambler());
             foreach (var obfuscationEngine in obfuscators)
             {
                 obfuscationEngine.LoadCode(obfuscatedSource);
