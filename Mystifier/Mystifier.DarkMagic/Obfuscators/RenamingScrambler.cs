@@ -7,7 +7,7 @@ namespace Mystifier.DarkMagic.Obfuscators
 {
     public class RenamingScrambler : BaseObfuscator
     {
-        private static readonly string[] IgnoreNames =
+        private static readonly string[] ReservedIgnoreNames =
             @"sin,cos,order,min,max,join,round,pow,abs,PI,floor,random,index,http,
     __defineGetter__,__defineSetter__,indexOf,isPrototypeOf,length,clone,toString,split,clear,erase
     RECT,SIZE,Vect,VectInt,vectint,vect,int,double,canvasElement,text1,text2,text3,textSizeTester,target,Number
@@ -23,66 +23,66 @@ namespace Mystifier.DarkMagic.Obfuscators
         public override string ObfuscateCode()
         {
             var obfuscatedCode = InputSource;
-            var freeIndex = 0;
+            var freeVarNameRenameIndex = 0;
             foreach (var s in _extraNames)
             {
-                freeIndex++;
-                var freeName = "" + (char) ('A' + freeIndex%25) + (char) ('A' + freeIndex/25%25);
+                freeVarNameRenameIndex++;
+                var freeName = "" + (char) ('A' + freeVarNameRenameIndex%25) + (char) ('A' + freeVarNameRenameIndex/25%25);
                 _names.Add(s, freeName);
             }
-            var reg1 = new Regex("(var |function |\\.prototype\\.)([a-zA-Z0-9_]+)");
-            var startat = 0;
-            while (startat < obfuscatedCode.Length)
+            var pattern1 = new Regex("(var |function |\\.prototype\\.)([a-zA-Z0-9_]+)");
+            var startOfObfuscationPoint = 0;
+            while (startOfObfuscationPoint < obfuscatedCode.Length)
             {
-                var match = reg1.Match(obfuscatedCode, startat);
-                if (!match.Success)
+                var rgxMatch = pattern1.Match(obfuscatedCode, startOfObfuscationPoint);
+                if (!rgxMatch.Success)
                     break;
 
-                var key = obfuscatedCode.Substring(match.Groups[2].Index, match.Groups[2].Length);
-                if (!IgnoreNames.Contains(key))
+                var key = obfuscatedCode.Substring(rgxMatch.Groups[2].Index, rgxMatch.Groups[2].Length);
+                if (!ReservedIgnoreNames.Contains(key))
                 {
-                    freeIndex++;
-                    var freeName = "" + (char) ('A' + freeIndex%25) + (char) ('A' + freeIndex/25%25);
+                    freeVarNameRenameIndex++;
+                    var freeName = "" + (char) ('A' + freeVarNameRenameIndex%25) + (char) ('A' + freeVarNameRenameIndex/25%25);
                     if (!_names.ContainsKey(key))
                         _names.Add(key, freeName);
                 }
-                startat = match.Groups[0].Index + match.Groups[0].Length;
+                startOfObfuscationPoint = rgxMatch.Groups[0].Index + rgxMatch.Groups[0].Length;
             }
 
-            var reg2 = new Regex(@"/\*.*\*/", RegexOptions.Multiline);
-            var reg3 = new Regex("([^:\\\\])//.*\r\n");
-            var reg4 = new Regex("([a-zA-Z0-9_]+)");
-            var reg5 = new Regex("(\r\n)*[ \t]+");
-            var reg6 = new Regex("(\r\n)+");
-            obfuscatedCode = reg2.Replace(obfuscatedCode, Eval2);
-            obfuscatedCode = reg3.Replace(obfuscatedCode, Eval3);
-            obfuscatedCode = reg4.Replace(obfuscatedCode, Eval4);
-            obfuscatedCode = reg5.Replace(obfuscatedCode, Eval5);
-            obfuscatedCode = reg6.Replace(obfuscatedCode, Eval6);
+            var pattern2 = new Regex(@"/\*.*\*/", RegexOptions.Multiline);
+            var pattern3 = new Regex("([^:\\\\])//.*\r\n");
+            var pattern4 = new Regex("([a-zA-Z0-9_]+)");
+            var pattern5 = new Regex("(\r\n)*[ \t]+");
+            var pattern6 = new Regex("(\r\n)+");
+            obfuscatedCode = pattern2.Replace(obfuscatedCode, Scramble_l2);
+            obfuscatedCode = pattern3.Replace(obfuscatedCode, ReEvaluate_3);
+            obfuscatedCode = pattern4.Replace(obfuscatedCode, ScrambleL4);
+            obfuscatedCode = pattern5.Replace(obfuscatedCode, Scramble_5);
+            obfuscatedCode = pattern6.Replace(obfuscatedCode, Scramble_l6);
             return obfuscatedCode;
         }
 
-        private string Eval4(Match match)
+        private string ScrambleL4(Match match)
         {
             return _names.ContainsKey(match.Groups[1].Value) ? _names[match.Groups[1].Value] : match.Groups[0].Value;
         }
 
-        private string Eval5(Match match)
+        private string Scramble_5(Match match)
         {
             return string.IsNullOrEmpty(match.Groups[1].Value) ? " " : Environment.NewLine;
         }
 
-        private string Eval6(Match match)
+        private string Scramble_l6(Match match)
         {
             return Environment.NewLine;
         }
 
-        private string Eval2(Match match)
+        private string Scramble_l2(Match match)
         {
             return " ";
         }
 
-        private string Eval3(Match match)
+        private string ReEvaluate_3(Match match)
         {
             return match.Groups[1].Value + Environment.NewLine;
         }

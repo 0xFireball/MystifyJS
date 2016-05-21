@@ -11,6 +11,7 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
+using MahApps.Metro.Controls.Dialogs;
 using Mystifier.Activation;
 using Mystifier.DarkMagic.Obfuscators;
 using Mystifier.IntelliJS.CodeCompletion;
@@ -28,17 +29,22 @@ namespace Mystifier
         private string _currentFile;
         private bool _isUnsaved;
 
+        public bool IsActivated { get; set; }
+        public string ProductUrl { get; set; } = "https://zetaphase.io";
+
         public MainWindow()
         {
             InitializeComponent();
             _activationProvider = new MystifierActivation();
             _enableCodeCompletion = false;
+            IsActivated = false;
+            CheckActivation();
         }
 
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadEditorTheme();
-            var isActivated = await Task.Run((Func<bool>) _activationProvider.CheckActivation);
+            var isActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
             if (isActivated)
             {
                 btnActivate.Visibility = Visibility.Hidden;
@@ -215,26 +221,55 @@ namespace Mystifier
 
         private void BtnActivate_OnClick(object sender, RoutedEventArgs e)
         {
+            RequestActivation();
         }
 
-        private void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
+        private void CheckActivation()
         {
-            string obfuscatedSource = TextEditor.Text;
-            List<BaseObfuscator> obfuscators = new List<BaseObfuscator>();
-            obfuscators.Add(new RenamingScrambler());
-            obfuscators.Add(new PackingScrambler());
-            obfuscators.Add(new UnicodeEncodingScrambler());
+            IsActivated = false;
+        }
+
+        private async void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
+        {
+            var controller = await this.ShowProgressAsync("Please Wait", "Obfuscating Source...");
+            controller.SetIndeterminate();
+            var inputSource = await Dispatcher.InvokeAsync(() => TextEditor.Text);
+            var obfuscatedSource = await Task.Run(()=>ObfuscateJsSource(inputSource));
+            await Dispatcher.InvokeAsync(() => OutputEditor.Text = obfuscatedSource);
+            await controller.CloseAsync();
+        }
+
+        private string ObfuscateJsSource(string inputSource)
+        {
+            var obfuscatedSource = inputSource;
+            var obfuscators = new List<BaseObfuscator>
+            {
+                new RenamingScrambler(),
+                new PackingScrambler(),
+                new UnicodeEncodingScrambler(),
+                new PackingScrambler(),
+            };
             foreach (var obfuscationEngine in obfuscators)
             {
                 obfuscationEngine.LoadCode(obfuscatedSource);
                 obfuscatedSource = obfuscationEngine.ObfuscateCode();
             }
-            OutputEditor.Text = obfuscatedSource;
+            return obfuscatedSource;
         }
 
         private void BtnCopyObfuscatedCode_OnClick(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(OutputEditor.Text);
+        }
+
+        private async void RequestActivation()
+        {
+            var activationKey = await this.ShowInputAsync("Activation", "Enter license key");
+            var result = await this.ShowMessageAsync("Activation", "Sorry, your activation key is invalid. Do you want to get an activation key now?", MessageDialogStyle.AffirmativeAndNegative);
+            if (result == MessageDialogResult.Affirmative)
+            {
+                Process.Start(ProductUrl);
+            }
         }
     }
 }
