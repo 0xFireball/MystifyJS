@@ -1,0 +1,37 @@
+<project outputDir="C:\Users\Nihal Talur\Documents\GitKraken\MystifyJS\ConfuserEx\Confused" baseDir="C:\Users\Nihal Talur\Documents\GitKraken\MystifyJS\ConfuserEx" xmlns="http://confuser.codeplex.com">
+  <packer id="compressor" />
+  <module path="..\Mystifier\Mystifier\bin\Release\Mystifier.DarkMagic.dll">
+    <rule pattern="true" inherit="false">
+      <protection id="anti ildasm" />
+      <protection id="anti tamper" />
+      <protection id="constants" />
+      <protection id="ctrl flow" />
+      <protection id="anti dump" />
+      <protection id="anti debug" />
+      <protection id="invalid metadata" />
+      <protection id="ref proxy" />
+      <protection id="rename" />
+    </rule>
+  </module>
+  <module path="..\Mystifier\Mystifier\bin\Release\Mystifier.exe">
+    <rule pattern="true" inherit="false">
+      <protection id="anti ildasm" />
+      <protection id="anti tamper" />
+      <protection id="constants" />
+      <protection id="ctrl flow" />
+      <protection id="anti debug" />
+      <protection id="ref proxy" />
+    </rule>
+  </module>
+  <module path="..\Mystifier\Mystifier\bin\Release\Mystifier.IntelliJS.dll">
+    <rule pattern="true" inherit="false">
+      <protection id="anti ildasm" />
+      <protection id="anti tamper" />
+      <protection id="constants" />
+      <protection id="invalid metadata" />
+    </rule>
+  </module>
+  <module path="..\Mystifier\Mystifier\bin\Release\ICSharpCode.AvalonEdit.dll" />
+  <module path="..\Mystifier\Mystifier\bin\Release\MahApps.Metro.dll" />
+  <module path="..\Mystifier\Mystifier\bin\Release\System.Windows.Interactivity.dll" />
+</project>
