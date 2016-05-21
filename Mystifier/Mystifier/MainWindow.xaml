@@ -95,9 +95,11 @@
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"></ColumnDefinition>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="70*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="40*"/>
         </Grid.ColumnDefinitions>
+        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="27,6,0,0" TextWrapping="Wrap" Text="[New File]" VerticalAlignment="Top" Width="371" Grid.Column="0"/>
         <avalonEdit:TextEditor
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             Name="TextEditor"
@@ -114,6 +116,7 @@
             Background="#FF2F2F2F"
             Grid.Column="0"
             Foreground="#FFE5E5E5" />
+        <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5" Background="#FF222222"/>
         <avalonedit:TextEditor
         	x:Name="OutputEditor"
         	HorizontalAlignment="Stretch"
@@ -127,9 +130,10 @@
         	FontSize="10pt"
         	Margin="10,27,10.8,38"
         	Background="#FF2F2F2F"
-        	Grid.Column="1"
+        	Grid.Column="2"
         	Foreground="#FFE5E5E5" />
-        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="27,6,0,0" TextWrapping="Wrap" Text="[New File]" VerticalAlignment="Top" Width="371" Grid.Column="0"/>
+        <Button x:Name="btnObfuscate" Grid.Column="0"  Content="Obfuscate" HorizontalAlignment="Left" Margin="432,447,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnLocalVmExecute" Content="Execute (Local VM)" HorizontalAlignment="Left" Margin="10,447,0,0" VerticalAlignment="Top" Width="116"/>
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>

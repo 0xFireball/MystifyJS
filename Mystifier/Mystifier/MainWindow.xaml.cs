@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -57,20 +56,64 @@ namespace Mystifier
             //Keyboard shortcuts
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
+                e.Handled = true;
                 if (e.Key == Key.S)
                 {
-                    OnSave(null, null);
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        OnSaveFileAs();
+                    }
+                    else
+                    {
+                        OnSaveFile();
+                    }
+                }
+                if (e.Key == Key.O)
+                {
+                    OnLoadFile();
                 }
             }
         }
 
-        private void OnSave(object sender, ExecutedRoutedEventArgs e)
+        private void OnLoadFile()
+        {
+            string newFile = MystifierUtil.BrowseForOpenFile("JavaScript Source Files (*.js)|*.js|All Files (*.*)|*.*", "Load File");
+            if (newFile != null)
+            {
+                _currentFile = newFile;
+                TextEditor.Load(_currentFile);
+                UpdateTitle();
+            }
+        }
+
+        private void OnSaveFileAs()
+        {
+            string previousFile = _currentFile;
+            _currentFile = null;
+            OnSaveFile();
+            if (_currentFile == null)
+            {
+                _currentFile = previousFile;
+            }
+        }
+
+        private void OnSaveFile()
         {
             if (_currentFile != null)
+            {
                 TextEditor.Save(_currentFile);
+                _isUnsaved = false;
+                UpdateTitle();
+            }
             else
             {
-                
+                _currentFile = MystifierUtil.BrowseForSaveFile(
+                    "JavaScript Source Files (*.js)|*.js|All Files (*.*)|*.*", "Save File");
+                if (_currentFile == null)
+                {
+                    return;
+                }
+                OnSaveFile();
             }
         }
 
@@ -79,7 +122,7 @@ namespace Mystifier
             if (e.Text == "." && _enableCodeCompletion)
             {
                 _completionWindow = new CompletionWindow(TextEditor.TextArea);
-                IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
+                var data = _completionWindow.CompletionList.CompletionData;
                 var codeCompletionProvider = new IntelligentJavaScriptCodeCompletionProvider();
                 foreach (var completionData in codeCompletionProvider.GetCompletionOptions())
                 {
@@ -127,6 +170,11 @@ namespace Mystifier
             if (_currentFile == null)
             {
                 tbFileName.Text = _isUnsaved ? "[New File*]" : "[New File]";
+            }
+            else
+            {
+                string fn = Path.GetFileName(_currentFile);
+                tbFileName.Text = _isUnsaved ? fn + "*" : fn;
             }
         }
 
