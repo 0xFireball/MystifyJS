@@ -51,7 +51,7 @@ namespace Mystifier
             }
             else
             {
-                Title += " [Free Trial]";
+                Title += " [Unlicensed, Personal use only]";
             }
             TextEditor.TextArea.TextEntering += TextAreaOnTextEntering;
             TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
@@ -239,7 +239,7 @@ namespace Mystifier
             await controller.CloseAsync();
         }
 
-        private string ObfuscateJsSource(string inputSource)
+        private static string ObfuscateJsSource(string inputSource)
         {
             var obfuscatedSource = inputSource;
             var obfuscators = new List<BaseObfuscator>
@@ -247,7 +247,6 @@ namespace Mystifier
                 new RenamingScrambler(),
                 new PackingScrambler(),
                 new UnicodeEncodingScrambler(),
-                new PackingScrambler(),
             };
             foreach (var obfuscationEngine in obfuscators)
             {
