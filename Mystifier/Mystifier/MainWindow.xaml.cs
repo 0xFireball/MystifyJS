@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Xml;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using Mystifier.Activation;
+using Mystifier.IntelliJS.CodeCompletion;
 
 namespace Mystifier
 {
@@ -17,11 +21,14 @@ namespace Mystifier
     public partial class MainWindow
     {
         private readonly MystifierActivation _activationProvider;
+        private CompletionWindow _completionWindow;
+        private readonly bool _enableCodeCompletion;
 
         public MainWindow()
         {
             InitializeComponent();
             _activationProvider = new MystifierActivation();
+            _enableCodeCompletion = false;
         }
 
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -36,6 +43,76 @@ namespace Mystifier
             {
                 Title += " [Free Trial]";
             }
+            TextEditor.TextArea.TextEntering += TextAreaOnTextEntering;
+            TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
+            TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
+        }
+
+        private void TextAreaOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            //Keyboard shortcuts
+            
+        }
+
+        private void TextAreaOnTextEntered(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text == "." && _enableCodeCompletion)
+            {
+                _completionWindow = new CompletionWindow(TextEditor.TextArea);
+                IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
+                var codeCompletionProvider = new IntelligentJavaScriptCodeCompletionProvider();
+                foreach (var completionData in codeCompletionProvider.GetCompletionOptions())
+                {
+                    data.Add(completionData);
+                }
+                _completionWindow.Show();
+                _completionWindow.Closed += delegate
+                {
+                    _completionWindow = null;
+                };
+            }
+            //Auto-pair characters
+            var editorCaret = TextEditor.TextArea.Caret;
+            switch (e.Text)
+            {
+                case "{":
+                    TextEditor.Document.Insert(editorCaret.Offset, "}");
+                    editorCaret.Offset--; //Go back one char
+                    break;
+
+                case "(":
+                    TextEditor.Document.Insert(editorCaret.Offset, ")");
+                    editorCaret.Offset--; //Go back one char
+                    break;
+
+                case ")":
+                    if (TextEditor.Document.GetCharAt(editorCaret.Offset - 2) == '(')
+                    {
+                        e.Handled = true; //Cancel the character
+                        TextEditor.Document.Remove(editorCaret.Offset - 1, 1);
+                    }
+                    break;
+
+                case "\"":
+                    TextEditor.Document.Insert(editorCaret.Offset, "\"");
+                    editorCaret.Offset--; //Go back one char
+                    break;
+            }
+        }
+
+        private void TextAreaOnTextEntering(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text.Length > 0 && _completionWindow != null)
+            {
+                if (!char.IsLetterOrDigit(e.Text[0]))
+                {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    _completionWindow.CompletionList.RequestInsertion(e);
+                }
+            }
+            // Do not set e.Handled=true.
+            // We still want to insert the character that was typed.
         }
 
         private void LoadEditorTheme()

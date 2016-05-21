@@ -117,6 +117,10 @@
       <Project>{692ae1b4-19ec-4ea6-b56f-592813fa4982}</Project>
       <Name>Mystifier.DarkMagic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mystifier.IntelliJS\Mystifier.IntelliJS.csproj">
+      <Project>{2727D171-ACA5-465E-841C-E101980687DF}</Project>
+      <Name>Mystifier.IntelliJS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />

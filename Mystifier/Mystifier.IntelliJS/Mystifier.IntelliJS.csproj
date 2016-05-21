@@ -48,6 +48,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeCompletion\IntelligentJavaScriptCodeCompletionProvider.cs" />
     <Compile Include="CodeCompletion\JavaScriptCodeCompletionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
