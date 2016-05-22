@@ -234,8 +234,8 @@ namespace Mystifier
             var controller = await this.ShowProgressAsync("Please Wait", "Obfuscating Source...");
             controller.SetIndeterminate();
             var inputSource = await Dispatcher.InvokeAsync(() => TextEditor.Text);
-            var obfuscatedSource = await Task.Run(()=>ObfuscateJsSource(inputSource));
-            await Dispatcher.InvokeAsync(() => OutputEditor.Text = obfuscatedSource);
+            var obfuscatedSource = await Task.Run(() => ObfuscateJsSource(inputSource));
+            await Dispatcher.BeginInvoke(new Func<string>(() => OutputEditor.Text = obfuscatedSource));
             await controller.CloseAsync();
         }
 
@@ -270,5 +270,28 @@ namespace Mystifier
                 Process.Start(ProductUrl);
             }
         }
+
+        private async void BtnLocalVmExecute_OnClick(object sender, RoutedEventArgs e)
+        {
+            await
+                this.ShowMessageAsync("Coming Soon",
+                    "Sorry, this feature has not yet been implemented. Make sure you stay up to date!");
+        }
+
+        private void MainWindow_OnContentRendered(object sender, EventArgs e)
+        {
+            if (IsCracked)
+            {
+                ShowDontCrackIt();
+            }
+        }
+
+        private async void ShowDontCrackIt()
+        {
+            await this.ShowMessageAsync("Ahoy, Matey", "By paying for this software, you support the developers. Please don't steal our work. If you don't want to follow the rules, don't use our software.", MessageDialogStyle.Affirmative);
+            this.Close();
+        }
+
+        public bool IsCracked { get; set; }
     }
 }
