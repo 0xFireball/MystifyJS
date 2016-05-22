@@ -104,6 +104,7 @@
     <Keywords color="JavaScriptGlobals">
       <Word>JSON</Word>
       <Word>window</Word>
+      <Word>console</Word>
     </Keywords>
     <Span color="Comment">
       <Begin>//</Begin>

@@ -11,10 +11,14 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
+using Jint;
+using Jint.Parser;
+using Jint.Runtime;
 using MahApps.Metro.Controls.Dialogs;
 using Mystifier.Activation;
 using Mystifier.DarkMagic.Obfuscators;
 using Mystifier.IntelliJS.CodeCompletion;
+using Mystifier.JSVM;
 
 namespace Mystifier
 {
@@ -82,6 +86,10 @@ namespace Mystifier
                 {
                     OnLoadFile();
                 }
+            }
+            if (e.Key == Key.F5)
+            {
+                ExecuteSourceInTextEditor();
             }
         }
 
@@ -233,6 +241,7 @@ namespace Mystifier
 
         private async void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
         {
+            OutputSourceTab.IsSelected = true;
             var controller = await this.ShowProgressAsync("Please Wait", "Obfuscating Source...");
             controller.SetIndeterminate();
             var inputSource = await Dispatcher.InvokeAsync(() => TextEditor.Text);
@@ -277,11 +286,31 @@ namespace Mystifier
             }
         }
 
-        private async void BtnLocalVmExecute_OnClick(object sender, RoutedEventArgs e)
+        private void BtnLocalVmExecute_OnClick(object sender, RoutedEventArgs e)
         {
-            await
-                this.ShowMessageAsync("Coming Soon",
-                    "Sorry, this feature has not yet been implemented. Make sure you stay up to date!");
+            ExecuteSourceInTextEditor();
+        }
+
+        private void ExecuteSourceInTextEditor()
+        {
+            Engine jsEngine = new Engine();
+            var console = new JSConsole(outputTb);
+            console.Clear();
+            jsEngine.SetValue("console", console);
+            ConsoleTab.IsSelected = true; //Switch to output tab
+            string jsSource = TextEditor.Text;
+            try
+            {
+                jsEngine.Execute(jsSource);
+            }
+            catch (JavaScriptException jEx)
+            {
+                console.WriteLine(jEx.ToString());
+            }
+            catch (ParserException pEx)
+            {
+                console.WriteLine("{0},{1} - {2}", pEx.LineNumber, pEx.Column, pEx.Description);
+            }
         }
 
         private void MainWindow_OnContentRendered(object sender, EventArgs e)
