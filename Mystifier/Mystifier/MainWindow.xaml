@@ -161,7 +161,7 @@
             <TabItem Name="ConsoleTab">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Output" />
+                        <TextBlock Text="Console" />
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
@@ -172,9 +172,9 @@
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="btnVersion" Content="v0.1.5" />
+            <Button Name="btnVersion" Content="v0.1.6" />
             <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
-            <Button Name="btnActivate" Content="Unlicensed" Click="BtnActivate_OnClick" />
+            <Button Name="btnActivate" Content="" Click="BtnActivate_OnClick" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 </controls:MetroWindow>

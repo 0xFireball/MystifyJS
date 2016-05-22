@@ -8,18 +8,16 @@ namespace Mystifier.Activation
     internal class MystifierActivation
     {
         private string _activationStatusFile = "_acx";
+        public string LicenseHolder { get; set; }
 
         public bool CheckActivation()
         {
             if (LoadActivationStatus() == null)
                 return false;
-            else
-            {
-                var data = LoadActivationStatus().Split(' ');
-                var acKey = data[0];
-                var email = data[1];
-                return AttemptActivation(acKey, email);
-            }
+            var data = LoadActivationStatus().Split(' ');
+            var acKey = data[0];
+            var email = data[1];
+            return AttemptActivation(acKey, email);
         }
 
         private string LoadActivationStatus()
@@ -59,6 +57,7 @@ namespace Mystifier.Activation
                     throw new ApplicationException("Invalid license details.");
                 }
                 activationResult = true;
+                LicenseHolder = email;
             }
             catch (Exception)
             {
@@ -77,6 +76,12 @@ namespace Mystifier.Activation
                     writer.WriteLine(licKey+" "+userDetails);
                 }
             }
+        }
+
+        public void RemoveSavedActivationStatus()
+        {
+            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            isoStore.DeleteFile(_activationStatusFile);
         }
     }
 }

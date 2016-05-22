@@ -47,11 +47,9 @@ namespace Mystifier
 
         public bool IsCracked { get; set; }
 
-        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadEditorTheme();
-            IsActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
-            ReloadVisibleActivation();
             TextEditor.TextArea.TextEntering += TextAreaOnTextEntering;
             TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
             TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
@@ -62,7 +60,7 @@ namespace Mystifier
         {
             if (IsActivated)
             {
-                btnActivate.Visibility = Visibility.Hidden;
+                btnActivate.Content = "Professional";
             }
             else
             {
@@ -236,7 +234,26 @@ namespace Mystifier
 
         private void BtnActivate_OnClick(object sender, RoutedEventArgs e)
         {
-            RequestActivation();
+            if (IsActivated)
+                ShowActivationDetails();
+            else
+                RequestActivation();
+        }
+
+        private async void ShowActivationDetails()
+        {
+            var result = await this.ShowMessageAsync("Licensing Information", "Mystifier Studio is licensed to " + _activationProvider.LicenseHolder, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "OK", NegativeButtonText = "Deactivate" });
+            if (result == MessageDialogResult.Negative)
+            {
+                result = await
+                    this.ShowMessageAsync("Alert", "Are you sure you want to deactivate this product?",
+                        MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    _activationProvider.RemoveSavedActivationStatus();
+                    await this.ShowMessageAsync("Licensing", "Your license has been deactivated. Please restart the application.");
+                }
+            }
         }
 
         private void CheckActivation()
@@ -297,7 +314,7 @@ namespace Mystifier
                         throw new ApplicationException("Invalid license details.");
                     }
                     await controller.CloseAsync();
-                    await this.ShowMessageAsync("Activation", "Thank you! You have successfully activated Mystifier Studio!");
+                    await this.ShowMessageAsync("Activation", "Thank you! You have successfully activated Mystifier Studio! Please restart the application to update the activation.");
                     IsActivated = true;
                     _activationProvider.SaveActivationStatus(activationKey, email);
                 }
@@ -349,8 +366,10 @@ namespace Mystifier
             }
         }
 
-        private void MainWindow_OnContentRendered(object sender, EventArgs e)
+        private async void MainWindow_OnContentRendered(object sender, EventArgs e)
         {
+            IsActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
+            ReloadVisibleActivation();
             if (IsCracked)
             {
                 ShowDontCrackIt();
