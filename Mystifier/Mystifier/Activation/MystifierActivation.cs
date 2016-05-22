@@ -68,7 +68,7 @@ namespace Mystifier.Activation
         {
             var activationResult = false;
             var deviceUid = FingerprintGenerator.GetFingerprint();
-            var productId = 3286; //Mystifier Product ID
+            var productId = 3826; //Mystifier Product ID
             string activationUrl =
                 $"https://apps.zetaphase.io/licensing/verify.php?serial_key={activationKey}&product_id={productId}&unique1={email}&unique2={deviceUid}";
             try
@@ -81,6 +81,7 @@ namespace Mystifier.Activation
                 }
                 activationResult = true;
                 SaveActivationStatus(activationKey, email);
+                LicenseHolder = email;
             }
             catch (Exception)
             {
