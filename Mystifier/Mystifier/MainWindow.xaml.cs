@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 using ICSharpCode.AvalonEdit.CodeCompletion;
@@ -65,7 +66,7 @@ namespace Mystifier
             else
             {
                 btnActivate.Content = "Unlicensed";
-                Title += " [Unlicensed, Personal use only]";
+                Title = "Mystifier Studio [Unlicensed, Personal use only]";
             }
         }
 
@@ -243,7 +244,7 @@ namespace Mystifier
 
         private async void ShowActivationDetails()
         {
-            var result = await this.ShowMessageAsync("Licensing Information", "Mystifier Studio is licensed to " + _activationProvider.LicenseHolder, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "OK", NegativeButtonText = "Deactivate" });
+            var result = await this.ShowMessageAsync("Licensing Information", "Mystifier Studio is licensed to " + _activationProvider.LicenseHolder, MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { AffirmativeButtonText = "OK", NegativeButtonText = "Deactivate", FirstAuxiliaryButtonText = "Details"});
             if (result == MessageDialogResult.Negative)
             {
                 result = await
@@ -254,6 +255,14 @@ namespace Mystifier
                     _activationProvider.RemoveSavedActivationStatus();
                     await this.ShowMessageAsync("Licensing", "Your license has been deactivated. Please restart the application.");
                     IsActivated = false;
+                }
+            }
+            if (result == MessageDialogResult.FirstAuxiliary)
+            {
+                result = await this.ShowMessageAsync("License Details", $"License Key: {_activationProvider.LicenseKey}", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() {NegativeButtonText = "Copy"});
+                if (result == MessageDialogResult.Negative)
+                {
+                    Clipboard.SetText(_activationProvider.LicenseKey);
                 }
             }
         }
@@ -273,7 +282,7 @@ namespace Mystifier
 
         private async void RunTrialJSObfuscator()
         {
-            var result = await this.ShowMessageAsync("Mystifier is unlicensed", "Unfortunately, Mystifier Studio is currently unlicensed. You will still be able to obfuscate code, but your code will not be processed by the most powerful obfuscators. Please purchase a license to unlock the advanced features. Would you like to get one now?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() {AffirmativeButtonText = "Yes", NegativeButtonText = "No"});
+            var result = await this.ShowMessageAsync("Mystifier is unlicensed", "Unfortunately, Mystifier Studio is currently unlicensed. You will still be able to obfuscate code, but your code will not be processed by the most powerful obfuscators. Please purchase a license to unlock the advanced features. Would you like to get one now?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
             if (result == MessageDialogResult.Affirmative)
             {
                 Process.Start(ProductUrl);
@@ -383,16 +392,16 @@ namespace Mystifier
             }
         }
 
-        private void BtnLocalVmExecute_OnClick(object sender, RoutedEventArgs e)
+        private async void BtnLocalVmExecute_OnClick(object sender, RoutedEventArgs e)
         {
-            ExecuteSourceInTextEditor();
+            await Task.Run(() => ExecuteSourceInTextEditor());
         }
 
-        private void ExecuteSourceInTextEditor()
+        private async void ExecuteSourceInTextEditor()
         {
             var jsEngine = new Engine(cfg => { cfg.AllowClr(); });
             var console = new JSConsole(outputTb);
-            console.Clear();
+            await Task.Run(() => console.clear());
             jsEngine.SetValue("console", console);
             ConsoleTab.IsSelected = true; //Switch to output tab
             var jsSource = TextEditor.Text;
@@ -402,11 +411,16 @@ namespace Mystifier
             }
             catch (JavaScriptException jEx)
             {
-                console.WriteLine(jEx.ToString());
+                await Task.Run(() => console.WriteLine(jEx.ToString()));
             }
             catch (ParserException pEx)
             {
-                console.WriteLine("{0},{1} - {2}", pEx.LineNumber, pEx.Column, pEx.Description);
+                await Task.Run(() => console.WriteLine("{0},{1} - {2}", pEx.LineNumber, pEx.Column, pEx.Description));
+            }
+            catch (TargetInvocationException tEx)
+            {
+                await Task.Run(() => console.WriteLine(
+                    $"{tEx.InnerException.GetType().Name} - {tEx.InnerException.Message}"));
             }
         }
 
@@ -427,6 +441,11 @@ namespace Mystifier
                     "By paying for this software, you support the developers. Please don't steal our work. If you don't want to follow the rules, don't use our software.",
                     MessageDialogStyle.Affirmative);
             Close();
+        }
+
+        private void OutputTb_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            outputTb.ScrollToEnd();
         }
     }
 }

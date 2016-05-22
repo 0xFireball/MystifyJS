@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Net;
+using System.Text;
 
 namespace Mystifier.Activation
 {
@@ -9,17 +10,39 @@ namespace Mystifier.Activation
     {
         private string _activationStatusFile = "_acx";
         public string LicenseHolder { get; set; }
+        public string LicenseKey { get; set; }
+        private static readonly string SecretHashSalt = "cuDFGVwg4J0oTSXxg3nUFQL3y3okNMA5Fs72bALhMdXm0VU0pu2Ju5lAmhErD3SkCCAKbosJXcccaFz9azsJ7LMT3pT16QflrGRJo06sHlQ6aT68SKcinFPX5dCwn5";
 
         public bool CheckActivation()
         {
-            if (LoadActivationStatus() == null)
+            var existingActivationInfo = LoadActivationStatus();
+            if (existingActivationInfo == null)
                 return false;
-            var data = LoadActivationStatus().Split(' ');
+            var data = existingActivationInfo.Split(' ');
             var acKey = data[0];
             var email = data[1];
             LicenseHolder = email;
-            var requiresWebActivation = CheckCacheDateIsWebActivationRequired();
+            LicenseKey = acKey;
+            var requiresWebActivation = CheckCacheDateIsWebActivationRequired() || IsInternetConnectionAvailable();
             return !requiresWebActivation || AttemptActivation(acKey, email);
+        }
+
+        private static bool IsInternetConnectionAvailable()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (var stream = client.OpenRead("https://www.google.com")) //Check Google
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -28,13 +51,13 @@ namespace Mystifier.Activation
         /// <returns></returns>
         private bool CheckCacheDateIsWebActivationRequired()
         {
-            IsolatedStorageFile isoStore =
+            var isoStore =
                 IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
             if (isoStore.FileExists(_activationStatusFile))
             {
                 var saveDate = isoStore.GetLastWriteTime(_activationStatusFile).DateTime;
                 var rightNow = DateTime.Now;
-                TimeSpan duration = rightNow.Subtract(saveDate);
+                var duration = rightNow.Subtract(saveDate);
                 return duration.Days > 7;
             }
             else
@@ -46,12 +69,12 @@ namespace Mystifier.Activation
         private string LoadActivationStatus()
         {
             string activationStatusInfo;
-            IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
             if (isoStore.FileExists(_activationStatusFile))
             {
-                using (IsolatedStorageFileStream isoStream = new IsolatedStorageFileStream(_activationStatusFile, FileMode.Open, isoStore))
+                using (var isoStream = new IsolatedStorageFileStream(_activationStatusFile, FileMode.Open, isoStore))
                 {
-                    using (StreamReader reader = new StreamReader(isoStream))
+                    using (var reader = new StreamReader(isoStream))
                     {
                         activationStatusInfo = reader.ReadToEnd();
                     }
@@ -75,13 +98,15 @@ namespace Mystifier.Activation
             {
                 var wc = new WebClient();
                 var response = wc.DownloadString(activationUrl);
-                if (response != "1")
+                var validResponse = SHA256(SecretHashSalt + "1");
+                if (response != validResponse)
                 {
                     throw new ApplicationException("Invalid license details.");
                 }
                 activationResult = true;
                 SaveActivationStatus(activationKey, email);
                 LicenseHolder = email;
+                LicenseKey = activationKey;
             }
             catch (Exception)
             {
@@ -93,7 +118,7 @@ namespace Mystifier.Activation
         public void SaveActivationStatus(string licKey, string userDetails)
         {
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
-            using (var isoStream = new IsolatedStorageFileStream(_activationStatusFile, FileMode.CreateNew, isoStore))
+            using (var isoStream = new IsolatedStorageFileStream(_activationStatusFile, FileMode.Create, isoStore))
             {
                 using (var writer = new StreamWriter(isoStream))
                 {
@@ -107,6 +132,18 @@ namespace Mystifier.Activation
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
             if (isoStore.FileExists(_activationStatusFile))
                 isoStore.DeleteFile(_activationStatusFile);
+        }
+
+        private static string SHA256(string password)
+        {
+            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var hash = new StringBuilder();
+            var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(password), 0, Encoding.UTF8.GetByteCount(password));
+            foreach (var theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
         }
     }
 }

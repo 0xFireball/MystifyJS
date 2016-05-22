@@ -136,23 +136,17 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
-                    <avalonedit:TextEditor
-                        x:Name="OutputEditor"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        LineNumbersForeground="{DynamicResource AccentColorBrush}"
-                        ShowLineNumbers="True"
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Auto"
-                        FontFamily="Consolas"
-                        SyntaxHighlighting="JavaScript"
-                        FontSize="10pt"
-                        IsReadOnly="True"
-                        WordWrap="True"
-                        Margin="10,27,10.8,38"
-                        Background="#FF2F2F2F"
-                        Grid.Column="2"
-                        Foreground="#FFE5E5E5" />
+                    <TextBox Name="OutputEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+
+                             HorizontalScrollBarVisibility="Auto"
+                             VerticalScrollBarVisibility="Auto"
+                             FontFamily="Consolas"
+                             FontSize="10pt"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             Margin="10,27,10.8,38"
+                             Background="#FF2F2F2F"
+                             Foreground="#FFE5E5E5" />
                     <Button Content="Copy" Name="btnCopyObfuscatedCode" Margin="0,0,10.8,10.4"
                             HorizontalAlignment="Right" Width="57" Height="25" VerticalAlignment="Bottom"
                             Click="BtnCopyObfuscatedCode_OnClick" />
@@ -165,14 +159,14 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
-                    <TextBox IsReadOnly="True" IsReadOnlyCaretVisible="True" Name="outputTb"></TextBox>
+                    <TextBox TextChanged="OutputTb_OnTextChanged" IsReadOnly="True" IsReadOnlyCaretVisible="True" Name="outputTb" TextWrapping="WrapWithOverflow" />
                 </Grid>
             </TabItem>
         </TabControl>
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="btnVersion" Content="v0.1.8" />
+            <Button Name="btnVersion" Content="v0.1.10" />
             <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
             <Button Name="btnActivate" Content="" Click="BtnActivate_OnClick" />
         </controls:WindowCommands>

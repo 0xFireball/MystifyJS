@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Mystifier.JSVM
 {
@@ -11,9 +13,12 @@ namespace Mystifier.JSVM
             _outputBox = outputBox;
         }
 
-        public void WriteLine(string format, params object[] args)
+        public async void WriteLine(string format, params object[] args)
         {
-            _outputBox.AppendText(string.Format(format, args) + "\n");
+            await _outputBox.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _outputBox.AppendText(string.Format(format, args) + "\n");
+            }));
         }
 
         // ReSharper disable once InconsistentNaming
@@ -22,9 +27,13 @@ namespace Mystifier.JSVM
             WriteLine(obj.ToString());
         }
 
-        public void Clear()
+        // ReSharper disable once InconsistentNaming
+        public async void clear()
         {
-            _outputBox.Text = "";
+            await _outputBox.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _outputBox.Text = "";
+            }));
         }
     }
 }
