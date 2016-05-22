@@ -320,7 +320,6 @@ namespace Mystifier
                     await controller.CloseAsync();
                     await this.ShowMessageAsync("Activation", "Thank you! You have successfully activated Mystifier Studio! Please restart the application to update the activation.");
                     IsActivated = true;
-                    _activationProvider.SaveActivationStatus(activationKey, email);
                 }
                 catch (Exception)
                 {

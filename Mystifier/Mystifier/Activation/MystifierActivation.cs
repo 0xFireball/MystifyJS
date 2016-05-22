@@ -17,7 +17,30 @@ namespace Mystifier.Activation
             var data = LoadActivationStatus().Split(' ');
             var acKey = data[0];
             var email = data[1];
-            return AttemptActivation(acKey, email);
+            LicenseHolder = email;
+            var requiresWebActivation = CheckCacheDateIsWebActivationRequired();
+            return !requiresWebActivation || AttemptActivation(acKey, email);
+        }
+
+        /// <summary>
+        /// Returns false if the cache is valid, returns true if the cache has expired
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckCacheDateIsWebActivationRequired()
+        {
+            IsolatedStorageFile isoStore =
+                IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            if (isoStore.FileExists(_activationStatusFile))
+            {
+                var saveDate = isoStore.GetLastWriteTime(_activationStatusFile).DateTime;
+                var rightNow = DateTime.Now;
+                TimeSpan duration = rightNow.Subtract(saveDate);
+                return duration.Days > 7;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private string LoadActivationStatus()
@@ -57,7 +80,7 @@ namespace Mystifier.Activation
                     throw new ApplicationException("Invalid license details.");
                 }
                 activationResult = true;
-                LicenseHolder = email;
+                SaveActivationStatus(activationKey, email);
             }
             catch (Exception)
             {
@@ -73,7 +96,7 @@ namespace Mystifier.Activation
             {
                 using (var writer = new StreamWriter(isoStream))
                 {
-                    writer.WriteLine(licKey+" "+userDetails);
+                    writer.WriteLine(licKey + " " + userDetails);
                 }
             }
         }
