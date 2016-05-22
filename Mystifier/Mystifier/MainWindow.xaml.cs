@@ -253,6 +253,7 @@ namespace Mystifier
                 {
                     _activationProvider.RemoveSavedActivationStatus();
                     await this.ShowMessageAsync("Licensing", "Your license has been deactivated. Please restart the application.");
+                    IsActivated = false;
                 }
             }
         }

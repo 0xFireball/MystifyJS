@@ -105,7 +105,8 @@ namespace Mystifier.Activation
         public void RemoveSavedActivationStatus()
         {
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
-            isoStore.DeleteFile(_activationStatusFile);
+            if (isoStore.FileExists(_activationStatusFile))
+                isoStore.DeleteFile(_activationStatusFile);
         }
     }
 }
