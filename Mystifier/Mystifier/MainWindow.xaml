@@ -124,7 +124,7 @@
                 Margin="0,0,9.8,7" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"
                 Click="BtnObfuscate_OnClick" />
         <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute in ZetaJS (F5)" HorizontalAlignment="Left"
-                Margin="10,0,0,7" Width="116" Click="BtnLocalVmExecute_OnClick" Height="26" VerticalAlignment="Bottom" />
+                Margin="10,0,0,7" Width="135" Click="BtnLocalVmExecute_OnClick" Height="26" VerticalAlignment="Bottom" />
         <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5"
                       Background="#FF222222" />
         <TabControl Grid.Column="2">
