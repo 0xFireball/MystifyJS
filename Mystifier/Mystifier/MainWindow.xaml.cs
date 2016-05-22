@@ -64,6 +64,7 @@ namespace Mystifier
             }
             else
             {
+                btnActivate.Content = "Unlicensed";
                 Title += " [Unlicensed, Personal use only]";
             }
         }
@@ -297,10 +298,13 @@ namespace Mystifier
         private async void RequestActivation()
         {
             var activationKey = await this.ShowInputAsync("Activation", "Enter license key");
-            if (activationKey.Length != 29)
+            if (activationKey == null)
             {
                 ShowActivationInvalid();
+                return;
             }
+            if (activationKey.Length != 29)
+                ShowActivationInvalid();
             else
             {
                 var controller = await this.ShowProgressAsync("Verifying...", "Please wait a moment");
