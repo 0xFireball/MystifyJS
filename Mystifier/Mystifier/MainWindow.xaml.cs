@@ -43,7 +43,7 @@ namespace Mystifier
         }
 
         public bool IsActivated { get; set; }
-        public string ProductUrl { get; set; } = "https://zetaphase.io";
+        public string ProductUrl { get; set; } = "https://zetaphase.binpress.com/product/mystifier-studio/3826";
 
         public bool IsCracked { get; set; }
 
@@ -262,7 +262,47 @@ namespace Mystifier
             IsActivated = false;
         }
 
-        private async void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
+        private void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (IsActivated)
+                RunJSObfuscator();
+            else
+                RunTrialJSObfuscator();
+        }
+
+        private async void RunTrialJSObfuscator()
+        {
+            var result = await this.ShowMessageAsync("Mystifier is unlicensed", "Unfortunately, Mystifier Studio is currently unlicensed. You will still be able to obfuscate code, but your code will not be processed by the most powerful obfuscators. Please purchase a license to unlock the advanced features. Would you like to get one now?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() {AffirmativeButtonText = "Yes", NegativeButtonText = "No"});
+            if (result == MessageDialogResult.Affirmative)
+            {
+                Process.Start(ProductUrl);
+            }
+            OutputSourceTab.IsSelected = true;
+            var controller = await this.ShowProgressAsync("Please Wait", "Obfuscating Source...");
+            controller.SetIndeterminate();
+            var inputSource = await Dispatcher.InvokeAsync(() => TextEditor.Text);
+            var obfuscatedSource = await Task.Run(() => ObfuscateJsSourceLimited(inputSource));
+            await Dispatcher.BeginInvoke(new Func<string>(() => OutputEditor.Text = obfuscatedSource));
+            await controller.CloseAsync();
+        }
+
+        private static string ObfuscateJsSourceLimited(string inputSource)
+        {
+            var obfuscatedSource = inputSource;
+            var obfuscators = new List<BaseObfuscator>
+            {
+                new RenamingScrambler(),
+                new UnicodeEncodingScrambler()
+            };
+            foreach (var obfuscationEngine in obfuscators)
+            {
+                obfuscationEngine.LoadCode(obfuscatedSource);
+                obfuscatedSource = obfuscationEngine.ObfuscateCode();
+            }
+            return obfuscatedSource;
+        }
+
+        private async void RunJSObfuscator()
         {
             OutputSourceTab.IsSelected = true;
             var controller = await this.ShowProgressAsync("Please Wait", "Obfuscating Source...");
