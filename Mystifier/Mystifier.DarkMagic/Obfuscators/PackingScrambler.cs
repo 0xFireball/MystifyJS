@@ -8,6 +8,14 @@ namespace Mystifier.DarkMagic.Obfuscators
 {
     public class PackingScrambler : BaseObfuscator
     {
+        public override string ObfuscateCode()
+        {
+            var obfuscatedCode = InputSource;
+            var p = new EcmaScriptPacker(EcmaScriptPacker.PackerEncoding.HighAscii, true, true);
+            obfuscatedCode = p.Pack(obfuscatedCode);
+            return obfuscatedCode;
+        }
+
         /// <summary>
         ///     Packs a javascript file into a smaller area, removing unnecessary characters from the output.
         /// </summary>
@@ -34,9 +42,9 @@ namespace Mystifier.DarkMagic.Obfuscators
             private static readonly string Lookup95 =
                 "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
 
-            private WordList _encodingLookup;
-
             private readonly string _ignore = "$1";
+
+            private WordList _encodingLookup;
 
             public EcmaScriptPacker()
             {
@@ -51,7 +59,7 @@ namespace Mystifier.DarkMagic.Obfuscators
             /// <param name="encoding">The encoding level for this instance</param>
             /// <param name="fastDecode">Adds a subroutine to the output to speed up decoding</param>
             /// <param name="specialChars">Replaces special characters</param>
-            public EcmaScriptPacker(EcmaScriptPacker.PackerEncoding encoding, bool fastDecode, bool specialChars)
+            public EcmaScriptPacker(PackerEncoding encoding, bool fastDecode, bool specialChars)
             {
                 Encoding = encoding;
                 FastDecode = fastDecode;
@@ -452,7 +460,7 @@ namespace Mystifier.DarkMagic.Obfuscators
 
                 public CountComparer(HybridDictionary count)
                 {
-                    this._count = count;
+                    _count = count;
                 }
 
                 #region IComparer Members
@@ -478,21 +486,21 @@ namespace Mystifier.DarkMagic.Obfuscators
             /// </summary>
             public delegate string MatchGroupEvaluator(Match match, int offset);
 
+            private readonly Regex _deleted = new Regex("\\x01[^\\x01]*\\x01");
+
+            private readonly Regex _escape = new Regex("\\\\.");
+
             private readonly StringCollection _escaped = new StringCollection();
             // used to determine nesting levels
             private readonly Regex _groups = new Regex("\\(");
 
-            private readonly Regex _subReplace = new Regex("\\$");
-
             private readonly Regex _indexed = new Regex("^\\$\\d+$");
 
-            private readonly Regex _escape = new Regex("\\\\.");
+            private readonly ArrayList _patterns = new ArrayList();
+
+            private readonly Regex _subReplace = new Regex("\\$");
 
             private Regex _quote = new Regex("'");
-
-            private readonly Regex _deleted = new Regex("\\x01[^\\x01]*\\x01");
-
-            private readonly ArrayList _patterns = new ArrayList();
 
             //decode escaped characters
             private int _unescapeIndex;
@@ -686,14 +694,6 @@ namespace Mystifier.DarkMagic.Obfuscators
                     return "(" + Expression + ")";
                 }
             }
-        }
-
-        public override string ObfuscateCode()
-        {
-            var obfuscatedCode = InputSource;
-            EcmaScriptPacker p = new EcmaScriptPacker(EcmaScriptPacker.PackerEncoding.HighAscii, true, true);
-            obfuscatedCode = p.Pack(obfuscatedCode);
-            return obfuscatedCode;
         }
     }
 }

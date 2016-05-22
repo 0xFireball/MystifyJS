@@ -18,7 +18,7 @@ namespace Mystifier.DarkMagic.Obfuscators
             StringSplitOptions.RemoveEmptyEntries);
 
         private readonly Dictionary<string, string> _names = new Dictionary<string, string>();
-        
+
 
         public override string ObfuscateCode()
         {
@@ -27,7 +27,8 @@ namespace Mystifier.DarkMagic.Obfuscators
             foreach (var s in _extraNames)
             {
                 freeVarNameRenameIndex++;
-                var freeName = "" + (char) ('A' + freeVarNameRenameIndex%25) + (char) ('A' + freeVarNameRenameIndex/25%25);
+                var freeName = "" + (char) ('A' + freeVarNameRenameIndex%25) +
+                               (char) ('A' + freeVarNameRenameIndex/25%25);
                 _names.Add(s, freeName);
             }
             var pattern1 = new Regex("(var |function |\\.prototype\\.)([a-zA-Z0-9_]+)");
@@ -42,7 +43,8 @@ namespace Mystifier.DarkMagic.Obfuscators
                 if (!ReservedIgnoreNames.Contains(key))
                 {
                     freeVarNameRenameIndex++;
-                    var freeName = "" + (char) ('A' + freeVarNameRenameIndex%25) + (char) ('A' + freeVarNameRenameIndex/25%25);
+                    var freeName = "" + (char) ('A' + freeVarNameRenameIndex%25) +
+                                   (char) ('A' + freeVarNameRenameIndex/25%25);
                     if (!_names.ContainsKey(key))
                         _names.Add(key, freeName);
                 }

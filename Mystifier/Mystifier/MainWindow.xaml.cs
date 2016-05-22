@@ -29,9 +29,6 @@ namespace Mystifier
         private string _currentFile;
         private bool _isUnsaved;
 
-        public bool IsActivated { get; set; }
-        public string ProductUrl { get; set; } = "https://zetaphase.io";
-
         public MainWindow()
         {
             InitializeComponent();
@@ -41,10 +38,15 @@ namespace Mystifier
             CheckActivation();
         }
 
+        public bool IsActivated { get; set; }
+        public string ProductUrl { get; set; } = "https://zetaphase.io";
+
+        public bool IsCracked { get; set; }
+
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadEditorTheme();
-            var isActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
+            var isActivated = await Task.Run((Func<bool>) _activationProvider.CheckActivation);
             if (isActivated)
             {
                 btnActivate.Visibility = Visibility.Hidden;
@@ -246,7 +248,7 @@ namespace Mystifier
             {
                 new RenamingScrambler(),
                 new PackingScrambler(),
-                new UnicodeEncodingScrambler(),
+                new UnicodeEncodingScrambler()
             };
             foreach (var obfuscationEngine in obfuscators)
             {
@@ -264,7 +266,11 @@ namespace Mystifier
         private async void RequestActivation()
         {
             var activationKey = await this.ShowInputAsync("Activation", "Enter license key");
-            var result = await this.ShowMessageAsync("Activation", "Sorry, your activation key is invalid. Do you want to get an activation key now?", MessageDialogStyle.AffirmativeAndNegative);
+            var result =
+                await
+                    this.ShowMessageAsync("Activation",
+                        "Sorry, your activation key is invalid. Do you want to get an activation key now?",
+                        MessageDialogStyle.AffirmativeAndNegative);
             if (result == MessageDialogResult.Affirmative)
             {
                 Process.Start(ProductUrl);
@@ -288,10 +294,11 @@ namespace Mystifier
 
         private async void ShowDontCrackIt()
         {
-            await this.ShowMessageAsync("Ahoy, Matey", "By paying for this software, you support the developers. Please don't steal our work. If you don't want to follow the rules, don't use our software.", MessageDialogStyle.Affirmative);
-            this.Close();
+            await
+                this.ShowMessageAsync("Ahoy, Matey",
+                    "By paying for this software, you support the developers. Please don't steal our work. If you don't want to follow the rules, don't use our software.",
+                    MessageDialogStyle.Affirmative);
+            Close();
         }
-
-        public bool IsCracked { get; set; }
     }
 }

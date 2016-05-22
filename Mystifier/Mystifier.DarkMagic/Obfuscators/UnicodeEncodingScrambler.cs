@@ -28,7 +28,7 @@ eval(e);
             var sb = new StringBuilder();
             foreach (var c in value.ToString())
             {
-                var encodedValue = "\\u" + ((int)c).ToString("x4");
+                var encodedValue = "\\u" + ((int) c).ToString("x4");
                 sb.Append(encodedValue);
             }
             return sb;
@@ -39,7 +39,7 @@ eval(e);
             return Regex.Replace(
                 value,
                 @"\\u(?<Value>[a-zA-Z0-9]{4})",
-                m => ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
+                m => ((char) int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
         }
     }
 }
