@@ -46,7 +46,7 @@ namespace Mystifier
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadEditorTheme();
-            var isActivated = await Task.Run((Func<bool>) _activationProvider.CheckActivation);
+            var isActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
             if (isActivated)
             {
                 btnActivate.Visibility = Visibility.Hidden;
