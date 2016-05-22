@@ -50,8 +50,17 @@ namespace Mystifier
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadEditorTheme();
-            var isActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
-            if (isActivated)
+            IsActivated = await Task.Run((Func<bool>)_activationProvider.CheckActivation);
+            ReloadVisibleActivation();
+            TextEditor.TextArea.TextEntering += TextAreaOnTextEntering;
+            TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
+            TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
+            UpdateTitle();
+        }
+
+        private void ReloadVisibleActivation()
+        {
+            if (IsActivated)
             {
                 btnActivate.Visibility = Visibility.Hidden;
             }
@@ -59,10 +68,6 @@ namespace Mystifier
             {
                 Title += " [Unlicensed, Personal use only]";
             }
-            TextEditor.TextArea.TextEntering += TextAreaOnTextEntering;
-            TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
-            TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
-            UpdateTitle();
         }
 
         private void TextAreaOnKeyDown(object sender, KeyEventArgs e)
@@ -275,6 +280,37 @@ namespace Mystifier
         private async void RequestActivation()
         {
             var activationKey = await this.ShowInputAsync("Activation", "Enter license key");
+            if (activationKey.Length != 29)
+            {
+                ShowActivationInvalid();
+            }
+            else
+            {
+                var controller = await this.ShowProgressAsync("Verifying...", "Please wait a moment");
+                controller.SetIndeterminate();
+                try
+                {
+                    var email = await this.ShowInputAsync("Activation", "Please enter the email you used to purchase Mystifier Studio");
+                    var activationStatus = _activationProvider.AttemptActivation(activationKey, email);
+                    if (!activationStatus)
+                    {
+                        throw new ApplicationException("Invalid license details.");
+                    }
+                    await controller.CloseAsync();
+                    await this.ShowMessageAsync("Activation", "Thank you! You have successfully activated Mystifier Studio!");
+                    IsActivated = true;
+                    _activationProvider.SaveActivationStatus(activationKey, email);
+                }
+                catch (Exception)
+                {
+                    await controller.CloseAsync();
+                    ShowActivationInvalid();
+                }
+            }
+        }
+
+        private async void ShowActivationInvalid()
+        {
             var result =
                 await
                     this.ShowMessageAsync("Activation",
@@ -293,12 +329,12 @@ namespace Mystifier
 
         private void ExecuteSourceInTextEditor()
         {
-            Engine jsEngine = new Engine();
+            var jsEngine = new Engine(cfg => { cfg.AllowClr(); });
             var console = new JSConsole(outputTb);
             console.Clear();
             jsEngine.SetValue("console", console);
             ConsoleTab.IsSelected = true; //Switch to output tab
-            string jsSource = TextEditor.Text;
+            var jsSource = TextEditor.Text;
             try
             {
                 jsEngine.Execute(jsSource);

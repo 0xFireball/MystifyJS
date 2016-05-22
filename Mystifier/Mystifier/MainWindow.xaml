@@ -108,6 +108,7 @@
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             Name="TextEditor"
             HorizontalAlignment="Stretch"
+            WordWrap="True"
             VerticalAlignment="Stretch"
             LineNumbersForeground="{DynamicResource AccentColorBrush}"
             ShowLineNumbers="True"
