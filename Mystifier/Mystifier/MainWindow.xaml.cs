@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -18,6 +19,7 @@ using Jint.Runtime;
 using MahApps.Metro.Controls.Dialogs;
 using Mystifier.Activation;
 using Mystifier.DarkMagic.Obfuscators;
+using Mystifier.EditorUtils;
 using Mystifier.IntelliJS.CodeCompletion;
 using Mystifier.JSVM;
 
@@ -33,6 +35,7 @@ namespace Mystifier
         private CompletionWindow _completionWindow;
         private string _currentFile;
         private bool _isUnsaved;
+        private bool _forceClose = false;
 
         public MainWindow()
         {
@@ -106,12 +109,21 @@ namespace Mystifier
             {
                 ExecuteSourceInTextEditor();
             }
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                if ((Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) && Keyboard.IsKeyDown(Key.F))
+                {
+                    e.Handled = true;
+                    BtnBeautify_OnClick(null, null);
+                }
+            }
         }
 
         private void OnNewFile()
         {
             _currentFile = null;
             TextEditor.Text = "";
+            _isUnsaved = true;
             UpdateTitle();
         }
 
@@ -123,6 +135,7 @@ namespace Mystifier
             {
                 _currentFile = newFile;
                 TextEditor.Load(_currentFile);
+                _isUnsaved = false;
                 UpdateTitle();
             }
         }
@@ -490,6 +503,80 @@ namespace Mystifier
         private void OutputTb_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             outputTb.ScrollToEnd();
+        }
+
+        private async void BtnBeautify_OnClick(object sender, RoutedEventArgs e)
+        {
+            string editorSource = TextEditor.Text;
+            _isUnsaved = true;
+            UpdateTitle();
+            var beautifiedSource = await Task.Run(() => BeautifySource(editorSource));
+            TextEditor.Text = beautifiedSource;
+        }
+
+        private string BeautifySource(string editorSource)
+        {
+            var beautifier = new Beautifier()
+            {
+                Opts = new JSBeautifier.BeautifierOptions()
+                {
+                    IndentWithTabs = true,
+                    JslintHappy = false,
+                    KeepArrayIndentation = false,
+                    PreserveNewlines = false,
+                    BraceStyle = JSBeautifier.BraceStyle.Collapse,
+                    //BreakChainedMethods = true,
+                    KeepFunctionIndentation = false,
+                    EvalCode = true,
+                },
+                Flags = new JSBeautifier.BeautifierFlags("BLOCK")
+                {
+                    IndentationLevel = 0,
+                }
+            };
+            return beautifier.Beautify(editorSource);
+        }
+
+        private async void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            if (_forceClose) return;
+            e.Cancel = true;
+            await Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (_isUnsaved)
+                {
+                    var result = await
+                        this.ShowMessageAsync("Unsaved Changes",
+                            "You have unsaved changes in the file you are currently editing. Do you want to save your changes?",
+                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,
+                            new MetroDialogSettings()
+                            {
+                                AffirmativeButtonText = "Save",
+                                NegativeButtonText = "Don't Save",
+                                FirstAuxiliaryButtonText = "Cancel"
+                            });
+                    switch (result)
+                    {
+                        case MessageDialogResult.Affirmative:
+                            OnSaveFile();
+                            if (!_isUnsaved)
+                            {
+                                _forceClose = true;
+                                this.Close();
+                            }
+                            break;
+
+                        case MessageDialogResult.FirstAuxiliary:
+                            e.Cancel = true;
+                            break;
+                    }
+                }
+                else
+                {
+                    _forceClose = true;
+                    this.Close();
+                }
+            }));
         }
     }
 }

@@ -8,6 +8,7 @@
                       xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
                       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       Loaded="MainWindow_OnLoaded"
+                      Closing="MainWindow_OnClosing"
                       ContentRendered="MainWindow_OnContentRendered"
                       mc:Ignorable="d"
                       Title="Mystifier Studio" Height="509.256" Width="823.512" Icon="icon.ico">
@@ -126,6 +127,8 @@
                 Click="BtnObfuscate_OnClick" />
         <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute in ZetaJS (F5)" HorizontalAlignment="Left"
                 Margin="10,0,0,7" Width="135" Click="BtnLocalVmExecute_OnClick" Height="26" VerticalAlignment="Bottom" />
+        <Button x:Name="btnBeautify" Grid.Column="0" Content="Beautify Code (Shift+Alt+F)" HorizontalAlignment="Left"
+                Margin="150,0,0,7" Width="164" Click="BtnBeautify_OnClick" Height="26" VerticalAlignment="Bottom" />
         <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5"
                       Background="#FF222222" />
         <TabControl Grid.Column="2">
@@ -167,7 +170,7 @@
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="btnVersion" Content="v0.1.11" />
+            <Button Name="btnVersion" Content="v0.1.12" />
             <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
             <Button Name="btnActivate" Content="" Click="BtnActivate_OnClick" />
         </controls:WindowCommands>

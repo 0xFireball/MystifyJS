@@ -75,6 +75,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EditorUtils\JSBeautifier.cs" />
     <Compile Include="JSVM\JSConsole.cs" />
     <Compile Include="JSVM\ZetaJSInit.cs" />
     <Compile Include="MainWindow.xaml.cs">
