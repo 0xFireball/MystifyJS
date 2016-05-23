@@ -159,14 +159,15 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
-                    <TextBox TextChanged="OutputTb_OnTextChanged" IsReadOnly="True" IsReadOnlyCaretVisible="True" Name="outputTb" TextWrapping="WrapWithOverflow" />
+                    <TextBox TextChanged="OutputTb_OnTextChanged" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                             Name="outputTb" TextWrapping="WrapWithOverflow" />
                 </Grid>
             </TabItem>
         </TabControl>
     </Grid>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="btnVersion" Content="v0.1.10" />
+            <Button Name="btnVersion" Content="v0.1.11" />
             <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
             <Button Name="btnActivate" Content="" Click="BtnActivate_OnClick" />
         </controls:WindowCommands>

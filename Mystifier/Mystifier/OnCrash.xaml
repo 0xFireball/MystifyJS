@@ -1,0 +1,19 @@
+﻿<controls:MetroWindow x:Class="Mystifier.OnCrash"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:Mystifier"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      mc:Ignorable="d"
+                      WindowStartupLocation="CenterOwner"
+                      Title="Mystifier Studio Unhandled Exception" Height="332.97" Width="527.044" Icon="icon.ico">
+    <Grid>
+        <TextBlock x:Name="titleCrashInfo" HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap"
+                   Text="Oops! Mystifier Studio crashed! Please contact the developers!" VerticalAlignment="Top"
+                   Height="20" Width="400" />
+        <TextBox x:Name="tbCrashInfo" Margin="10,30,10,9.8" TextWrapping="Wrap" Text="Crash Details..."
+                 IsReadOnly="True" IsReadOnlyCaretVisible="True" />
+
+    </Grid>
+</controls:MetroWindow>

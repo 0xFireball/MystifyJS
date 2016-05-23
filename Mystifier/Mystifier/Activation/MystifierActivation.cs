@@ -2,16 +2,19 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Mystifier.Activation
 {
     internal class MystifierActivation
     {
-        private string _activationStatusFile = "_acx";
+        private static readonly string SecretHashSalt =
+            "cuDFGVwg4J0oTSXxg3nUFQL3y3okNMA5Fs72bALhMdXm0VU0pu2Ju5lAmhErD3SkCCAKbosJXcccaFz9azsJ7LMT3pT16QflrGRJo06sHlQ6aT68SKcinFPX5dCwn5";
+
+        private readonly string _activationStatusFile = "_acx";
         public string LicenseHolder { get; set; }
         public string LicenseKey { get; set; }
-        private static readonly string SecretHashSalt = "cuDFGVwg4J0oTSXxg3nUFQL3y3okNMA5Fs72bALhMdXm0VU0pu2Ju5lAmhErD3SkCCAKbosJXcccaFz9azsJ7LMT3pT16QflrGRJo06sHlQ6aT68SKcinFPX5dCwn5";
 
         public bool CheckActivation()
         {
@@ -46,7 +49,7 @@ namespace Mystifier.Activation
         }
 
         /// <summary>
-        /// Returns false if the cache is valid, returns true if the cache has expired
+        ///     Returns false if the cache is valid, returns true if the cache has expired
         /// </summary>
         /// <returns></returns>
         private bool CheckCacheDateIsWebActivationRequired()
@@ -60,16 +63,14 @@ namespace Mystifier.Activation
                 var duration = rightNow.Subtract(saveDate);
                 return duration.Days > 7;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         private string LoadActivationStatus()
         {
             string activationStatusInfo;
-            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
+                null);
             if (isoStore.FileExists(_activationStatusFile))
             {
                 using (var isoStream = new IsolatedStorageFileStream(_activationStatusFile, FileMode.Open, isoStore))
@@ -117,7 +118,8 @@ namespace Mystifier.Activation
 
         public void SaveActivationStatus(string licKey, string userDetails)
         {
-            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
+                null);
             using (var isoStream = new IsolatedStorageFileStream(_activationStatusFile, FileMode.Create, isoStore))
             {
                 using (var writer = new StreamWriter(isoStream))
@@ -129,14 +131,15 @@ namespace Mystifier.Activation
 
         public void RemoveSavedActivationStatus()
         {
-            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
+                null);
             if (isoStore.FileExists(_activationStatusFile))
                 isoStore.DeleteFile(_activationStatusFile);
         }
 
         private static string SHA256(string password)
         {
-            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var crypt = new SHA256Managed();
             var hash = new StringBuilder();
             var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(password), 0, Encoding.UTF8.GetByteCount(password));
             foreach (var theByte in crypto)

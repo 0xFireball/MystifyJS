@@ -37,6 +37,12 @@ namespace Mystifier
         public MainWindow()
         {
             InitializeComponent();
+            Application.Current.DispatcherUnhandledException +=
+                (sender, args) =>
+                {
+                    args.Handled = true;
+                    new OnCrash(args.Exception.ToString()) { Owner = this }.Show();
+                };
             _activationProvider = new MystifierActivation();
             _enableCodeCompletion = false;
             IsActivated = false;
@@ -91,11 +97,22 @@ namespace Mystifier
                 {
                     OnLoadFile();
                 }
+                if (e.Key == Key.N)
+                {
+                    OnNewFile();
+                }
             }
             if (e.Key == Key.F5)
             {
                 ExecuteSourceInTextEditor();
             }
+        }
+
+        private void OnNewFile()
+        {
+            _currentFile = null;
+            TextEditor.Text = "";
+            UpdateTitle();
         }
 
         private void OnLoadFile()
@@ -244,22 +261,39 @@ namespace Mystifier
 
         private async void ShowActivationDetails()
         {
-            var result = await this.ShowMessageAsync("Licensing Information", "Mystifier Studio is licensed to " + _activationProvider.LicenseHolder, MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { AffirmativeButtonText = "OK", NegativeButtonText = "Deactivate", FirstAuxiliaryButtonText = "Details"});
+            var result =
+                await
+                    this.ShowMessageAsync("Licensing Information",
+                        "Mystifier Studio is licensed to " + _activationProvider.LicenseHolder,
+                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,
+                        new MetroDialogSettings
+                        {
+                            AffirmativeButtonText = "OK",
+                            NegativeButtonText = "Deactivate",
+                            FirstAuxiliaryButtonText = "Details"
+                        });
             if (result == MessageDialogResult.Negative)
             {
                 result = await
                     this.ShowMessageAsync("Alert", "Are you sure you want to deactivate this product?",
-                        MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+                        MessageDialogStyle.AffirmativeAndNegative,
+                        new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
                 if (result == MessageDialogResult.Affirmative)
                 {
                     _activationProvider.RemoveSavedActivationStatus();
-                    await this.ShowMessageAsync("Licensing", "Your license has been deactivated. Please restart the application.");
+                    await
+                        this.ShowMessageAsync("Licensing",
+                            "Your license has been deactivated. Please restart the application.");
                     IsActivated = false;
                 }
             }
             if (result == MessageDialogResult.FirstAuxiliary)
             {
-                result = await this.ShowMessageAsync("License Details", $"License Key: {_activationProvider.LicenseKey}", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() {NegativeButtonText = "Copy"});
+                result =
+                    await
+                        this.ShowMessageAsync("License Details", $"License Key: {_activationProvider.LicenseKey}",
+                            MessageDialogStyle.AffirmativeAndNegative,
+                            new MetroDialogSettings { NegativeButtonText = "Copy" });
                 if (result == MessageDialogResult.Negative)
                 {
                     Clipboard.SetText(_activationProvider.LicenseKey);
@@ -282,7 +316,12 @@ namespace Mystifier
 
         private async void RunTrialJSObfuscator()
         {
-            var result = await this.ShowMessageAsync("Mystifier is unlicensed", "Unfortunately, Mystifier Studio is currently unlicensed. You will still be able to obfuscate code, but your code will not be processed by the most powerful obfuscators. Please purchase a license to unlock the advanced features. Would you like to get one now?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+            var result =
+                await
+                    this.ShowMessageAsync("Mystifier is unlicensed",
+                        "Unfortunately, Mystifier Studio is currently unlicensed. You will still be able to obfuscate code, but your code will not be processed by the most powerful obfuscators. Please purchase a license to unlock the advanced features. Would you like to get one now?",
+                        MessageDialogStyle.AffirmativeAndNegative,
+                        new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
             if (result == MessageDialogResult.Affirmative)
             {
                 Process.Start(ProductUrl);
@@ -361,14 +400,19 @@ namespace Mystifier
                 controller.SetIndeterminate();
                 try
                 {
-                    var email = await this.ShowInputAsync("Activation", "Please enter the email you used to purchase Mystifier Studio");
+                    var email =
+                        await
+                            this.ShowInputAsync("Activation",
+                                "Please enter the email you used to purchase Mystifier Studio");
                     var activationStatus = _activationProvider.AttemptActivation(activationKey, email);
                     if (!activationStatus)
                     {
                         throw new ApplicationException("Invalid license details.");
                     }
                     await controller.CloseAsync();
-                    await this.ShowMessageAsync("Activation", "Thank you! You have successfully activated Mystifier Studio! Please restart the application to update the activation.");
+                    await
+                        this.ShowMessageAsync("Activation",
+                            "Thank you! You have successfully activated Mystifier Studio! Please restart the application to update the activation.");
                     IsActivated = true;
                 }
                 catch (Exception)
@@ -399,7 +443,7 @@ namespace Mystifier
 
         private async void ExecuteSourceInTextEditor()
         {
-            var jsEngine = new Engine(cfg => { cfg.AllowClr(); });
+            var jsEngine = new Engine(cfg => { cfg.AllowClr(ZetaJSInit.GetZetaJSAssemblies()); });
             var console = new JSConsole(outputTb);
             await Task.Run(() => console.clear());
             jsEngine.SetValue("console", console);
