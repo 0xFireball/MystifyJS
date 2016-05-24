@@ -20,6 +20,7 @@
       <protection id="ctrl flow" />
       <protection id="anti debug" />
       <protection id="ref proxy" />
+      <protection id="resources" />
     </rule>
   </module>
   <module path="..\Mystifier\Mystifier\bin\Release\Mystifier.IntelliJS.dll">

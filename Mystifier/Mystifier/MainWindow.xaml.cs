@@ -566,6 +566,11 @@ namespace Mystifier
                             }
                             break;
 
+                        case MessageDialogResult.Negative:
+                            _forceClose = true;
+                            this.Close();
+                            break;
+
                         case MessageDialogResult.FirstAuxiliary:
                             e.Cancel = true;
                             break;
