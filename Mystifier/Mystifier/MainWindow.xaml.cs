@@ -89,20 +89,20 @@ namespace Mystifier
                 {
                     if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        OnSaveFileAs();
+                        OnSaveFileAs(null, null);
                     }
                     else
                     {
-                        OnSaveFile();
+                        OnSaveFile(null, null);
                     }
                 }
                 if (e.Key == Key.O)
                 {
-                    OnLoadFile();
+                    OnLoadFile(null, null);
                 }
                 if (e.Key == Key.N)
                 {
-                    OnNewFile();
+                    OnNewFile(null, null);
                 }
             }
             if (e.Key == Key.F5)
@@ -119,7 +119,7 @@ namespace Mystifier
             }
         }
 
-        private void OnNewFile()
+        private void OnNewFile(object sender, EventArgs e)
         {
             _currentFile = null;
             TextEditor.Text = "";
@@ -127,7 +127,7 @@ namespace Mystifier
             UpdateTitle();
         }
 
-        private void OnLoadFile()
+        private void OnLoadFile(object sender, EventArgs e)
         {
             var newFile = MystifierUtil.BrowseForOpenFile("JavaScript Source Files (*.js)|*.js|All Files (*.*)|*.*",
                 "Load File");
@@ -140,18 +140,18 @@ namespace Mystifier
             }
         }
 
-        private void OnSaveFileAs()
+        private void OnSaveFileAs(object sender, EventArgs e)
         {
             var previousFile = _currentFile;
             _currentFile = null;
-            OnSaveFile();
+            OnSaveFile(null, null);
             if (_currentFile == null)
             {
                 _currentFile = previousFile;
             }
         }
 
-        private void OnSaveFile()
+        private void OnSaveFile(object sender, EventArgs e)
         {
             if (_currentFile != null)
             {
@@ -167,7 +167,7 @@ namespace Mystifier
                 {
                     return;
                 }
-                OnSaveFile();
+                OnSaveFile(null, null);
             }
         }
 
@@ -460,8 +460,12 @@ namespace Mystifier
             var console = new JSConsole(outputTb);
             await Task.Run(() => console.clear());
             jsEngine.SetValue("console", console);
-            ConsoleTab.IsSelected = true; //Switch to output tab
-            var jsSource = TextEditor.Text;
+            var jsSource = "";
+            await Dispatcher.InvokeAsync(() =>
+            {
+                ConsoleTab.IsSelected = true;
+                jsSource = TextEditor.Text;
+            }); //Switch to output tab
             try
             {
                 jsEngine.Execute(jsSource);
@@ -558,17 +562,17 @@ namespace Mystifier
                     switch (result)
                     {
                         case MessageDialogResult.Affirmative:
-                            OnSaveFile();
+                            OnSaveFile(null, null);
                             if (!_isUnsaved)
                             {
                                 _forceClose = true;
-                                this.Close();
+                                Close();
                             }
                             break;
 
                         case MessageDialogResult.Negative:
                             _forceClose = true;
-                            this.Close();
+                            Close();
                             break;
 
                         case MessageDialogResult.FirstAuxiliary:
@@ -579,9 +583,24 @@ namespace Mystifier
                 else
                 {
                     _forceClose = true;
-                    this.Close();
+                    Close();
                 }
             }));
+        }
+
+        private void OnClickExit(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            new About() { Owner = this }.ShowDialog();
+        }
+
+        private void ToggleGitHubAuth(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

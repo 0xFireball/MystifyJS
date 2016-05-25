@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System.Net;
+using Microsoft.Win32;
 
 namespace Mystifier
 {
@@ -12,7 +13,7 @@ namespace Mystifier
                 Title = title
             };
             var showDialog = sfd.ShowDialog();
-            if (showDialog != null && (bool) showDialog)
+            if (showDialog != null && (bool)showDialog)
             {
                 return sfd.FileName;
             }
@@ -28,11 +29,29 @@ namespace Mystifier
                 Multiselect = false
             };
             var showDialog = ofd.ShowDialog();
-            if (showDialog != null && (bool) showDialog)
+            if (showDialog != null && (bool)showDialog)
             {
                 return ofd.FileName;
             }
             return null;
+        }
+
+        public static bool IsInternetConnectionAvailable()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (var stream = client.OpenRead("https://www.google.com")) //Check Google
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

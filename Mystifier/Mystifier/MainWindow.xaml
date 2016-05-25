@@ -103,8 +103,35 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="40*" />
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="27,6,0,0" TextWrapping="Wrap"
-                   Text="[New File]" VerticalAlignment="Top" Width="371" Grid.Column="0" />
+        <StackPanel Grid.Column="0">
+            <Menu Margin="10,0,-0.2,0">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New..." Click="OnNewFile"/>
+                    <Separator />
+                    <MenuItem Header="_Open..." Click="OnLoadFile" />
+                    <Separator />
+                    <MenuItem Header="_Save" Click="OnSaveFile"/>
+                    <MenuItem Header="_Save As..." Click="OnSaveFileAs"/>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="OnClickExit"/>
+                </MenuItem>
+                <MenuItem Header="_Tools">
+                    <MenuItem Header="DarkMagic">
+                        <MenuItem Header="Obfuscate" Click="BtnObfuscate_OnClick"/>
+                    </MenuItem>
+                    <MenuItem Header="Beautify (Shift+Alt+F)" Click="BtnBeautify_OnClick"/>
+                    <MenuItem Header="Execute (F5)" Click="BtnLocalVmExecute_OnClick"/>
+                </MenuItem>
+                <MenuItem Header="_GitHub">
+                    <MenuItem Header="Log in" Click="ToggleGitHubAuth"/>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="About" Click="MenuItem_OnClick"/>
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+        <TextBlock x:Name="tbFileName" HorizontalAlignment="Left" Margin="10,0,0,13" TextWrapping="Wrap"
+                   Text="[New File]" Width="371" Grid.Column="0" Foreground="White" Height="16" VerticalAlignment="Bottom" />
         <avalonEdit:TextEditor
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             Name="TextEditor"
@@ -125,10 +152,6 @@
         <Button x:Name="btnObfuscate" Grid.Column="0" Content="Obfuscate"
                 Margin="0,0,9.8,7" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"
                 Click="BtnObfuscate_OnClick" />
-        <Button x:Name="btnLocalVmExecute" Grid.Column="0" Content="Execute in ZetaJS (F5)" HorizontalAlignment="Left"
-                Margin="10,0,0,7" Width="135" Click="BtnLocalVmExecute_OnClick" Height="26" VerticalAlignment="Bottom" />
-        <Button x:Name="btnBeautify" Grid.Column="0" Content="Beautify Code (Shift+Alt+F)" HorizontalAlignment="Left"
-                Margin="150,0,0,7" Width="164" Click="BtnBeautify_OnClick" Height="26" VerticalAlignment="Bottom" />
         <GridSplitter Grid.Column="1" x:Name="gridSplitter" HorizontalAlignment="Stretch" Width="5"
                       Background="#FF222222" />
         <TabControl Grid.Column="2">

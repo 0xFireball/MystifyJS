@@ -21,31 +21,13 @@ namespace Mystifier.Activation
             var existingActivationInfo = LoadActivationStatus();
             if (existingActivationInfo == null)
                 return false;
-            var data = existingActivationInfo.Split(' ');
+            var data = existingActivationInfo.Trim(new[] { '\n', '\r' }).Split(' ');
             var acKey = data[0];
             var email = data[1];
             LicenseHolder = email;
             LicenseKey = acKey;
-            var requiresWebActivation = CheckCacheDateIsWebActivationRequired() || IsInternetConnectionAvailable();
+            var requiresWebActivation = CheckCacheDateIsWebActivationRequired() || MystifierUtil.IsInternetConnectionAvailable();
             return !requiresWebActivation || AttemptActivation(acKey, email);
-        }
-
-        private static bool IsInternetConnectionAvailable()
-        {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    using (var stream = client.OpenRead("https://www.google.com")) //Check Google
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         /// <summary>
