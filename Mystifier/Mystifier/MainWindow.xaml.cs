@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,6 +44,7 @@ namespace Mystifier
         private bool _isUnsaved;
         private bool _forceClose = false;
         private MystifierGitHubAccess _gitHubAccessProvider;
+        private string _currentGistId;
 
         public MainWindow()
         {
@@ -141,6 +144,8 @@ namespace Mystifier
                 "Load File");
             if (newFile != null)
             {
+                _editingGist = false;
+                _currentGist = null;
                 _currentFile = newFile;
                 TextEditor.Load(_currentFile);
                 _isUnsaved = false;
@@ -150,12 +155,22 @@ namespace Mystifier
 
         private void OnSaveFileAs(object sender, EventArgs e)
         {
-            var previousFile = _currentFile;
-            _currentFile = null;
-            OnSaveFile(null, null);
-            if (_currentFile == null)
+            if (_editingGist)
             {
-                _currentFile = previousFile;
+                OnSaveFile(null, null);
+                _editingGist = false;
+                _currentGist = null;
+                OnSaveFileAs(null, null); //Call again, but this time not editing
+            }
+            else
+            {
+                var previousFile = _currentFile;
+                _currentFile = null;
+                OnSaveFile(null, null);
+                if (_currentFile == null)
+                {
+                    _currentFile = previousFile;
+                }
             }
         }
 
@@ -167,8 +182,29 @@ namespace Mystifier
                 _isUnsaved = false;
                 UpdateTitle();
             }
+            else if (_editingGist)
+            {
+                Action saveGistAction = async () =>
+                {
+                    try
+                    {
+                        var gistUpdateRequest = new GistUpdate();
+                        gistUpdateRequest.Files[_currentGist] = new GistFileUpdate() { Content = TextEditor.Text };
+                        await _gitHubAccessProvider.ApiClient.Gist.Edit(_currentGistId, gistUpdateRequest);
+                        _isUnsaved = false;
+                        UpdateTitle();
+                    }
+                    catch
+                    {
+                        await this.ShowMessageAsync("Error", "Could not save gist.");
+                    }
+                };
+                saveGistAction();
+            }
             else
             {
+                _currentGist = null;
+                _editingGist = false;
                 _currentFile = MystifierUtil.BrowseForSaveFile(
                     "JavaScript Source Files (*.js)|*.js|All Files (*.*)|*.*", "Save File");
                 if (_currentFile == null)
@@ -226,9 +262,13 @@ namespace Mystifier
 
         private void UpdateTitle()
         {
-            if (_currentFile == null)
+            if (_currentFile == null && !_editingGist)
             {
                 tbFileName.Text = _isUnsaved ? "[New File*]" : "[New File]";
+            }
+            else if (_editingGist)
+            {
+                tbFileName.Text = "Gist: " + (_isUnsaved ? _currentGist + "*" : _currentGist) + $" ({_currentGistId})";
             }
             else
             {
@@ -506,7 +546,7 @@ namespace Mystifier
         private async void CheckGitHubAvailability()
         {
             await Dispatcher.InvokeAsync(() => menuGitHub.IsEnabled = false);
-            bool gitHubAvailable = await _gitHubAccessProvider.CheckIfAuthenticationIsValid();
+            var gitHubAvailable = await _gitHubAccessProvider.CheckIfAuthenticationIsValid();
             await Dispatcher.InvokeAsync(() =>
             {
                 menuGitHub.IsEnabled = _gitHubAccessProvider.ConnectionAvailable;
@@ -514,6 +554,9 @@ namespace Mystifier
                 {
                     //Connection's still there
                     menuGitHubAuth.Header = gitHubAvailable ? "Manage" : "Connect";
+                    //Enable submenus
+                    btnCreateGist.IsEnabled = true;
+                    btnOpenGist.IsEnabled = true;
                 }
             });
         }
@@ -534,7 +577,7 @@ namespace Mystifier
 
         private async void BtnBeautify_OnClick(object sender, RoutedEventArgs e)
         {
-            string editorSource = TextEditor.Text;
+            var editorSource = TextEditor.Text;
             _isUnsaved = true;
             UpdateTitle();
             var beautifiedSource = await Task.Run(() => BeautifySource(editorSource));
@@ -668,7 +711,7 @@ namespace Mystifier
                                 this.ShowLoginAsync("Log in to GitHub", "Please enter your GitHub credentials", new LoginDialogSettings() { RememberCheckBoxVisibility = Visibility.Hidden });
                         if (credentialText.Username != null && credentialText.Password != null)
                         {
-                            string gitHubUsername = credentialText.Username.TrimEnd('\r', '\n');
+                            var gitHubUsername = credentialText.Username.TrimEnd('\r', '\n');
                             var githubPassword = credentialText.Password.TrimEnd('\r', '\n');
                             gitHubCreds = new Credentials(gitHubUsername, githubPassword);
                         }
@@ -680,7 +723,7 @@ namespace Mystifier
                     //Reload GitHub Access
                     var progress = await this.ShowProgressAsync("Please wait...", "Authenticating...");
                     progress.SetIndeterminate();
-                    bool success = await _gitHubAccessProvider.CheckIfAuthenticationIsValid();
+                    var success = await _gitHubAccessProvider.CheckIfAuthenticationIsValid();
                     if (success)
                     {
                         await
@@ -695,6 +738,128 @@ namespace Mystifier
                     }
                     await progress.CloseAsync();
                 }
+            }
+        }
+
+        private async void OnOpenFromUrl(object sender, RoutedEventArgs e)
+        {
+            var url = await this.ShowInputAsync("Open from URL", "Enter a URL to open from");
+            if (url != null)
+            {
+                var progress = await this.ShowProgressAsync("Please wait...", "Loading...");
+                try
+                {
+                    var continueLoading = !_isUnsaved || await PromptSave();
+                    if (continueLoading)
+                    {
+                        var wc = new WebClient();
+                        progress.SetIndeterminate();
+                        var code = await wc.DownloadStringTaskAsync(url);
+
+                        TextEditor.Text = code;
+                        _isUnsaved = true;
+                    }
+                }
+                catch
+                {
+                    await this.ShowMessageAsync("Error", "The file could not be opened.");
+                }
+                await progress.CloseAsync();
+            }
+        }
+
+        private async Task<bool> PromptSave() //Returns false to cancel
+        {
+            var result = await
+                        this.ShowMessageAsync("Unsaved Changes",
+                            "You have unsaved changes in the file you are currently editing. Do you want to save your changes?",
+                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,
+                            new MetroDialogSettings()
+                            {
+                                AffirmativeButtonText = "Save",
+                                NegativeButtonText = "Don't Save",
+                                FirstAuxiliaryButtonText = "Cancel"
+                            });
+            switch (result)
+            {
+                case MessageDialogResult.Affirmative:
+                    OnSaveFile(null, null);
+                    if (!_isUnsaved)
+                    {
+                        return true;
+                    }
+                    break;
+
+                case MessageDialogResult.Negative:
+                    return true;
+
+                case MessageDialogResult.FirstAuxiliary:
+                    return false;
+            }
+            return false;
+        }
+
+        private async void OnCreateGist(object sender, RoutedEventArgs e)
+        {
+            var continueLoading = !_isUnsaved || await PromptSave();
+            if (!continueLoading) return;
+            var newGistName = await this.ShowInputAsync("New Gist", "Enter a name for the new Gist");
+            if (newGistName != null)
+            {
+                var progress = await this.ShowProgressAsync("Please Wait...", "Creating Gist...");
+                progress.SetIndeterminate();
+                try
+                {
+                    var fnInfo = new FileInfo(newGistName);
+                    if (fnInfo.Extension == "")
+                    {
+                        newGistName += ".js";
+                    }
+                    var newGistRequest = new NewGist() { Description = newGistName, Public = false };
+                    newGistRequest.Files[newGistName] = "//Created with Mystifier Studio\n";
+                    var newGist = await _gitHubAccessProvider.ApiClient.Gist.Create(newGistRequest);
+                    _currentFile = null;
+                    _currentGist = newGistName;
+                    _editingGist = true;
+                    _currentGistId = newGist.Id;
+                    _isUnsaved = true;
+                    TextEditor.Text = newGist.Files[newGistName].Content;
+                    UpdateTitle();
+                }
+                catch (Exception)
+                {
+                    await this.ShowMessageAsync("Error", "Gist creation failed");
+                }
+                await progress.CloseAsync();
+            }
+        }
+
+        private async void OnOpenGist(object sender, RoutedEventArgs e)
+        {
+            var continueLoading = !_isUnsaved || await PromptSave();
+            if (!continueLoading) return;
+            var gistId = await this.ShowInputAsync("Open Gist", "Enter the ID of the Gist");
+            if (gistId != null)
+            {
+                var progress = await this.ShowProgressAsync("Please Wait...", "Opening Gist...");
+                progress.SetIndeterminate();
+                try
+                {
+                    var gist = await _gitHubAccessProvider.ApiClient.Gist.Get(gistId);
+                    var editFile = gist.Files.First();
+                    _currentFile = null;
+                    _currentGist = editFile.Key;
+                    _editingGist = true;
+                    _currentGistId = gist.Id;
+                    _isUnsaved = true;
+                    TextEditor.Text = editFile.Value.Content;
+                    UpdateTitle();
+                }
+                catch (Exception)
+                {
+                    await this.ShowMessageAsync("Error", "Gist load failed");
+                }
+                await progress.CloseAsync();
             }
         }
     }

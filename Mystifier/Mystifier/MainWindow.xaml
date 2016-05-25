@@ -121,11 +121,14 @@
                     </MenuItem>
                     <MenuItem Header="Beautify (Shift+Alt+F)" Click="BtnBeautify_OnClick"/>
                     <MenuItem Header="Execute (F5)" Click="BtnLocalVmExecute_OnClick"/>
+                    <Separator />
+                    <MenuItem Header="Open from URL" Click="OnOpenFromUrl" />
                 </MenuItem>
                 <MenuItem Header="_GitHub" Name="menuGitHub" IsEnabled="False">
                     <MenuItem Header="[auth]" Name="menuGitHubAuth" Click="ToggleGitHubAuth"/>
-                    <MenuItem Header="Create Gist"/>
-                    <MenuItem Header="Open Gist"/>
+                    <Separator />
+                    <MenuItem Header="Create Gist" IsEnabled="False"  Click="OnCreateGist" Name="btnCreateGist"/>
+                    <MenuItem Header="Open Gist" IsEnabled="False" Click="OnOpenGist"  Name="btnOpenGist"/>
                 </MenuItem>
                 <MenuItem Header="_Help">
                     <MenuItem Header="About" Click="MenuItem_OnClick"/>
