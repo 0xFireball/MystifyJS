@@ -37,6 +37,8 @@ namespace Mystifier
         private readonly bool _enableCodeCompletion;
         private CompletionWindow _completionWindow;
         private string _currentFile;
+        private string _currentGist;
+        private bool _editingGist;
         private bool _isUnsaved;
         private bool _forceClose = false;
         private MystifierGitHubAccess _gitHubAccessProvider;
@@ -478,7 +480,7 @@ namespace Mystifier
             }
             catch (JavaScriptException jEx)
             {
-                await Task.Run(() => console.WriteLine(jEx.ToString()));
+                await Task.Run(() => console.WriteLine("{0},{1} - {2}", jEx.LineNumber, jEx.Column, jEx.Error));
             }
             catch (ParserException pEx)
             {

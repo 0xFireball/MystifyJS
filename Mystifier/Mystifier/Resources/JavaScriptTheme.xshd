@@ -53,6 +53,7 @@
       <Word>instanceof</Word>
       <Word>int</Word>
       <Word>interface</Word>
+      <Word>let</Word>
       <Word>long</Word>
       <Word>native</Word>
       <Word>package</Word>
@@ -72,15 +73,29 @@
     </Keywords>
     <Keywords color="JavaScriptIntrinsics">
       <Word>Array</Word>
+      <Word>ArrayBuffer</Word>
       <Word>Boolean</Word>
       <Word>Date</Word>
+      <Word>Error</Word>
+      <Word>EvalError</Word>
       <Word>Function</Word>
       <Word>Global</Word>
+      <Word>InternalError</Word>
+      <Word>JSON</Word>
       <Word>Math</Word>
+      <Word>Map</Word>
       <Word>Number</Word>
       <Word>Object</Word>
+      <Word>Proxy</Word>
+      <Word>RangeError</Word>
+      <Word>ReferenceError</Word>
+      <Word>Reflect</Word>
       <Word>RegExp</Word>
       <Word>String</Word>
+      <Word>Symbol</Word>
+      <Word>SyntaxError</Word>
+      <Word>TypeError</Word>
+      <Word>URIError</Word>
     </Keywords>
     <Keywords color="JavaScriptLiterals">
       <Word>false</Word>
@@ -93,8 +108,10 @@
       <Word>eval</Word>
       <Word>parseInt</Word>
       <Word>parseFloat</Word>
-      <Word>escape</Word>
-      <Word>unescape</Word>
+      <Word>decodeURIComponent</Word>
+      <Word>decodeURI</Word>
+      <Word>encodeURIComponent</Word>
+      <Word>encodeURI</Word>
       <Word>isNaN</Word>
       <Word>isFinite</Word>
       <!--Browser Specific-->
@@ -102,7 +119,6 @@
       <Word>btoa</Word>
     </Keywords>
     <Keywords color="JavaScriptGlobals">
-      <Word>JSON</Word>
       <Word>window</Word>
       <Word>console</Word>
     </Keywords>

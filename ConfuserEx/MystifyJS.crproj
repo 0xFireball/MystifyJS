@@ -35,4 +35,5 @@
   <module path="..\Mystifier\Mystifier\bin\Release\MahApps.Metro.dll" />
   <module path="..\Mystifier\Mystifier\bin\Release\System.Windows.Interactivity.dll" />
   <module path="..\Mystifier\Mystifier\bin\Release\Jint.dll" />
+  <module path="..\Mystifier\Mystifier\bin\Release\Octokit.dll" />
 </project>
