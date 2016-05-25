@@ -26,6 +26,7 @@ namespace Mystifier.GitHub
             HasCredentials = GitHubAuthInfo != null;
             if (HasCredentials)
             {
+                GitHubAuthInfo = GitHubAuthInfo.TrimEnd('\r', '\n');
                 AttemptLoadingCredentials();
             }
             IsAvailable = MystifierUtil.IsInternetConnectionAvailable();

@@ -511,7 +511,7 @@ namespace Mystifier
                 if (menuGitHub.IsEnabled)
                 {
                     //Connection's still there
-                    menuGitHubAuth.Header = gitHubAvailable ? "Disconnect" : "Connect";
+                    menuGitHubAuth.Header = gitHubAvailable ? "Manage" : "Connect";
                 }
             });
         }
@@ -625,11 +625,23 @@ namespace Mystifier
             {
                 //Disassociate with GitHub
                 var currentUser = await _gitHubAccessProvider.ApiClient.User.Current();
-                await
+                var choice = await
                     this.ShowMessageAsync("GitHub Authentication",
-                        $"You are autheticated as {currentUser.Login}");
-                _gitHubAccessProvider.DiscardSavedCredentials();
-                await Task.Factory.StartNew(CheckGitHubAvailability);
+                        $"You are signed in to GitHub as {currentUser.Login}.", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "OK", NegativeButtonText = "Disconnect" });
+                if (choice == MessageDialogResult.Negative)
+                {
+                    choice = await this.ShowMessageAsync("GitHub Authentication",
+                        "Are you sure you want to disconnect? You will no longer be able to use the GitHub integration features.", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+                    if (choice == MessageDialogResult.Affirmative)
+                    {
+                        _gitHubAccessProvider.DiscardSavedCredentials();
+                        _gitHubAccessProvider = new MystifierGitHubAccess(); //Reinitialize GitHub access
+                        await Task.Factory.StartNew(CheckGitHubAvailability);
+                        await
+                            this.ShowMessageAsync("GitHub Authentication",
+                                "You have successfully disconnected Mystifier Studio from GitHub.");
+                    }
+                }
             }
             else
             {
