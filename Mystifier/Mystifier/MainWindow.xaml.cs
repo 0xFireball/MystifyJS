@@ -23,6 +23,8 @@ using Mystifier.EditorUtils;
 using Mystifier.GitHub;
 using Mystifier.IntelliJS.CodeCompletion;
 using Mystifier.JSVM;
+using Octokit;
+using Application = System.Windows.Application;
 
 namespace Mystifier
 {
@@ -502,7 +504,7 @@ namespace Mystifier
         private async void CheckGitHubAvailability()
         {
             await Dispatcher.InvokeAsync(() => menuGitHub.IsEnabled = false);
-            bool gitHubAvailable = await Task.Run((Func<bool>)_gitHubAccessProvider.CheckIfAuthenticationIsValid);
+            bool gitHubAvailable = await _gitHubAccessProvider.CheckIfAuthenticationIsValid();
             await Dispatcher.InvokeAsync(() =>
             {
                 menuGitHub.IsEnabled = _gitHubAccessProvider.ConnectionAvailable;
@@ -617,17 +619,68 @@ namespace Mystifier
             new About() { Owner = this }.ShowDialog();
         }
 
-        private void ToggleGitHubAuth(object sender, RoutedEventArgs e)
+        private async void ToggleGitHubAuth(object sender, RoutedEventArgs e)
         {
             if (_gitHubAccessProvider.GitHubAuthenticationValid)
             {
                 //Disassociate with GitHub
+                var currentUser = await _gitHubAccessProvider.ApiClient.User.Current();
+                await
+                    this.ShowMessageAsync("GitHub Authentication",
+                        $"You are autheticated as {currentUser.Login}");
                 _gitHubAccessProvider.DiscardSavedCredentials();
-                Task.Factory.StartNew(CheckGitHubAvailability);
+                await Task.Factory.StartNew(CheckGitHubAvailability);
             }
             else
             {
                 //Connect to GitHub
+                Credentials gitHubCreds = null;
+                var result = await
+                    this.ShowMessageAsync("GitHub Authentication",
+                        "Would you like to connect to GitHub with an access token or your login credentials?",
+                        MessageDialogStyle.AffirmativeAndNegative,
+                        new MetroDialogSettings() { AffirmativeButtonText = "Access Token", NegativeButtonText = "Login" });
+                switch (result)
+                {
+                    case MessageDialogResult.Affirmative: //Auth token
+                        var authToken = await this.ShowInputAsync("Connect to GitHub", "Please enter an authorization token");
+                        if (authToken != null)
+                            gitHubCreds = new Credentials(authToken);
+                        break;
+
+                    case MessageDialogResult.Negative: //Creds
+                        var credentialText =
+                            await
+                                this.ShowLoginAsync("Log in to GitHub", "Please enter your GitHub credentials", new LoginDialogSettings() { RememberCheckBoxVisibility = Visibility.Hidden });
+                        if (credentialText.Username != null && credentialText.Password != null)
+                        {
+                            string gitHubUsername = credentialText.Username.TrimEnd('\r', '\n');
+                            var githubPassword = credentialText.Password.TrimEnd('\r', '\n');
+                            gitHubCreds = new Credentials(gitHubUsername, githubPassword);
+                        }
+                        break;
+                }
+                if (gitHubCreds != null)
+                {
+                    _gitHubAccessProvider.LoadCredentials(gitHubCreds);
+                    //Reload GitHub Access
+                    var progress = await this.ShowProgressAsync("Please wait...", "Authenticating...");
+                    progress.SetIndeterminate();
+                    bool success = await _gitHubAccessProvider.CheckIfAuthenticationIsValid();
+                    if (success)
+                    {
+                        await
+                            this.ShowMessageAsync("Success!",
+                                "You have successfully connected Mystifier Studio to GitHub!");
+                        await Task.Run(() => CheckGitHubAvailability());
+                    }
+                    else
+                    {
+                        await
+                            this.ShowMessageAsync("Error", "Sorry, Mystifier Studio could not log in to GitHub with the provided credentials.");
+                    }
+                    await progress.CloseAsync();
+                }
             }
         }
     }

@@ -1,26 +1,66 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.IsolatedStorage;
+using System.Threading.Tasks;
+using Octokit;
+using FileMode = System.IO.FileMode;
 
 namespace Mystifier.GitHub
 {
     internal class MystifierGitHubAccess
     {
-        public string GitHubAuthToken { get; }
-        public bool IsAuthenticated { get; }
+        public GitHubClient ApiClient { get; set; }
+        public string GitHubAuthInfo { get; }
+        public Credentials GitHubCredentials { get; set; }
+        public bool HasCredentials { get; }
         public bool IsAvailable { get; }
         public bool GitHubAuthenticationValid { get; set; }
         public bool ConnectionAvailable { get; set; }
+        public User CurrentlyAuthenticatedUser { get; set; }
 
-        private readonly string authTokenFile = ".gittoken";
+        private const string AuthInfoFile = ".gittoken";
 
         public MystifierGitHubAccess()
         {
-            GitHubAuthToken = LoadAuthToken();
-            IsAuthenticated = GitHubAuthToken != null;
+            GitHubAuthInfo = LoadAuthInfo();
+            HasCredentials = GitHubAuthInfo != null;
+            if (HasCredentials)
+            {
+                AttemptLoadingCredentials();
+            }
             IsAvailable = MystifierUtil.IsInternetConnectionAvailable();
         }
 
-        public bool CheckIfAuthenticationIsValid()
+        private void AttemptLoadingCredentials()
+        {
+            if (GitHubAuthInfo.Contains(" "))
+            {
+                //It's un/pw set
+                int splitIndex = GitHubAuthInfo.IndexOf(" ", StringComparison.Ordinal);
+                string un = GitHubAuthInfo.Substring(0, splitIndex);
+                string pw = GitHubAuthInfo.Substring(splitIndex + 1);
+                GitHubCredentials = new Credentials(un, pw);
+            }
+            else
+            {
+                GitHubCredentials = new Credentials(GitHubAuthInfo);
+            }
+        }
+
+        public void LoadCredentials(Credentials gitHubCreds)
+        {
+            GitHubCredentials = gitHubCreds;
+            if (gitHubCreds.AuthenticationType == AuthenticationType.Oauth)
+            {
+                SaveAuthInfo(gitHubCreds.GetToken());
+            }
+            else if (gitHubCreds.AuthenticationType == AuthenticationType.Basic)
+            {
+                SaveAuthInfo(gitHubCreds.Login + " " + gitHubCreds.Password);
+            }
+        }
+
+        public async Task<bool> CheckIfAuthenticationIsValid()
         {
             if (!MystifierUtil.IsInternetConnectionAvailable())
             {
@@ -30,22 +70,38 @@ namespace Mystifier.GitHub
             else
             {
                 ConnectionAvailable = true;
+                if (GitHubCredentials == null)
+                    return false;
+                ApiClient = new GitHubClient(new ProductHeaderValue("Mystifier-Studio"))
+                {
+                    Credentials = GitHubCredentials
+                };
+                try
+                {
+                    CurrentlyAuthenticatedUser = await ApiClient.User.Current();
+                    GitHubAuthenticationValid = true;
+                }
+                catch (AuthorizationException)
+                {
+                    return false;
+                }
+
             }
             return GitHubAuthenticationValid;
         }
 
-        private string LoadAuthToken()
+        private string LoadAuthInfo()
         {
-            string authToken = "";
+            string AuthInfo = "";
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
                 null);
-            if (isoStore.FileExists(authTokenFile))
+            if (isoStore.FileExists(AuthInfoFile))
             {
-                using (var isoStream = new IsolatedStorageFileStream(authTokenFile, FileMode.Open, isoStore))
+                using (var isoStream = new IsolatedStorageFileStream(AuthInfoFile, FileMode.Open, isoStore))
                 {
                     using (var reader = new StreamReader(isoStream))
                     {
-                        authToken = reader.ReadToEnd();
+                        AuthInfo = reader.ReadToEnd();
                     }
                 }
             }
@@ -53,33 +109,33 @@ namespace Mystifier.GitHub
             {
                 return null;
             }
-            return authToken;
+            return AuthInfo;
         }
 
-        public void SaveAuthToken(string authToken)
+        public void SaveAuthInfo(string AuthInfo)
         {
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
                 null);
-            using (var isoStream = new IsolatedStorageFileStream(authTokenFile, FileMode.Create, isoStore))
+            using (var isoStream = new IsolatedStorageFileStream(AuthInfoFile, FileMode.Create, isoStore))
             {
                 using (var writer = new StreamWriter(isoStream))
                 {
-                    writer.WriteLine(authToken);
+                    writer.WriteLine(AuthInfo);
                 }
             }
         }
 
-        public void PurgeAuthToken()
+        public void PurgeAuthInfo()
         {
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
                 null);
-            if (isoStore.FileExists(authTokenFile))
-                isoStore.DeleteFile(authTokenFile);
+            if (isoStore.FileExists(AuthInfoFile))
+                isoStore.DeleteFile(AuthInfoFile);
         }
 
         public void DiscardSavedCredentials()
         {
-            PurgeAuthToken();
+            PurgeAuthInfo();
         }
     }
 }
