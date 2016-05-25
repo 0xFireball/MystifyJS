@@ -122,8 +122,8 @@
                     <MenuItem Header="Beautify (Shift+Alt+F)" Click="BtnBeautify_OnClick"/>
                     <MenuItem Header="Execute (F5)" Click="BtnLocalVmExecute_OnClick"/>
                 </MenuItem>
-                <MenuItem Header="_GitHub">
-                    <MenuItem Header="Log in" Click="ToggleGitHubAuth"/>
+                <MenuItem Header="_GitHub" Name="menuGitHub">
+                    <MenuItem Header="[auth]" Name="menuGitHubAuth" Click="ToggleGitHubAuth"/>
                 </MenuItem>
                 <MenuItem Header="_Help">
                     <MenuItem Header="About" Click="MenuItem_OnClick"/>
@@ -195,7 +195,7 @@
         <controls:WindowCommands>
             <Button Name="btnVersion" Content="v0.1.13" />
             <Button Name="btnZetaPhase" Content="ZetaPhase Technologies" FontSize="14" Click="BtnZetaPhase_OnClick" />
-            <Button Name="btnActivate" Content="" Click="BtnActivate_OnClick" />
+            <Button Name="btnActivate" Content="Loading..." Click="BtnActivate_OnClick" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 </controls:MetroWindow>

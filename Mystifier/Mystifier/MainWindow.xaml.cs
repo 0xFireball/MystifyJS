@@ -20,6 +20,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Mystifier.Activation;
 using Mystifier.DarkMagic.Obfuscators;
 using Mystifier.EditorUtils;
+using Mystifier.GitHub;
 using Mystifier.IntelliJS.CodeCompletion;
 using Mystifier.JSVM;
 
@@ -36,6 +37,7 @@ namespace Mystifier
         private string _currentFile;
         private bool _isUnsaved;
         private bool _forceClose = false;
+        private MystifierGitHubAccess _gitHubAccessProvider;
 
         public MainWindow()
         {
@@ -47,6 +49,7 @@ namespace Mystifier
                     new OnCrash(args.Exception.ToString()) { Owner = this }.Show();
                 };
             _activationProvider = new MystifierActivation();
+            _gitHubAccessProvider = new MystifierGitHubAccess();
             _enableCodeCompletion = false;
             IsActivated = false;
             CheckActivation();
@@ -64,6 +67,7 @@ namespace Mystifier
             TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
             TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
             UpdateTitle();
+            Task.Factory.StartNew(CheckGitHubAvailability);
         }
 
         private void ReloadVisibleActivation()
@@ -495,6 +499,21 @@ namespace Mystifier
             }
         }
 
+        private async void CheckGitHubAvailability()
+        {
+            await Dispatcher.InvokeAsync(() => menuGitHub.IsEnabled = false);
+            bool gitHubAvailable = await Task.Run((Func<bool>)_gitHubAccessProvider.CheckIfAuthenticationIsValid);
+            await Dispatcher.InvokeAsync(() =>
+            {
+                menuGitHub.IsEnabled = _gitHubAccessProvider.ConnectionAvailable;
+                if (menuGitHub.IsEnabled)
+                {
+                    //Connection's still there
+                    menuGitHubAuth.Header = gitHubAvailable ? "Disconnect" : "Connect";
+                }
+            });
+        }
+
         private async void ShowDontCrackIt()
         {
             await
@@ -600,7 +619,16 @@ namespace Mystifier
 
         private void ToggleGitHubAuth(object sender, RoutedEventArgs e)
         {
-
+            if (_gitHubAccessProvider.GitHubAuthenticationValid)
+            {
+                //Disassociate with GitHub
+                _gitHubAccessProvider.DiscardSavedCredentials();
+                Task.Factory.StartNew(CheckGitHubAvailability);
+            }
+            else
+            {
+                //Connect to GitHub
+            }
         }
     }
 }
