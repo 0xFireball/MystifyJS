@@ -20,8 +20,8 @@ using Jint.Parser;
 using Jint.Runtime;
 using MahApps.Metro.Controls.Dialogs;
 using Mystifier.Activation;
+using Mystifier.DarkMagic.EditorUtils;
 using Mystifier.DarkMagic.Obfuscators;
-using Mystifier.EditorUtils;
 using Mystifier.GitHub;
 using Mystifier.IntelliJS.CodeCompletion;
 using Mystifier.JSVM;
@@ -586,24 +586,7 @@ namespace Mystifier
 
         private string BeautifySource(string editorSource)
         {
-            var beautifier = new Beautifier()
-            {
-                Opts = new JSBeautifier.BeautifierOptions()
-                {
-                    IndentWithTabs = true,
-                    JslintHappy = false,
-                    KeepArrayIndentation = false,
-                    PreserveNewlines = false,
-                    BraceStyle = JSBeautifier.BraceStyle.Collapse,
-                    //BreakChainedMethods = true,
-                    KeepFunctionIndentation = false,
-                    EvalCode = true,
-                },
-                Flags = new JSBeautifier.BeautifierFlags("BLOCK")
-                {
-                    IndentationLevel = 0,
-                }
-            };
+            var beautifier = Beautifier.CreateDefault();
             return beautifier.Beautify(editorSource);
         }
 
@@ -803,9 +786,13 @@ namespace Mystifier
         {
             var continueLoading = !_isUnsaved || await PromptSave();
             if (!continueLoading) return;
-            var newGistName = await this.ShowInputAsync("New Gist", "Enter a name for the new Gist");
+            var newGistName = await this.ShowInputAsync("New Gist", "Enter a name for the new Gist", new MetroDialogSettings());
             if (newGistName != null)
             {
+                var pubPri =
+                await
+                    this.ShowMessageAsync("New Gist", "Should the gist be public or private?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Public", NegativeButtonText = "Private" });
+                bool gistPublic = pubPri == MessageDialogResult.Affirmative;
                 var progress = await this.ShowProgressAsync("Please Wait...", "Creating Gist...");
                 progress.SetIndeterminate();
                 try
@@ -815,7 +802,7 @@ namespace Mystifier
                     {
                         newGistName += ".js";
                     }
-                    var newGistRequest = new NewGist() { Description = newGistName, Public = false };
+                    var newGistRequest = new NewGist() { Description = newGistName, Public = gistPublic };
                     newGistRequest.Files[newGistName] = "//Created with Mystifier Studio\n";
                     var newGist = await _gitHubAccessProvider.ApiClient.Gist.Create(newGistRequest);
                     _currentFile = null;

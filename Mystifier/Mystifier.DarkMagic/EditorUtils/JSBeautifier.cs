@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Mystifier.EditorUtils
+namespace Mystifier.DarkMagic.EditorUtils
 {
     public class JSBeautifier
     {
@@ -115,6 +115,28 @@ namespace Mystifier.EditorUtils
 
     public class Beautifier
     {
+        public static Beautifier CreateDefault()
+        {
+            var defaultBeautifier = new Beautifier()
+            {
+                Opts = new JSBeautifier.BeautifierOptions()
+                {
+                    IndentWithTabs = true,
+                    JslintHappy = false,
+                    KeepArrayIndentation = false,
+                    PreserveNewlines = false,
+                    BraceStyle = JSBeautifier.BraceStyle.Collapse,
+                    //BreakChainedMethods = true,
+                    KeepFunctionIndentation = false,
+                    EvalCode = true,
+                },
+                Flags = new JSBeautifier.BeautifierFlags("BLOCK")
+                {
+                    IndentationLevel = 0,
+                }
+            };
+            return defaultBeautifier;
+        }
         public Beautifier()
             : this(new JSBeautifier.BeautifierOptions())
         {
