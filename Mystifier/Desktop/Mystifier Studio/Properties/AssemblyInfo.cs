@@ -6,12 +6,12 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Mystifier")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Mystifier Studio")]
+[assembly: AssemblyDescription("Mystifier Studio")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Mystifier")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("ExaPhaser Industries")]
+[assembly: AssemblyProduct("Mystifier Studio")]
+[assembly: AssemblyCopyright("Copyright © 0xFireball, ExaPhaser Industries 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

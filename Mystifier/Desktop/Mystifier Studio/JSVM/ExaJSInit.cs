@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Mystifier.JSVM
 {
-    internal class ZetaJSInit
+    internal class ExaJSInit
     {
         public static Assembly[] GetZetaJSAssemblies()
         {

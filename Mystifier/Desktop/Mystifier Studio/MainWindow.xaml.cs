@@ -504,7 +504,7 @@ namespace Mystifier
 
         private async void ExecuteSourceInTextEditor()
         {
-            var jsEngine = new Engine(cfg => { cfg.AllowClr(ZetaJSInit.GetZetaJSAssemblies()); });
+            var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetZetaJSAssemblies()); });
             var console = new JSConsole(outputTb);
             await Task.Run(() => console.clear());
             jsEngine.SetValue("console", console);

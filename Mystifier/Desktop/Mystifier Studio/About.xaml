@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="About Mystifier Studio" Height="207.693" Width="289.14" Icon="icon.ico" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
     <Grid>
-        <TextBlock x:Name="copyrightTb" HorizontalAlignment="Left" Margin="10,0,0,10.4" TextWrapping="Wrap" Text="(c) 0xFireball, ExaPhaser Industries, ZetaPhase Technologies 2016" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="aboutTb" Margin="10,10,10.4,26.4" TextWrapping="Wrap" Text="Mystifier Studio is an advanced JavaScript editor created by 0xFireball from ZetaPhase Technologies."/>
+        <TextBlock x:Name="copyrightTb" HorizontalAlignment="Left" Margin="10,0,0,10.4" TextWrapping="Wrap" Text="(c) 0xFireball, ExaPhaser Industries, ExaPhaser Industries 2016" VerticalAlignment="Bottom"/>
+        <TextBlock x:Name="aboutTb" Margin="10,10,10.4,26.4" TextWrapping="Wrap" Text="Mystifier Studio is an advanced JavaScript editor created by 0xFireball from ExaPhaser Industries."/>
 
     </Grid>
 </controls:MetroWindow>
