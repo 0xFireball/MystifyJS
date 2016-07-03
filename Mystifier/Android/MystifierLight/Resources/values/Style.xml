@@ -1,0 +1,12 @@
+﻿<resources>
+  <style name="MystifyJS.Base" parent="android:Theme.Material">
+  </style>
+
+  <style name="MystifyJS" parent="MystifyJS.Base">
+  </style>
+
+  <style name="MystifyJS.Splash" parent ="android:Theme.Material.Light">
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+</resources>

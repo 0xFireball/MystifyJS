@@ -63,7 +63,7 @@ namespace Mystifier
         }
 
         public bool IsActivated { get; set; }
-        public string ProductUrl { get; set; } = "https://zetaphase.binpress.com/product/mystifier-studio/3826";
+        public string ProductUrl { get; set; } = "https://exaphaser.binpress.com/product/mystifier-studio/3826";
 
         public bool IsCracked { get; set; }
 
@@ -309,7 +309,7 @@ namespace Mystifier
 
         private void BtnZetaPhase_OnClick(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://zetaphase.io");
+            //Process.Start("https://example.com");
         }
 
         private void BtnActivate_OnClick(object sender, RoutedEventArgs e)

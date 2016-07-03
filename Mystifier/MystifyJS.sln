@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mystifier Studio", "Mystifier\Mystifier Studio.csproj", "{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mystifier.DarkMagic", "Mystifier.DarkMagic\Mystifier.DarkMagic.csproj", "{692AE1B4-19EC-4EA6-B56F-592813FA4982}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mystifier.IntelliJS", "Mystifier.IntelliJS\Mystifier.IntelliJS.csproj", "{2727D171-ACA5-465E-841C-E101980687DF}"
@@ -13,16 +11,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{E233
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{15D86C56-1EED-4306-BB8B-8D4E10540432}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mystifier Studio", "Desktop\Mystifier Studio\Mystifier Studio.csproj", "{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MystifierLight", "Android\MystifierLight\MystifierLight.csproj", "{111C6286-E82A-431C-943B-A21D84D2C5D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Release|Any CPU.Build.0 = Release|Any CPU
 		{692AE1B4-19EC-4EA6-B56F-592813FA4982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{692AE1B4-19EC-4EA6-B56F-592813FA4982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692AE1B4-19EC-4EA6-B56F-592813FA4982}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -31,11 +29,22 @@ Global
 		{2727D171-ACA5-465E-841C-E101980687DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2727D171-ACA5-465E-841C-E101980687DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2727D171-ACA5-465E-841C-E101980687DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{111C6286-E82A-431C-943B-A21D84D2C5D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{111C6286-E82A-431C-943B-A21D84D2C5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{111C6286-E82A-431C-943B-A21D84D2C5D0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{111C6286-E82A-431C-943B-A21D84D2C5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{111C6286-E82A-431C-943B-A21D84D2C5D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{111C6286-E82A-431C-943B-A21D84D2C5D0}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DB9CD907-8D6A-4E4B-A2EC-7F22252B6A17} = {E23318A1-689C-486F-A844-826F30E507DB}
+		{111C6286-E82A-431C-943B-A21D84D2C5D0} = {15D86C56-1EED-4306-BB8B-8D4E10540432}
 	EndGlobalSection
 EndGlobal
