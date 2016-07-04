@@ -29,6 +29,10 @@ namespace MystifierLight
         private void BtnExecuteOnClick(object sender, EventArgs eventArgs)
         {
             //Execute code
+            AlertDialog.Builder msg = new AlertDialog.Builder(this);
+            msg.SetTitle("Coming soon");
+            msg.SetMessage("This feature has not yet been implemented. Thank you for using Mystifier.");
+            msg.Show();
         }
 
         private void InitializeComponent()
