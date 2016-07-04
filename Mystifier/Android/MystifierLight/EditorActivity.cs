@@ -1,4 +1,5 @@
 using System;
+using Acr.UserDialogs;
 using Android.App;
 using Android.OS;
 using Android.Widget;
@@ -29,6 +30,7 @@ namespace MystifierLight
         private void BtnExecuteOnClick(object sender, EventArgs eventArgs)
         {
             //Execute code
+            UserDialogs.Instance.AlertAsync("This feature has not yet been implemented. Thank you for using Mystifier.", "Coming soon");
         }
 
         private void InitializeComponent()
