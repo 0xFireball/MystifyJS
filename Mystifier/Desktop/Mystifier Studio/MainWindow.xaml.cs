@@ -21,6 +21,7 @@ using Jint.Runtime;
 using MahApps.Metro.Controls.Dialogs;
 using Mystifier.Activation;
 using Mystifier.DarkMagic.EditorUtils;
+using Mystifier.DarkMagic.JSVM;
 using Mystifier.DarkMagic.Obfuscators;
 using Mystifier.GitHub;
 using Mystifier.IntelliJS.CodeCompletion;
@@ -504,7 +505,7 @@ namespace Mystifier
 
         private async void ExecuteSourceInTextEditor()
         {
-            var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetZetaJSAssemblies()); });
+            var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
             var console = new JSConsole(outputTb);
             await Task.Run(() => console.clear());
             jsEngine.SetValue("console", console);

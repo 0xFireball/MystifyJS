@@ -2,11 +2,11 @@
 using System.Net;
 using System.Reflection;
 
-namespace Mystifier.JSVM
+namespace Mystifier.DarkMagic.JSVM
 {
-    internal class ExaJSInit
+    public class ExaJSInit
     {
-        public static Assembly[] GetZetaJSAssemblies()
+        public static Assembly[] GetExaJSAssemblies()
         {
             return new[]
             {

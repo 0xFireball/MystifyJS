@@ -113,6 +113,9 @@ namespace MystifierLight
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f080007
+			public const int btnBackToEditor = 2131230727;
+			
 			// aapt resource value: 0x7f080001
 			public const int btnExecute = 2131230721;
 			
@@ -124,6 +127,12 @@ namespace MystifierLight
 			
 			// aapt resource value: 0x7f080000
 			public const int jsEditor = 2131230720;
+			
+			// aapt resource value: 0x7f080006
+			public const int logTxViewScrollView = 2131230726;
+			
+			// aapt resource value: 0x7f080008
+			public const int outputTxView = 2131230728;
 			
 			// aapt resource value: 0x7f080002
 			public const int textView = 2131230722;
@@ -151,7 +160,10 @@ namespace MystifierLight
 			public const int Intro = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int SplashScreen = 2130903042;
+			public const int JExecute = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int SplashScreen = 2130903043;
 			
 			static Layout()
 			{

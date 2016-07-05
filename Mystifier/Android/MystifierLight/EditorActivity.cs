@@ -1,5 +1,6 @@
 using System;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Widget;
 
@@ -30,9 +31,14 @@ namespace MystifierLight
         {
             //Execute code
             AlertDialog.Builder msg = new AlertDialog.Builder(this);
+            /* Not Implemented
             msg.SetTitle("Coming soon");
             msg.SetMessage("This feature has not yet been implemented. Thank you for using Mystifier.");
             msg.Show();
+            */
+            var executeIntent = new Intent(this, typeof(JSVMExecuteActivity));
+            executeIntent.PutExtra("code", jsEditor.Text);
+            StartActivity(executeIntent);
         }
 
         private void InitializeComponent()
