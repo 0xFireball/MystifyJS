@@ -12,7 +12,7 @@ using MystifierLight.Util;
 
 namespace MystifierLight
 {
-    [Activity(Label = "JSVMExecuteActivity")]
+    [Activity(Label = "Execute JavaScript")]
     public class JSVMExecuteActivity : Activity
     {
         private string _codeToExecute;

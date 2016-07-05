@@ -8,7 +8,7 @@ using Mystifier.DarkMagic.EditorUtils;
 
 namespace MystifierLight
 {
-    [Activity(Label = "EditorActivity", Icon = "@drawable/icon")]
+    [Activity(Label = "Editor", Icon = "@drawable/icon")]
     public class EditorActivity : Activity
     {
         private EditText jsEditor;
