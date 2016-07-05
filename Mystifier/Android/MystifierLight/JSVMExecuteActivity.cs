@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Reflection;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Jint;
+using Jint.Parser;
+using Jint.Runtime;
 using Mystifier.DarkMagic.JSVM;
+using MystifierLight.Util;
 
 namespace MystifierLight
 {
@@ -33,10 +31,28 @@ namespace MystifierLight
             ExecuteLoadedCode();
         }
 
-        private void ExecuteLoadedCode()
+        private async void ExecuteLoadedCode()
         {
             var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
-            
+            var console = new JSConsole(outputTv, this);
+            jsEngine.SetValue("console", console);
+            try
+            {
+                jsEngine.Execute(_codeToExecute);
+            }
+            catch (JavaScriptException jEx)
+            {
+                await Task.Run(() => console.WriteLine($"{jEx.LineNumber},{jEx.Column} - {jEx.Error}"));
+            }
+            catch (ParserException pEx)
+            {
+                await Task.Run(() => console.WriteLine($"{pEx.LineNumber},{pEx.Column} - {pEx.Description}"));
+            }
+            catch (TargetInvocationException tEx)
+            {
+                await Task.Run(() => console.WriteLine(
+                    $"{tEx.InnerException.GetType().Name} - {tEx.InnerException.Message}"));
+            }
         }
 
         private void WireEvents()
