@@ -4,10 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Jint.Native;
-using Jint.Native.Function;
+using IridiumJS.Native;
+using IridiumJS.Native.Function;
 
-namespace Jint.Runtime.Interop
+namespace IridiumJS.Runtime.Interop
 {
     public sealed class MethodInfoFunctionInstance : FunctionInstance
     {

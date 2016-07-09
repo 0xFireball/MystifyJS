@@ -1,7 +1,7 @@
-﻿using Jint.Native;
-using Jint.Parser;
+﻿using IridiumJS.Native;
+using IridiumJS.Parser;
 
-namespace Jint.Runtime
+namespace IridiumJS.Runtime
 {
     /// <summary>
     ///     http://www.ecma-international.org/ecma-262/5.1/#sec-8.9

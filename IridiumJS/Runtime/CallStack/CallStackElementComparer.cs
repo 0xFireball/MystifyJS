@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Jint.Runtime.CallStack
+namespace IridiumJS.Runtime.CallStack
 {
     public class CallStackElementComparer : IEqualityComparer<CallStackElement>
     {

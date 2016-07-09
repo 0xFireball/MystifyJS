@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Jint.Runtime;
-using Jint.Runtime.Descriptors;
+using IridiumJS.Runtime;
+using IridiumJS.Runtime.Descriptors;
 
-namespace Jint.Native.Object
+namespace IridiumJS.Native.Object
 {
     public class ObjectInstance
     {

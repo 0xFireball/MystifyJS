@@ -1,7 +1,7 @@
 ﻿using System;
-using Jint.Runtime.CallStack;
+using IridiumJS.Runtime.CallStack;
 
-namespace Jint.Runtime
+namespace IridiumJS.Runtime
 {
     public class RecursionDepthOverflowException : Exception
     {

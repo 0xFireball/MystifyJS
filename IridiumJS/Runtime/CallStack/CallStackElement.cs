@@ -1,7 +1,7 @@
-﻿using Jint.Native;
-using Jint.Parser.Ast;
+﻿using IridiumJS.Native;
+using IridiumJS.Parser.Ast;
 
-namespace Jint.Runtime
+namespace IridiumJS.Runtime.CallStack
 {
     public class CallStackElement
     {

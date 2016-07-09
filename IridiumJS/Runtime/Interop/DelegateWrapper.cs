@@ -1,10 +1,10 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using Jint.Native;
-using Jint.Native.Function;
+using IridiumJS.Native;
+using IridiumJS.Native.Function;
 
-namespace Jint.Runtime.Interop
+namespace IridiumJS.Runtime.Interop
 {
     /// <summary>
     ///     Represents a FunctionInstance wrapper around a CLR method. This is used by user to pass

@@ -1,11 +1,11 @@
 using System.Linq;
 using System.Reflection;
-using Jint.Native;
-using Jint.Native.Object;
-using Jint.Runtime.Descriptors;
-using Jint.Runtime.Descriptors.Specialized;
+using IridiumJS.Native;
+using IridiumJS.Native.Object;
+using IridiumJS.Runtime.Descriptors;
+using IridiumJS.Runtime.Descriptors.Specialized;
 
-namespace Jint.Runtime.Interop
+namespace IridiumJS.Runtime.Interop
 {
     /// <summary>
     ///     Wraps a CLR instance

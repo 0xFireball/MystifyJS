@@ -1,9 +1,9 @@
 ﻿using System;
-using Jint.Native;
-using Jint.Native.Error;
-using Jint.Parser;
+using IridiumJS.Native;
+using IridiumJS.Native.Error;
+using IridiumJS.Parser;
 
-namespace Jint.Runtime
+namespace IridiumJS.Runtime
 {
     public class JavaScriptException : Exception
     {

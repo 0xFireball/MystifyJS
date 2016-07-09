@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Jint.Native;
+using IridiumJS.Native;
 
-namespace Jint.Runtime.Interop
+namespace IridiumJS.Runtime.Interop
 {
     public class DefaultTypeConverter : ITypeConverter
     {

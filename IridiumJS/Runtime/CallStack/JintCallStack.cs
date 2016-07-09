@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Jint.Runtime.CallStack
+namespace IridiumJS.Runtime.CallStack
 {
     public class JintCallStack
     {
