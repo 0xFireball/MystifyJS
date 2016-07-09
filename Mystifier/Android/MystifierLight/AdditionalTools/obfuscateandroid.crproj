@@ -1,6 +1,6 @@
 <project outputDir="C:\Git\MystifyJS\Mystifier\Android\MystifierLight\obj\Release\android\assets" baseDir="C:\Git\MystifyJS\Mystifier\Android\MystifierLight\obj\Release\android\assets" xmlns="http://confuser.codeplex.com">
   <module path="ExaPhaser.FilePicker.dll" />
-  <module path="Jint.dll" />
+  <module path="IridiumJS.dll" />
   <module path="Mystifier.DarkMagic.dll">
     <rule pattern="true" inherit="false">
       <protection id="anti ildasm" />

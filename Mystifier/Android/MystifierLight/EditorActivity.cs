@@ -16,11 +16,11 @@ namespace MystifierLight
     [Activity(Label = "Editor", Icon = "@drawable/icon")]
     public class EditorActivity : Activity
     {
-        private EditText jsEditor;
-        private Button btnExecute;
-        private Button btnBeautify;
+        private EditText _jsEditor;
+        private Button _btnExecute;
+        private Button _btnBeautify;
         private bool _isUnsaved;
-        private Button btnTools;
+        private Button _btnTools;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,9 +34,9 @@ namespace MystifierLight
 
         private void WireEvents()
         {
-            btnExecute.Click += BtnExecuteOnClick;
-            btnBeautify.Click += BtnBeautifyOnClick;
-            btnTools.Click += BtnToolsOnClick;
+            _btnExecute.Click += BtnExecuteOnClick;
+            _btnBeautify.Click += BtnBeautifyOnClick;
+            _btnTools.Click += BtnToolsOnClick;
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -60,11 +60,11 @@ namespace MystifierLight
                             {
                                 case "openFile":
                                     var fileCnt = File.ReadAllText(selectedFile);
-                                    jsEditor.Text = fileCnt;
+                                    _jsEditor.Text = fileCnt;
                                     break;
 
                                 case "saveFile":
-                                    var editorCnt = jsEditor.Text;
+                                    var editorCnt = _jsEditor.Text;
                                     File.WriteAllText(selectedFile, editorCnt);
                                     break;
                             }
@@ -79,7 +79,7 @@ namespace MystifierLight
 
         private void BtnToolsOnClick(object sender, EventArgs eventArgs)
         {
-            var popup = new PopupMenu(this, btnTools);
+            var popup = new PopupMenu(this, _btnTools);
             popup.MenuInflater.Inflate(Resource.Menu.EditorToolsMenu, popup.Menu);
             popup.MenuItemClick += (s, args) =>
             {
@@ -112,7 +112,7 @@ namespace MystifierLight
                                     var wc = new WebClient();
                                     Toast.MakeText(this, "Downloading...", ToastLength.Short);
                                     var dlContents = await wc.DownloadStringTaskAsync(dlUrl);
-                                    jsEditor.Text = dlContents;
+                                    _jsEditor.Text = dlContents;
                                     Toast.MakeText(this, "Downloaded", ToastLength.Short);
                                 }
                                 else
@@ -135,7 +135,7 @@ namespace MystifierLight
 
         private async void BtnBeautifyOnClick(object sender, EventArgs eventArgs)
         {
-            var editorSource = jsEditor.Text;
+            var editorSource = _jsEditor.Text;
             _isUnsaved = true;
             var beautifiedSource = editorSource;
             await Task.Run(() =>
@@ -143,7 +143,7 @@ namespace MystifierLight
                 var beautifier = Beautifier.CreateDefault();
                 beautifiedSource = beautifier.Beautify(editorSource);
             });
-            jsEditor.Text = beautifiedSource;
+            _jsEditor.Text = beautifiedSource;
         }
 
         private void BtnExecuteOnClick(object sender, EventArgs eventArgs)
@@ -155,17 +155,17 @@ namespace MystifierLight
             msg.SetMessage("This feature has not yet been implemented. Thank you for using Mystifier.");
             msg.Show();
             */
-            var executeIntent = new Intent(this, typeof(JSVMExecuteActivity));
-            executeIntent.PutExtra("code", jsEditor.Text);
+            var executeIntent = new Intent(this, typeof(JsvmExecuteActivity));
+            executeIntent.PutExtra("code", _jsEditor.Text);
             StartActivity(executeIntent);
         }
 
         private void InitializeComponent()
         {
-            jsEditor = FindViewById<EditText>(Resource.Id.jsEditor);
-            btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
-            btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
-            btnTools = FindViewById<Button>(Resource.Id.btnTools);
+            _jsEditor = FindViewById<EditText>(Resource.Id.jsEditor);
+            _btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
+            _btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
+            _btnTools = FindViewById<Button>(Resource.Id.btnTools);
         }
     }
 }

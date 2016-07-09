@@ -51,10 +51,6 @@
     <AndroidLinkSkip>System;mscorlib;System.Core</AndroidLinkSkip>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jint, Version=2.7.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Jint.2.8\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -73,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />
-    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\SplashScreen.axml">
@@ -122,6 +117,10 @@
     <AndroidResource Include="Resources\values\Dimen.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\IridiumJS\IridiumJS.csproj">
+      <Project>{678738da-f723-4920-b9e5-cad667104bda}</Project>
+      <Name>IridiumJS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mystifier.DarkMagic\Mystifier.DarkMagic.csproj">
       <Project>{692ae1b4-19ec-4ea6-b56f-592813fa4982}</Project>
       <Name>Mystifier.DarkMagic</Name>

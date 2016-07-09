@@ -4,20 +4,20 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
-using Jint;
-using Jint.Parser;
-using Jint.Runtime;
+using IridiumJS;
+using IridiumJS.Parser;
+using IridiumJS.Runtime;
 using Mystifier.DarkMagic.JSVM;
 using MystifierLight.Util;
 
 namespace MystifierLight
 {
     [Activity(Label = "Execute JavaScript")]
-    public class JSVMExecuteActivity : Activity
+    public class JsvmExecuteActivity : Activity
     {
         private string _codeToExecute;
-        private TextView outputTv;
-        private Button returnBtn;
+        private TextView _outputTv;
+        private Button _returnBtn;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,7 +34,7 @@ namespace MystifierLight
         private async void ExecuteLoadedCode()
         {
             var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
-            var console = new JSConsole(outputTv, this);
+            var console = new JSConsole(_outputTv, this);
             jsEngine.SetValue("console", console);
             try
             {
@@ -57,7 +57,7 @@ namespace MystifierLight
 
         private void WireEvents()
         {
-            returnBtn.Click += (sender, args) =>
+            _returnBtn.Click += (sender, args) =>
             {
                 OnBackPressed();
             };
@@ -65,8 +65,8 @@ namespace MystifierLight
 
         private void InitializeComponent()
         {
-            outputTv = FindViewById<TextView>(Resource.Id.outputTxView);
-            returnBtn = FindViewById<Button>(Resource.Id.btnBackToEditor);
+            _outputTv = FindViewById<TextView>(Resource.Id.outputTxView);
+            _returnBtn = FindViewById<Button>(Resource.Id.btnBackToEditor);
         }
     }
 }

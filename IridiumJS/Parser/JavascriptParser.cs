@@ -2157,6 +2157,7 @@ namespace IridiumJS.Parser
             var token = _lookahead;
             MarkStart();
 
+            IPropertyKeyExpression key;
             if (token.Type == Tokens.Identifier)
             {
                 var id = ParseObjectPropertyKey();
@@ -2165,7 +2166,7 @@ namespace IridiumJS.Parser
 
                 if ("get".Equals(token.Value) && !Match(":"))
                 {
-                    var key = ParseObjectPropertyKey();
+                    key = ParseObjectPropertyKey();
                     Expect("(");
                     Expect(")");
                     value = ParsePropertyFunction(new Identifier[0]);
@@ -2173,7 +2174,7 @@ namespace IridiumJS.Parser
                 }
                 if ("set".Equals(token.Value) && !Match(":"))
                 {
-                    var key = ParseObjectPropertyKey();
+                    key = ParseObjectPropertyKey();
                     Expect("(");
                     token = _lookahead;
                     if (token.Type != Tokens.Identifier)
@@ -2200,7 +2201,7 @@ namespace IridiumJS.Parser
                 ThrowUnexpected(token);
                 return null; // can't be reached
             }
-            var key = ParseObjectPropertyKey();
+            key = ParseObjectPropertyKey();
             Expect(":");
             value = ParseAssignmentExpression();
             return MarkEnd(CreateProperty(PropertyKind.Data, key, value));
