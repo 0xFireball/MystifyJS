@@ -4,8 +4,8 @@ using Jint.Parser.Ast;
 namespace Jint.Parser
 {
     /// <summary>
-    /// Used to safe references to all variable delcarations in a specific scope.
-    /// Hoisting.
+    ///     Used to safe references to all variable delcarations in a specific scope.
+    ///     Hoisting.
     /// </summary>
     public interface IVariableScope
     {

@@ -1,13 +1,13 @@
-﻿namespace Jint.Runtime.CallStack
-{
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+namespace Jint.Runtime.CallStack
+{
     public class JintCallStack
     {
-        private Stack<CallStackElement> _stack = new Stack<CallStackElement>();
+        private readonly Stack<CallStackElement> _stack = new Stack<CallStackElement>();
 
-        private Dictionary<CallStackElement, int> _statistics =
+        private readonly Dictionary<CallStackElement, int> _statistics =
             new Dictionary<CallStackElement, int>(new CallStackElementComparer());
 
         public int Push(CallStackElement item)
@@ -17,11 +17,8 @@
             {
                 return ++_statistics[item];
             }
-            else
-            {
-                _statistics.Add(item, 0);
-                return 0;
-            }
+            _statistics.Add(item, 0);
+            return 0;
         }
 
         public CallStackElement Pop()

@@ -5,7 +5,7 @@ using Jint.Runtime.Interop;
 namespace Jint.Native.Error
 {
     /// <summary>
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.11.4
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.11.4
     /// </summary>
     public sealed class ErrorPrototype : ErrorInstance
     {
@@ -16,7 +16,7 @@ namespace Jint.Native.Error
 
         public static ErrorPrototype CreatePrototypeObject(Engine engine, ErrorConstructor errorConstructor, string name)
         {
-            var obj = new ErrorPrototype(engine, name) { Extensible = true };
+            var obj = new ErrorPrototype(engine, name) {Extensible = true};
             obj.FastAddProperty("constructor", errorConstructor, true, false, true);
             obj.FastAddProperty("message", "", true, false, true);
 

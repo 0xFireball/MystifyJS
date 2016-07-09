@@ -6,12 +6,16 @@ namespace Jint.Native.Number.Dtoa
 {
     public class FastDtoaBuilder
     {
+        private static readonly char[] Digits =
+        {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+        };
 
         // allocate buffer for generated digits + extra notation + padding zeroes
         private readonly char[] _chars = new char[FastDtoa.KFastDtoaMaximalLength + 8];
-        internal int End = 0;
-        internal int Point;
         private bool _formatted;
+        internal int End;
+        internal int Point;
 
         internal void Append(char c)
         {
@@ -31,16 +35,16 @@ namespace Jint.Native.Number.Dtoa
 
         public override string ToString()
         {
-            return "[chars:" + new System.String(_chars, 0, End) + ", point:" + Point + "]";
+            return "[chars:" + new string(_chars, 0, End) + ", point:" + Point + "]";
         }
 
-        public System.String Format()
+        public string Format()
         {
             if (!_formatted)
             {
                 // check for minus sign
-                int firstDigit = _chars[0] == '-' ? 1 : 0;
-                int decPoint = Point - firstDigit;
+                var firstDigit = _chars[0] == '-' ? 1 : 0;
+                var decPoint = Point - firstDigit;
                 if (decPoint < -5 || decPoint > 21)
                 {
                     ToExponentialFormat(firstDigit, decPoint);
@@ -51,8 +55,7 @@ namespace Jint.Native.Number.Dtoa
                 }
                 _formatted = true;
             }
-            return new System.String(_chars, 0, End);
-
+            return new string(_chars, 0, End);
         }
 
         private void ToFixedFormat(int firstDigit, int decPoint)
@@ -70,7 +73,7 @@ namespace Jint.Native.Number.Dtoa
                 else
                 {
                     // < 1,
-                    int target = firstDigit + 2 - decPoint;
+                    var target = firstDigit + 2 - decPoint;
                     System.Array.Copy(_chars, firstDigit, _chars, target, End - firstDigit);
                     _chars[firstDigit] = '0';
                     _chars[firstDigit + 1] = '.';
@@ -94,14 +97,14 @@ namespace Jint.Native.Number.Dtoa
             if (End - firstDigit > 1)
             {
                 // insert decimal point if more than one digit was produced
-                int dot = firstDigit + 1;
+                var dot = firstDigit + 1;
                 System.Array.Copy(_chars, dot, _chars, dot + 1, End - dot);
                 _chars[dot] = '.';
                 End++;
             }
             _chars[End++] = 'e';
-            char sign = '+';
-            int exp = decPoint - 1;
+            var sign = '+';
+            var exp = decPoint - 1;
             if (exp < 0)
             {
                 sign = '-';
@@ -109,27 +112,22 @@ namespace Jint.Native.Number.Dtoa
             }
             _chars[End++] = sign;
 
-            int charPos = exp > 99 ? End + 2 : exp > 9 ? End + 1 : End;
+            var charPos = exp > 99 ? End + 2 : exp > 9 ? End + 1 : End;
             End = charPos + 1;
 
             // code below is needed because Integer.getChars() is not public
             for (;;)
             {
-                int r = exp%10;
+                var r = exp%10;
                 _chars[charPos--] = Digits[r];
                 exp = exp/10;
                 if (exp == 0) break;
             }
         }
 
-        private static readonly char[] Digits =
-        {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-        };
-
         private void Fill<T>(T[] array, int fromIndex, int toIndex, T val)
         {
-            for (int i = fromIndex; i < toIndex; i++)
+            for (var i = fromIndex; i < toIndex; i++)
             {
                 array[i] = val;
             }

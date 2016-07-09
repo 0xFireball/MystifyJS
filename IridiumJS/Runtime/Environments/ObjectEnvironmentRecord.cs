@@ -6,13 +6,13 @@ using Jint.Runtime.Descriptors;
 namespace Jint.Runtime.Environments
 {
     /// <summary>
-    /// Represents an object environment record
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-10.2.1.2
+    ///     Represents an object environment record
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-10.2.1.2
     /// </summary>
     public sealed class ObjectEnvironmentRecord : EnvironmentRecord
     {
-        private readonly Engine _engine;
         private readonly ObjectInstance _bindingObject;
+        private readonly Engine _engine;
         private readonly bool _provideThis;
 
         public ObjectEnvironmentRecord(Engine engine, ObjectInstance bindingObject, bool provideThis) : base(engine)
@@ -28,13 +28,14 @@ namespace Jint.Runtime.Environments
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-10.2.1.2.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-10.2.1.2.2
         /// </summary>
         /// <param name="name"></param>
         /// <param name="configurable"></param>
         public override void CreateMutableBinding(string name, bool configurable = true)
         {
-            _bindingObject.DefineOwnProperty(name, new PropertyDescriptor(Undefined.Instance, true, true, configurable), true);
+            _bindingObject.DefineOwnProperty(name, new PropertyDescriptor(Undefined.Instance, true, true, configurable),
+                true);
         }
 
         public override void SetMutableBinding(string name, JsValue value, bool strict)
@@ -48,7 +49,7 @@ namespace Jint.Runtime.Environments
 
             if (!_bindingObject.HasProperty(name))
             {
-                if(!strict)
+                if (!strict)
                 {
                     return Undefined.Instance;
                 }
@@ -78,7 +79,7 @@ namespace Jint.Runtime.Environments
         {
             if (_bindingObject != null)
             {
-                return _bindingObject.GetOwnProperties().Select( x=> x.Key).ToArray();
+                return _bindingObject.GetOwnProperties().Select(x => x.Key).ToArray();
             }
 
             return new string[0];

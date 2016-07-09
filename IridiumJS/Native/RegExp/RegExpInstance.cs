@@ -12,10 +12,7 @@ namespace Jint.Native.RegExp
 
         public override string Class
         {
-            get
-            {
-                return "RegExp";
-            }
+            get { return "RegExp"; }
         }
 
         public Regex Value { get; set; }

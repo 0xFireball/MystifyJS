@@ -7,8 +7,8 @@ namespace Jint.Runtime.Descriptors.Specialized
     public sealed class PropertyInfoDescriptor : PropertyDescriptor
     {
         private readonly Engine _engine;
-        private readonly PropertyInfo _propertyInfo;
         private readonly object _item;
+        private readonly PropertyInfo _propertyInfo;
 
         public PropertyInfoDescriptor(Engine engine, PropertyInfo propertyInfo, object item)
         {
@@ -21,16 +21,13 @@ namespace Jint.Runtime.Descriptors.Specialized
 
         public override JsValue? Value
         {
-            get
-            {
-                return JsValue.FromObject(_engine, _propertyInfo.GetValue(_item, null));
-            }
+            get { return JsValue.FromObject(_engine, _propertyInfo.GetValue(_item, null)); }
 
             set
             {
                 var currentValue = value.GetValueOrDefault();
                 object obj;
-                if (_propertyInfo.PropertyType == typeof (JsValue))
+                if (_propertyInfo.PropertyType == typeof(JsValue))
                 {
                     obj = currentValue;
                 }
@@ -40,10 +37,11 @@ namespace Jint.Runtime.Descriptors.Specialized
                     obj = currentValue.ToObject();
                     if (obj != null && obj.GetType() != _propertyInfo.PropertyType)
                     {
-                        obj = _engine.ClrTypeConverter.Convert(obj, _propertyInfo.PropertyType, CultureInfo.InvariantCulture);
+                        obj = _engine.ClrTypeConverter.Convert(obj, _propertyInfo.PropertyType,
+                            CultureInfo.InvariantCulture);
                     }
                 }
-                
+
                 _propertyInfo.SetValue(_item, obj, null);
             }
         }

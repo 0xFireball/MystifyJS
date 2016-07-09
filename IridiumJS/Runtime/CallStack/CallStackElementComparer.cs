@@ -1,8 +1,8 @@
-﻿namespace Jint.Runtime.CallStack
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-    public class CallStackElementComparer: IEqualityComparer<CallStackElement>
+namespace Jint.Runtime.CallStack
+{
+    public class CallStackElementComparer : IEqualityComparer<CallStackElement>
     {
         public bool Equals(CallStackElement x, CallStackElement y)
         {

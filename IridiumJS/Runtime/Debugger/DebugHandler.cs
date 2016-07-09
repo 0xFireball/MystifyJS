@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Jint.Native;
 using Jint.Parser.Ast;
 using Jint.Runtime.Environments;
-using Jint.Runtime.References;
 
 namespace Jint.Runtime.Debugger
 {
     internal class DebugHandler
     {
         private readonly Stack<string> _debugCallStack;
-        private StepMode _stepMode;
-        private int _callBackStepOverDepth;
         private readonly Engine _engine;
+        private int _callBackStepOverDepth;
+        private StepMode _stepMode;
 
         public DebugHandler(Engine engine)
         {
@@ -74,13 +72,13 @@ namespace Jint.Runtime.Debugger
             {
                 return;
             }
-            
-            BreakPoint breakpoint = _engine.BreakPoints.FirstOrDefault(breakPoint => BpTest(statement, breakPoint));
-            bool breakpointFound = false;
+
+            var breakpoint = _engine.BreakPoints.FirstOrDefault(breakPoint => BpTest(statement, breakPoint));
+            var breakpointFound = false;
 
             if (breakpoint != null)
             {
-                DebugInformation info = CreateDebugInformation(statement);
+                var info = CreateDebugInformation(statement);
                 var result = _engine.InvokeBreakEvent(info);
                 if (result.HasValue)
                 {
@@ -91,7 +89,7 @@ namespace Jint.Runtime.Debugger
 
             if (breakpointFound == false && _stepMode == StepMode.Into)
             {
-                DebugInformation info = CreateDebugInformation(statement);
+                var info = CreateDebugInformation(statement);
                 var result = _engine.InvokeStepEvent(info);
                 if (result.HasValue)
                 {
@@ -121,8 +119,8 @@ namespace Jint.Runtime.Debugger
         {
             bool afterStart, beforeEnd;
 
-            afterStart = (breakpoint.Line == statement.Location.Start.Line &&
-                             breakpoint.Char >= statement.Location.Start.Column);
+            afterStart = breakpoint.Line == statement.Location.Start.Line &&
+                         breakpoint.Char >= statement.Location.Start.Column;
 
             if (!afterStart)
             {
@@ -148,7 +146,7 @@ namespace Jint.Runtime.Debugger
 
         private DebugInformation CreateDebugInformation(Statement statement)
         {
-            var info = new DebugInformation { CurrentStatement = statement, CallStack = _debugCallStack };
+            var info = new DebugInformation {CurrentStatement = statement, CallStack = _debugCallStack};
 
             if (_engine.ExecutionContext != null && _engine.ExecutionContext.LexicalEnvironment != null)
             {
@@ -162,7 +160,7 @@ namespace Jint.Runtime.Debugger
 
         private static Dictionary<string, JsValue> GetLocalVariables(LexicalEnvironment lex)
         {
-            Dictionary<string, JsValue> locals = new Dictionary<string, JsValue>();
+            var locals = new Dictionary<string, JsValue>();
             if (lex != null && lex.Record != null)
             {
                 AddRecordsFromEnvironment(lex, locals);
@@ -172,8 +170,8 @@ namespace Jint.Runtime.Debugger
 
         private static Dictionary<string, JsValue> GetGlobalVariables(LexicalEnvironment lex)
         {
-            Dictionary<string, JsValue> globals = new Dictionary<string, JsValue>();
-            LexicalEnvironment tempLex = lex;
+            var globals = new Dictionary<string, JsValue>();
+            var tempLex = lex;
 
             while (tempLex != null && tempLex.Record != null)
             {

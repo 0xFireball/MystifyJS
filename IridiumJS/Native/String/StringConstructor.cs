@@ -12,6 +12,28 @@ namespace Jint.Native.String
         {
         }
 
+        public StringPrototype PrototypeObject { get; private set; }
+
+        public override JsValue Call(JsValue thisObject, JsValue[] arguments)
+        {
+            if (arguments.Length == 0)
+            {
+                return "";
+            }
+
+            return TypeConverter.ToString(arguments[0]);
+        }
+
+        /// <summary>
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.2.1
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public ObjectInstance Construct(JsValue[] arguments)
+        {
+            return Construct(arguments.Length > 0 ? TypeConverter.ToString(arguments[0]) : "");
+        }
+
         public static StringConstructor CreateStringConstructor(Engine engine)
         {
             var obj = new StringConstructor(engine);
@@ -37,35 +59,13 @@ namespace Jint.Native.String
         private static JsValue FromCharCode(JsValue thisObj, JsValue[] arguments)
         {
             var chars = new char[arguments.Length];
-            for (var i = 0; i < chars.Length; i++ )
+            for (var i = 0; i < chars.Length; i++)
             {
-                chars[i] = (char)TypeConverter.ToUint16(arguments[i]);
-            }
-            
-            return new System.String(chars);
-        }
-
-        public override JsValue Call(JsValue thisObject, JsValue[] arguments)
-        {
-            if (arguments.Length == 0)
-            {
-                return "";
+                chars[i] = (char) TypeConverter.ToUint16(arguments[i]);
             }
 
-            return TypeConverter.ToString(arguments[0]);
+            return new string(chars);
         }
-
-        /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.2.1
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        public ObjectInstance Construct(JsValue[] arguments)
-        {
-            return Construct(arguments.Length > 0 ? TypeConverter.ToString(arguments[0]) : "");
-        }
-
-        public StringPrototype PrototypeObject { get; private set; }
 
         public StringInstance Construct(string value)
         {

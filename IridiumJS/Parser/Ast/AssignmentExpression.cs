@@ -15,13 +15,13 @@ namespace Jint.Parser.Ast
         BitwiseXOrAssign,
         LeftShiftAssign,
         RightShiftAssign,
-        UnsignedRightShiftAssign,
+        UnsignedRightShiftAssign
     }
 
     public class AssignmentExpression : Expression
     {
-        public AssignmentOperator Operator;
         public Expression Left;
+        public AssignmentOperator Operator;
         public Expression Right;
 
         public static AssignmentOperator ParseAssignmentOperator(string op)

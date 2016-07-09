@@ -32,14 +32,16 @@ using System.Diagnostics;
 
 namespace Jint.Native.Number.Dtoa
 {
-
 // Helper functions for doubles.
     public class DoubleHelper
     {
-
         private const long KExponentMask = 0x7FF0000000000000L;
         private const long KSignificandMask = 0x000FFFFFFFFFFFFFL;
         private const long KHiddenBit = 0x0010000000000000L;
+
+        private const int KSignificandSize = 52; // Excludes the hidden bit.
+        private const int KExponentBias = 0x3FF + KSignificandSize;
+        private const int KDenormalExponent = -KExponentBias + 1;
 
         private static DiyFp AsDiyFp(long d64)
         {
@@ -50,8 +52,8 @@ namespace Jint.Native.Number.Dtoa
         // this->Significand() must not be 0.
         internal static DiyFp AsNormalizedDiyFp(long d64)
         {
-            long f = Significand(d64);
-            int e = Exponent(d64);
+            var f = Significand(d64);
+            var e = Exponent(d64);
 
             Debug.Assert(f != 0);
 
@@ -71,21 +73,18 @@ namespace Jint.Native.Number.Dtoa
         {
             if (IsDenormal(d64)) return KDenormalExponent;
 
-            int biasedE = (int) ((d64 & KExponentMask).UnsignedShift(KSignificandSize) & 0xffffffffL);
+            var biasedE = (int) ((d64 & KExponentMask).UnsignedShift(KSignificandSize) & 0xffffffffL);
             return biasedE - KExponentBias;
         }
 
         private static long Significand(long d64)
         {
-            long significand = d64 & KSignificandMask;
+            var significand = d64 & KSignificandMask;
             if (!IsDenormal(d64))
             {
                 return significand + KHiddenBit;
             }
-            else
-            {
-                return significand;
-            }
+            return significand;
         }
 
         // Returns true if the double is a denormal.
@@ -106,8 +105,8 @@ namespace Jint.Native.Number.Dtoa
         // exponent as m_plus.
         internal static void NormalizedBoundaries(long d64, DiyFp mMinus, DiyFp mPlus)
         {
-            DiyFp v = AsDiyFp(d64);
-            bool significandIsZero = (v.F == KHiddenBit);
+            var v = AsDiyFp(d64);
+            var significandIsZero = v.F == KHiddenBit;
             mPlus.F = (v.F << 1) + 1;
             mPlus.E = v.E - 1;
             mPlus.Normalize();
@@ -130,9 +129,5 @@ namespace Jint.Native.Number.Dtoa
             mMinus.F = mMinus.F << (mMinus.E - mPlus.E);
             mMinus.E = mPlus.E;
         }
-
-        private const int KSignificandSize = 52; // Excludes the hidden bit.
-        private const int KExponentBias = 0x3FF + KSignificandSize;
-        private const int KDenormalExponent = -KExponentBias + 1;
     }
 }

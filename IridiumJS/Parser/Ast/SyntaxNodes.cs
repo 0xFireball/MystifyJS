@@ -43,5 +43,5 @@
         VariableDeclarator,
         WhileStatement,
         WithStatement
-    };
+    }
 }

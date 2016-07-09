@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Jint.Native.Object;
 using Jint.Runtime;
 using Jint.Runtime.Descriptors;
 using Jint.Runtime.Interop;
@@ -40,9 +41,9 @@ namespace Jint.Native.RegExp
             var regExp = thisObj.TryCast<RegExpInstance>();
 
             return "/" + regExp.Source + "/"
-                + (regExp.Flags.Contains("g") ? "g" : "")
-                + (regExp.Flags.Contains("i") ? "i" : "")
-                + (regExp.Flags.Contains("m") ? "m" : "")
+                   + (regExp.Flags.Contains("g") ? "g" : "")
+                   + (regExp.Flags.Contains("i") ? "i" : "")
+                   + (regExp.Flags.Contains("m") ? "m" : "")
                 ;
         }
 
@@ -71,13 +72,13 @@ namespace Jint.Native.RegExp
             var lastIndex = TypeConverter.ToNumber(R.Get("lastIndex"));
             var i = TypeConverter.ToInteger(lastIndex);
             var global = R.Global;
-            
+
             if (!global)
             {
                 i = 0;
             }
 
-            if (R.Source == "(?:)")  // Reg Exp is really ""
+            if (R.Source == "(?:)") // Reg Exp is really ""
             {
                 // "aaa".match() => [ '', index: 0, input: 'aaa' ]
                 var aa = InitReturnValueArray(Engine.Array.Construct(Arguments.Empty), s, 1, 0);
@@ -88,7 +89,7 @@ namespace Jint.Native.RegExp
             Match r = null;
             if (i < 0 || i > length)
             {
-                R.Put("lastIndex", (double) 0, true);
+                R.Put("lastIndex", 0, true);
                 return Null.Instance;
             }
 
@@ -96,36 +97,37 @@ namespace Jint.Native.RegExp
 
             if (!r.Success)
             {
-                R.Put("lastIndex", (double) 0, true);
+                R.Put("lastIndex", 0, true);
                 return Null.Instance;
             }
 
             var e = r.Index + r.Length;
-            
+
             if (global)
             {
-                R.Put("lastIndex", (double) e, true);
+                R.Put("lastIndex", e, true);
             }
             var n = r.Groups.Count;
             var matchIndex = r.Index;
 
             var a = InitReturnValueArray(Engine.Array.Construct(Arguments.Empty), s, n, matchIndex);
-            
+
             for (var k = 0; k < n; k++)
             {
                 var group = r.Groups[k];
                 var value = group.Success ? group.Value : Undefined.Instance;
-                a.DefineOwnProperty(k.ToString(), new PropertyDescriptor(value, true, true, true), true);            
+                a.DefineOwnProperty(k.ToString(), new PropertyDescriptor(value, true, true, true), true);
             }
 
             return a;
         }
 
-        private static Object.ObjectInstance InitReturnValueArray(Object.ObjectInstance array, string inputValue, int lengthValue, int indexValue)
+        private static ObjectInstance InitReturnValueArray(ObjectInstance array, string inputValue, int lengthValue,
+            int indexValue)
         {
-            array.DefineOwnProperty("index", new PropertyDescriptor(indexValue, writable: true, enumerable: true, configurable: true), true);
-            array.DefineOwnProperty("input", new PropertyDescriptor(inputValue, writable: true, enumerable: true, configurable: true), true);
-            array.DefineOwnProperty("length", new PropertyDescriptor(value: lengthValue, writable: true, enumerable: false, configurable: false), true);
+            array.DefineOwnProperty("index", new PropertyDescriptor(indexValue, true, true, true), true);
+            array.DefineOwnProperty("input", new PropertyDescriptor(inputValue, true, true, true), true);
+            array.DefineOwnProperty("length", new PropertyDescriptor(lengthValue, true, false, false), true);
             return array;
         }
     }

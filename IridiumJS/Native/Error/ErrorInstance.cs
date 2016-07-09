@@ -13,10 +13,7 @@ namespace Jint.Native.Error
 
         public override string Class
         {
-            get
-            {
-                return "Error";
-            }
+            get { return "Error"; }
         }
 
         public override string ToString()

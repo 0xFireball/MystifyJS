@@ -11,20 +11,20 @@
         Punctuator = 7,
         StringLiteral = 8,
         RegularExpression = 9
-    };
+    }
 
     public class Token
     {
         public static Token Empty = new Token();
-
-        public Tokens Type;
-        public string Literal;
-        public object Value;
-        public int[] Range;
         public int? LineNumber;
         public int LineStart;
-        public bool Octal;
+        public string Literal;
         public Location Location;
+        public bool Octal;
         public int Precedence;
+        public int[] Range;
+
+        public Tokens Type;
+        public object Value;
     }
 }

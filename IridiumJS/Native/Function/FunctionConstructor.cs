@@ -12,57 +12,38 @@ namespace Jint.Native.Function
 {
     public sealed class FunctionConstructor : FunctionInstance, IConstructor
     {
-        private FunctionConstructor(Engine engine):base(engine, null, null, false)
+        private FunctionInstance _throwTypeError;
+
+        private FunctionConstructor(Engine engine) : base(engine, null, null, false)
         {
-        }
-
-        public static FunctionConstructor CreateFunctionConstructor(Engine engine)
-        {
-            var obj = new FunctionConstructor(engine);
-            obj.Extensible = true;
-
-            // The initial value of Function.prototype is the standard built-in Function prototype object
-            obj.PrototypeObject = FunctionPrototype.CreatePrototypeObject(engine);
-            
-            // The value of the [[Prototype]] internal property of the Function constructor is the standard built-in Function prototype object 
-            obj.Prototype = obj.PrototypeObject;
-            
-            obj.FastAddProperty("prototype", obj.PrototypeObject, false, false, false);
-
-            obj.FastAddProperty("length", 1, false, false, false);
-
-            return obj;
-        }
-
-        public void Configure()
-        {
-
         }
 
         public FunctionPrototype PrototypeObject { get; private set; }
+
+        public FunctionInstance ThrowTypeError
+        {
+            get
+            {
+                if (_throwTypeError != null)
+                {
+                    return _throwTypeError;
+                }
+
+                _throwTypeError = new ThrowTypeError(Engine);
+                return _throwTypeError;
+            }
+        }
 
         public override JsValue Call(JsValue thisObject, JsValue[] arguments)
         {
             return Construct(arguments);
         }
 
-        private string[] ParseArgumentNames(string parameterDeclaration)
-        {
-            string[] values = parameterDeclaration.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var newValues = new string[values.Length];
-            for (var i = 0; i < values.Length; i++)
-            {
-                newValues[i] = StringPrototype.TrimEx(values[i]);
-            }
-            return newValues;
-        }
-
         public ObjectInstance Construct(JsValue[] arguments)
         {
             var argCount = arguments.Length;
-            string p = "";
-            string body = "";
+            var p = "";
+            var body = "";
 
             if (argCount == 1)
             {
@@ -78,16 +59,16 @@ namespace Jint.Native.Function
                     p += "," + TypeConverter.ToString(nextArg);
                 }
 
-                body = TypeConverter.ToString(arguments[argCount-1]);
+                body = TypeConverter.ToString(arguments[argCount - 1]);
             }
-            
-            var parameters = this.ParseArgumentNames(p);
+
+            var parameters = ParseArgumentNames(p);
             var parser = new JavaScriptParser();
             FunctionExpression function;
             try
             {
                 var functionExpression = "function(" + p + ") { " + body + "}";
-                function = parser.ParseFunctionExpression(functionExpression); 
+                function = parser.ParseFunctionExpression(functionExpression);
             }
             catch (ParserException)
             {
@@ -98,31 +79,64 @@ namespace Jint.Native.Function
             var functionObject = new ScriptFunctionInstance(
                 Engine,
                 new FunctionDeclaration
+                {
+                    Type = SyntaxNodes.FunctionDeclaration,
+                    Body = new BlockStatement
                     {
-                        Type = SyntaxNodes.FunctionDeclaration,
-                        Body = new BlockStatement
-                            {
-                                Type = SyntaxNodes.BlockStatement,
-                                Body = new [] { function.Body }
-                            },
-                        Parameters = parameters.Select(x => new Identifier
-                            {
-                                Type = SyntaxNodes.Identifier,
-                                Name = x
-                            }).ToArray(),
-                        FunctionDeclarations = function.FunctionDeclarations,
-                        VariableDeclarations = function.VariableDeclarations
-                    },  
+                        Type = SyntaxNodes.BlockStatement,
+                        Body = new[] {function.Body}
+                    },
+                    Parameters = parameters.Select(x => new Identifier
+                    {
+                        Type = SyntaxNodes.Identifier,
+                        Name = x
+                    }).ToArray(),
+                    FunctionDeclarations = function.FunctionDeclarations,
+                    VariableDeclarations = function.VariableDeclarations
+                },
                 LexicalEnvironment.NewDeclarativeEnvironment(Engine, Engine.ExecutionContext.LexicalEnvironment),
                 function.Strict
-                ) { Extensible = true };
+                ) {Extensible = true};
 
             return functionObject;
-            
+        }
+
+        public static FunctionConstructor CreateFunctionConstructor(Engine engine)
+        {
+            var obj = new FunctionConstructor(engine);
+            obj.Extensible = true;
+
+            // The initial value of Function.prototype is the standard built-in Function prototype object
+            obj.PrototypeObject = FunctionPrototype.CreatePrototypeObject(engine);
+
+            // The value of the [[Prototype]] internal property of the Function constructor is the standard built-in Function prototype object 
+            obj.Prototype = obj.PrototypeObject;
+
+            obj.FastAddProperty("prototype", obj.PrototypeObject, false, false, false);
+
+            obj.FastAddProperty("length", 1, false, false, false);
+
+            return obj;
+        }
+
+        public void Configure()
+        {
+        }
+
+        private string[] ParseArgumentNames(string parameterDeclaration)
+        {
+            var values = parameterDeclaration.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+
+            var newValues = new string[values.Length];
+            for (var i = 0; i < values.Length; i++)
+            {
+                newValues[i] = StringPrototype.TrimEx(values[i]);
+            }
+            return newValues;
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-13.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-13.2
         /// </summary>
         /// <param name="functionDeclaration"></param>
         /// <returns></returns>
@@ -133,25 +147,9 @@ namespace Jint.Native.Function
                 functionDeclaration,
                 LexicalEnvironment.NewDeclarativeEnvironment(Engine, Engine.ExecutionContext.LexicalEnvironment),
                 functionDeclaration.Strict
-                ) { Extensible = true };
+                ) {Extensible = true};
 
             return functionObject;
-        }
-
-        private FunctionInstance _throwTypeError;
-
-        public FunctionInstance ThrowTypeError
-        {
-            get
-            {
-                if (_throwTypeError != null)
-                {
-                    return _throwTypeError;
-                }
-
-                _throwTypeError = new ThrowTypeError(Engine);
-                return _throwTypeError;
-            }
         }
 
         public object Apply(JsValue thisObject, JsValue[] arguments)

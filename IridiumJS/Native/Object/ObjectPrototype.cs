@@ -12,7 +12,7 @@ namespace Jint.Native.Object
 
         public static ObjectPrototype CreatePrototypeObject(Engine engine, ObjectConstructor objectConstructor)
         {
-            var obj = new ObjectPrototype(engine) { Extensible = true };
+            var obj = new ObjectPrototype(engine) {Extensible = true};
 
             obj.FastAddProperty("constructor", objectConstructor, true, false, true);
 
@@ -26,7 +26,8 @@ namespace Jint.Native.Object
             FastAddProperty("valueOf", new ClrFunctionInstance(Engine, ValueOf), true, false, true);
             FastAddProperty("hasOwnProperty", new ClrFunctionInstance(Engine, HasOwnProperty, 1), true, false, true);
             FastAddProperty("isPrototypeOf", new ClrFunctionInstance(Engine, IsPrototypeOf, 1), true, false, true);
-            FastAddProperty("propertyIsEnumerable", new ClrFunctionInstance(Engine, PropertyIsEnumerable, 1), true, false, true);
+            FastAddProperty("propertyIsEnumerable", new ClrFunctionInstance(Engine, PropertyIsEnumerable, 1), true,
+                false, true);
         }
 
         private JsValue PropertyIsEnumerable(JsValue thisObject, JsValue[] arguments)
@@ -71,23 +72,20 @@ namespace Jint.Native.Object
                 {
                     return true;
                 }
-
             }
         }
 
         private JsValue ToLocaleString(JsValue thisObject, JsValue[] arguments)
         {
             var o = TypeConverter.ToObject(Engine, thisObject);
-            var toString = o.Get("toString").TryCast<ICallable>(x =>
-            {
-                throw new JavaScriptException(Engine.TypeError);
-            });
+            var toString =
+                o.Get("toString").TryCast<ICallable>(x => { throw new JavaScriptException(Engine.TypeError); });
 
             return toString.Call(o, Arguments.Empty);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.2.4.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.2.4.2
         /// </summary>
         /// <param name="thisObject"></param>
         /// <param name="arguments"></param>
@@ -109,7 +107,7 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.2.4.5
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.2.4.5
         /// </summary>
         /// <param name="thisObject"></param>
         /// <param name="arguments"></param>

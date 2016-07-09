@@ -6,13 +6,26 @@ using Jint.Runtime.Interop;
 namespace Jint.Native.Date
 {
     /// <summary>
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.5
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.5
     /// </summary>
     public sealed class DatePrototype : DateInstance
     {
+        public const double HoursPerDay = 24;
+        public const double MinutesPerHour = 60;
+        public const double SecondsPerMinute = 60;
+        public const double MsPerSecond = 1000;
+        public const double MsPerMinute = 60000;
+        public const double MsPerHour = 3600000;
+        public const double MsPerDay = 86400000;
+
         private DatePrototype(Engine engine)
             : base(engine)
         {
+        }
+
+        public double LocalTza
+        {
+            get { return Engine.Options._LocalTimeZone.BaseUtcOffset.TotalMilliseconds; }
         }
 
         public static DatePrototype CreatePrototypeObject(Engine engine, DateConstructor dateConstructor)
@@ -35,8 +48,10 @@ namespace Jint.Native.Date
             FastAddProperty("toDateString", new ClrFunctionInstance(Engine, ToDateString, 0), true, false, true);
             FastAddProperty("toTimeString", new ClrFunctionInstance(Engine, ToTimeString, 0), true, false, true);
             FastAddProperty("toLocaleString", new ClrFunctionInstance(Engine, ToLocaleString, 0), true, false, true);
-            FastAddProperty("toLocaleDateString", new ClrFunctionInstance(Engine, ToLocaleDateString, 0), true, false, true);
-            FastAddProperty("toLocaleTimeString", new ClrFunctionInstance(Engine, ToLocaleTimeString, 0), true, false, true);
+            FastAddProperty("toLocaleDateString", new ClrFunctionInstance(Engine, ToLocaleDateString, 0), true, false,
+                true);
+            FastAddProperty("toLocaleTimeString", new ClrFunctionInstance(Engine, ToLocaleTimeString, 0), true, false,
+                true);
             FastAddProperty("valueOf", new ClrFunctionInstance(Engine, ValueOf, 0), true, false, true);
             FastAddProperty("getTime", new ClrFunctionInstance(Engine, GetTime, 0), true, false, true);
             FastAddProperty("getFullYear", new ClrFunctionInstance(Engine, GetFullYear, 0), true, false, true);
@@ -55,11 +70,14 @@ namespace Jint.Native.Date
             FastAddProperty("getSeconds", new ClrFunctionInstance(Engine, GetSeconds, 0), true, false, true);
             FastAddProperty("getUTCSeconds", new ClrFunctionInstance(Engine, GetUTCSeconds, 0), true, false, true);
             FastAddProperty("getMilliseconds", new ClrFunctionInstance(Engine, GetMilliseconds, 0), true, false, true);
-            FastAddProperty("getUTCMilliseconds", new ClrFunctionInstance(Engine, GetUTCMilliseconds, 0), true, false, true);
-            FastAddProperty("getTimezoneOffset", new ClrFunctionInstance(Engine, GetTimezoneOffset, 0), true, false, true);
+            FastAddProperty("getUTCMilliseconds", new ClrFunctionInstance(Engine, GetUTCMilliseconds, 0), true, false,
+                true);
+            FastAddProperty("getTimezoneOffset", new ClrFunctionInstance(Engine, GetTimezoneOffset, 0), true, false,
+                true);
             FastAddProperty("setTime", new ClrFunctionInstance(Engine, SetTime, 1), true, false, true);
             FastAddProperty("setMilliseconds", new ClrFunctionInstance(Engine, SetMilliseconds, 1), true, false, true);
-            FastAddProperty("setUTCMilliseconds", new ClrFunctionInstance(Engine, SetUTCMilliseconds, 1), true, false, true);
+            FastAddProperty("setUTCMilliseconds", new ClrFunctionInstance(Engine, SetUTCMilliseconds, 1), true, false,
+                true);
             FastAddProperty("setSeconds", new ClrFunctionInstance(Engine, SetSeconds, 2), true, false, true);
             FastAddProperty("setUTCSeconds", new ClrFunctionInstance(Engine, SetUTCSeconds, 2), true, false, true);
             FastAddProperty("setMinutes", new ClrFunctionInstance(Engine, SetMinutes, 3), true, false, true);
@@ -84,30 +102,32 @@ namespace Jint.Native.Date
         }
 
         /// <summary>
-        /// Converts a value to a <see cref="DateInstance"/> or throws a TypeError exception.
-        /// c.f., http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.5
+        ///     Converts a value to a <see cref="DateInstance" /> or throws a TypeError exception.
+        ///     c.f., http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.5
         /// </summary>
         private DateInstance EnsureDateInstance(JsValue thisObj)
         {
-            return thisObj.TryCast<DateInstance>(value =>
-               {
-                   throw new JavaScriptException(Engine.TypeError, "Invalid Date");
-               });
+            return
+                thisObj.TryCast<DateInstance>(
+                    value => { throw new JavaScriptException(Engine.TypeError, "Invalid Date"); });
         }
 
         public JsValue ToString(JsValue thisObj, JsValue[] arg2)
         {
-            return ToLocalTime(EnsureDateInstance(thisObj).ToDateTime()).ToString("ddd MMM dd yyyy HH:mm:ss 'GMT'K", CultureInfo.InvariantCulture);
+            return ToLocalTime(EnsureDateInstance(thisObj).ToDateTime())
+                .ToString("ddd MMM dd yyyy HH:mm:ss 'GMT'K", CultureInfo.InvariantCulture);
         }
 
         private JsValue ToDateString(JsValue thisObj, JsValue[] arguments)
         {
-            return ToLocalTime(EnsureDateInstance(thisObj).ToDateTime()).ToString("ddd MMM dd yyyy", CultureInfo.InvariantCulture);
+            return ToLocalTime(EnsureDateInstance(thisObj).ToDateTime())
+                .ToString("ddd MMM dd yyyy", CultureInfo.InvariantCulture);
         }
 
         private JsValue ToTimeString(JsValue thisObj, JsValue[] arguments)
         {
-            return ToLocalTime(EnsureDateInstance(thisObj).ToDateTime()).ToString("HH:mm:ss 'GMT'K", CultureInfo.InvariantCulture);
+            return ToLocalTime(EnsureDateInstance(thisObj).ToDateTime())
+                .ToString("HH:mm:ss 'GMT'K", CultureInfo.InvariantCulture);
         }
 
         private JsValue ToLocaleString(JsValue thisObj, JsValue[] arguments)
@@ -521,35 +541,42 @@ namespace Jint.Native.Date
 
         private JsValue ToUtcString(JsValue thisObj, JsValue[] arguments)
         {
-            return thisObj.TryCast<DateInstance>(x =>
-            {
-                throw new JavaScriptException(Engine.TypeError);
-            } )
-            .ToDateTime().ToUniversalTime().ToString("ddd MMM dd yyyy HH:mm:ss 'GMT'", CultureInfo.InvariantCulture);
+            return thisObj.TryCast<DateInstance>(x => { throw new JavaScriptException(Engine.TypeError); })
+                .ToDateTime().ToUniversalTime().ToString("ddd MMM dd yyyy HH:mm:ss 'GMT'", CultureInfo.InvariantCulture);
         }
 
         private JsValue ToISOString(JsValue thisObj, JsValue[] arguments)
         {
-            var t = thisObj.TryCast<DateInstance>(x =>
-            {
-                throw new JavaScriptException(Engine.TypeError);
-            }).PrimitiveValue;
+            var t =
+                thisObj.TryCast<DateInstance>(x => { throw new JavaScriptException(Engine.TypeError); }).PrimitiveValue;
 
             if (double.IsInfinity(t) || double.IsNaN(t))
             {
                 throw new JavaScriptException(Engine.RangeError);
             }
-            double h = HourFromTime(t);
-            double m = MinFromTime(t);
-            double s = SecFromTime(t);
-            double ms = MsFromTime(t);
-            if (h < 0) { h += HoursPerDay; }
-            if (m < 0) { m += MinutesPerHour; }
-            if (s < 0) { s += SecondsPerMinute; }
-            if (ms < 0) { ms += MsPerSecond; }
+            var h = HourFromTime(t);
+            var m = MinFromTime(t);
+            var s = SecFromTime(t);
+            var ms = MsFromTime(t);
+            if (h < 0)
+            {
+                h += HoursPerDay;
+            }
+            if (m < 0)
+            {
+                m += MinutesPerHour;
+            }
+            if (s < 0)
+            {
+                s += SecondsPerMinute;
+            }
+            if (ms < 0)
+            {
+                ms += MsPerSecond;
+            }
             return string.Format("{0:0000}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}.{6:000}Z",
                 YearFromTime(t),
-                MonthFromTime(t)+1,
+                MonthFromTime(t) + 1,
                 DateFromTime(t),
                 h,
                 m,
@@ -575,32 +602,24 @@ namespace Jint.Native.Date
             return toIso.TryCast<ICallable>().Call(o, Arguments.Empty);
         }
 
-        public const double HoursPerDay = 24;
-        public const double MinutesPerHour = 60;
-        public const double SecondsPerMinute = 60;
-        public const double MsPerSecond = 1000;
-        public const double MsPerMinute = 60000;
-        public const double MsPerHour = 3600000;
-        public const double MsPerDay = 86400000;
-
         /// <summary>
-        /// 15.9.1.2
+        ///     15.9.1.2
         /// </summary>
         public static double Day(double t)
         {
-            return System.Math.Floor(t / MsPerDay);
+            return System.Math.Floor(t/MsPerDay);
         }
 
         /// <summary>
-        /// 15.9.1.2
+        ///     15.9.1.2
         /// </summary>
         public static double TimeWithinDay(double t)
         {
-            return t % MsPerDay;
+            return t%MsPerDay;
         }
 
         /// <summary>
-        /// The number of days in a year
+        ///     The number of days in a year
         /// </summary>
         public static double DaysInYear(double y)
         {
@@ -628,18 +647,18 @@ namespace Jint.Native.Date
         }
 
         /// <summary>
-        /// The day number of the first day of the year.
+        ///     The day number of the first day of the year.
         /// </summary>
         public static double DayFromYear(double y)
         {
             return 365*(y - 1970)
-                + System.Math.Floor((y - 1969)/4)
-                - System.Math.Floor((y - 1901)/100)
-                + System.Math.Floor((y - 1601)/400);
+                   + System.Math.Floor((y - 1969)/4)
+                   - System.Math.Floor((y - 1901)/100)
+                   + System.Math.Floor((y - 1601)/400);
         }
 
         /// <summary>
-        /// The time value of the start of the year
+        ///     The time value of the start of the year
         /// </summary>
         public static double TimeFromYear(double y)
         {
@@ -647,20 +666,20 @@ namespace Jint.Native.Date
         }
 
         /// <summary>
-        /// The year of a time value.
+        ///     The year of a time value.
         /// </summary>
         public static double YearFromTime(double t)
         {
             if (!AreFinite(t))
             {
-                return Double.NaN;
+                return double.NaN;
             }
 
-            double upper = double.MaxValue;
-            double lower = double.MinValue;
+            var upper = double.MaxValue;
+            var lower = double.MinValue;
             while (upper > lower + 1)
             {
-                var current = System.Math.Floor((upper + lower) / 2);
+                var current = System.Math.Floor((upper + lower)/2);
 
                 var tfy = TimeFromYear(current);
 
@@ -678,7 +697,10 @@ namespace Jint.Native.Date
         }
 
         /// <summary>
-        /// <value>true</value> if the time is within a leap year, <value>false</value> otherwise
+        ///     <value>true</value>
+        ///     if the time is within a leap year,
+        ///     <value>false</value>
+        ///     otherwise
         /// </summary>
         public static double InLeapYear(double t)
         {
@@ -698,7 +720,7 @@ namespace Jint.Native.Date
         }
 
         /// <summary>
-        /// The month number of a time value.
+        ///     The month number of a time value.
         /// </summary>
         public static double MonthFromTime(double t)
         {
@@ -842,19 +864,11 @@ namespace Jint.Native.Date
         }
 
         /// <summary>
-        /// The weekday for a particular time value.
+        ///     The weekday for a particular time value.
         /// </summary>
         public static double WeekDay(double t)
         {
             return (Day(t) + 4)%7;
-        }
-
-        public double LocalTza
-        {
-            get
-            {
-                return Engine.Options._LocalTimeZone.BaseUtcOffset.TotalMilliseconds;
-            }
         }
 
         public double DaylightSavingTa(double t)
@@ -878,7 +892,7 @@ namespace Jint.Native.Date
                 year = isLeapYear ? 2000 : 1999;
             }
 
-            var dateTime = new DateTime((int)year, 1, 1).AddMilliseconds(timeInYear);
+            var dateTime = new DateTime((int) year, 1, 1).AddMilliseconds(timeInYear);
 
             return Engine.Options._LocalTimeZone.IsDaylightSavingTime(dateTime) ? MsPerHour : 0;
         }
@@ -888,9 +902,13 @@ namespace Jint.Native.Date
             switch (t.Kind)
             {
                 case DateTimeKind.Local:
-                    return new DateTimeOffset(TimeZoneInfo.ConvertTime(t.ToUniversalTime(), Engine.Options._LocalTimeZone), Engine.Options._LocalTimeZone.GetUtcOffset(t));
+                    return
+                        new DateTimeOffset(
+                            TimeZoneInfo.ConvertTime(t.ToUniversalTime(), Engine.Options._LocalTimeZone),
+                            Engine.Options._LocalTimeZone.GetUtcOffset(t));
                 case DateTimeKind.Utc:
-                    return new DateTimeOffset(TimeZoneInfo.ConvertTime(t, Engine.Options._LocalTimeZone), Engine.Options._LocalTimeZone.GetUtcOffset(t));
+                    return new DateTimeOffset(TimeZoneInfo.ConvertTime(t, Engine.Options._LocalTimeZone),
+                        Engine.Options._LocalTimeZone.GetUtcOffset(t));
                 default:
                     return t;
             }
@@ -908,27 +926,27 @@ namespace Jint.Native.Date
 
         public static double HourFromTime(double t)
         {
-            return System.Math.Floor(t / MsPerHour) % HoursPerDay;
+            return System.Math.Floor(t/MsPerHour)%HoursPerDay;
         }
 
         public static double MinFromTime(double t)
         {
-            return System.Math.Floor(t / MsPerMinute) % MinutesPerHour;
+            return System.Math.Floor(t/MsPerMinute)%MinutesPerHour;
         }
 
         public static double SecFromTime(double t)
         {
-            return System.Math.Floor(t / MsPerSecond) % SecondsPerMinute;
+            return System.Math.Floor(t/MsPerSecond)%SecondsPerMinute;
         }
 
         public static double MsFromTime(double t)
         {
-            return t % MsPerSecond;
+            return t%MsPerSecond;
         }
 
         public static double DayFromMonth(double year, double month)
         {
-            double day = month * 30;
+            var day = month*30;
 
             if (month >= 7)
             {
@@ -975,7 +993,6 @@ namespace Jint.Native.Date
                     return 28 + leap;
                 default:
                     throw new ArgumentOutOfRangeException("month");
-
             }
         }
 
@@ -1006,28 +1023,28 @@ namespace Jint.Native.Date
             month = TypeConverter.ToInteger(month);
             date = TypeConverter.ToInteger(date);
 
-            var sign = (year < 1970) ? -1 : 1;
-            double t = (year < 1970) ? 1 : 0;
+            var sign = year < 1970 ? -1 : 1;
+            double t = year < 1970 ? 1 : 0;
             int y;
 
             if (sign == -1)
             {
                 for (y = 1969; y >= year; y += sign)
                 {
-                    t += sign * DaysInYear(y) * MsPerDay;
+                    t += sign*DaysInYear(y)*MsPerDay;
                 }
             }
             else
             {
                 for (y = 1970; y < year; y += sign)
                 {
-                    t += sign * DaysInYear(y) * MsPerDay;
+                    t += sign*DaysInYear(y)*MsPerDay;
                 }
             }
 
             for (var m = 0; m < month; m++)
             {
-                t += DaysInMonth(m, InLeapYear(t)) * MsPerDay;
+                t += DaysInMonth(m, InLeapYear(t))*MsPerDay;
             }
 
             return Day(t) + date - 1;
@@ -1040,7 +1057,7 @@ namespace Jint.Native.Date
                 return double.NaN;
             }
 
-            return day * MsPerDay + time;
+            return day*MsPerDay + time;
         }
 
         public static double TimeClip(double time)
@@ -1060,7 +1077,7 @@ namespace Jint.Native.Date
 
         private static bool AreFinite(params double[] values)
         {
-            for (int index = 0; index < values.Length; index++)
+            for (var index = 0; index < values.Length; index++)
             {
                 var value = values[index];
                 if (double.IsNaN(value) || double.IsInfinity(value))

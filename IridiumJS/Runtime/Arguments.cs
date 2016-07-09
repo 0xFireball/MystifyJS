@@ -12,7 +12,7 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// Returns the arguments at the provided position or Undefined if not present
+        ///     Returns the arguments at the provided position or Undefined if not present
         /// </summary>
         /// <param name="args"></param>
         /// <param name="index">The index of the parameter to return</param>

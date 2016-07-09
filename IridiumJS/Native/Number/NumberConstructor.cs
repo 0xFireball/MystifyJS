@@ -9,7 +9,28 @@ namespace Jint.Native.Number
         public NumberConstructor(Engine engine)
             : base(engine, null, null, false)
         {
-            
+        }
+
+        public NumberPrototype PrototypeObject { get; private set; }
+
+        public override JsValue Call(JsValue thisObject, JsValue[] arguments)
+        {
+            if (arguments.Length == 0)
+            {
+                return 0d;
+            }
+
+            return TypeConverter.ToNumber(arguments[0]);
+        }
+
+        /// <summary>
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.2.1
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public ObjectInstance Construct(JsValue[] arguments)
+        {
+            return Construct(arguments.Length > 0 ? TypeConverter.ToNumber(arguments[0]) : 0);
         }
 
         public static NumberConstructor CreateNumberConstructor(Engine engine)
@@ -37,28 +58,6 @@ namespace Jint.Native.Number
             FastAddProperty("NEGATIVE_INFINITY", double.NegativeInfinity, false, false, false);
             FastAddProperty("POSITIVE_INFINITY", double.PositiveInfinity, false, false, false);
         }
-
-        public override JsValue Call(JsValue thisObject, JsValue[] arguments)
-        {
-            if (arguments.Length == 0)
-            {
-                return 0d;
-            }
-
-            return TypeConverter.ToNumber(arguments[0]);
-        }
-
-        /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.2.1
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        public ObjectInstance Construct(JsValue[] arguments)
-        {
-            return Construct(arguments.Length > 0 ? TypeConverter.ToNumber(arguments[0]) : 0);
-        }
-
-        public NumberPrototype PrototypeObject { get; private set; }
 
         public NumberInstance Construct(double value)
         {

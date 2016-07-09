@@ -5,13 +5,13 @@ using Jint.Native;
 namespace Jint.Runtime.Environments
 {
     /// <summary>
-    /// Represents a declarative environment record
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-10.2.1.1
+    ///     Represents a declarative environment record
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-10.2.1.1
     /// </summary>
     public sealed class DeclarativeEnvironmentRecord : EnvironmentRecord
     {
-        private readonly Engine _engine;
         private readonly IDictionary<string, Binding> _bindings = new Dictionary<string, Binding>();
+        private readonly Engine _engine;
 
         public DeclarativeEnvironmentRecord(Engine engine) : base(engine)
         {
@@ -26,11 +26,11 @@ namespace Jint.Runtime.Environments
         public override void CreateMutableBinding(string name, bool canBeDeleted = false)
         {
             _bindings.Add(name, new Binding
-                {
-                    Value = Undefined.Instance, 
-                    CanBeDeleted =  canBeDeleted,
-                    Mutable = true
-                });
+            {
+                Value = Undefined.Instance,
+                CanBeDeleted = canBeDeleted,
+                Mutable = true
+            });
         }
 
         public override void SetMutableBinding(string name, JsValue value, bool strict)
@@ -57,7 +57,8 @@ namespace Jint.Runtime.Environments
             {
                 if (strict)
                 {
-                    throw new JavaScriptException(_engine.ReferenceError, "Can't access anm uninitiazed immutable binding.");
+                    throw new JavaScriptException(_engine.ReferenceError,
+                        "Can't access anm uninitiazed immutable binding.");
                 }
 
                 return Undefined.Instance;
@@ -80,7 +81,7 @@ namespace Jint.Runtime.Environments
             }
 
             _bindings.Remove(name);
-            
+
             return true;
         }
 
@@ -90,21 +91,21 @@ namespace Jint.Runtime.Environments
         }
 
         /// <summary>
-        /// Creates a new but uninitialised immutable binding in an environment record.
+        ///     Creates a new but uninitialised immutable binding in an environment record.
         /// </summary>
         /// <param name="name">The identifier of the binding.</param>
         public void CreateImmutableBinding(string name)
         {
             _bindings.Add(name, new Binding
-                {
-                    Value = Undefined.Instance,
-                    Mutable = false,
-                    CanBeDeleted = false
-                });
+            {
+                Value = Undefined.Instance,
+                Mutable = false,
+                CanBeDeleted = false
+            });
         }
 
         /// <summary>
-        /// Sets the value of an already existing but uninitialised immutable binding in an environment record.
+        ///     Sets the value of an already existing but uninitialised immutable binding in an environment record.
         /// </summary>
         /// <param name="name">The identifier of the binding.</param>
         /// <param name="value">The value of the binding.</param>
@@ -115,7 +116,7 @@ namespace Jint.Runtime.Environments
         }
 
         /// <summary>
-        /// Returns an array of all the defined binding names
+        ///     Returns an array of all the defined binding names
         /// </summary>
         /// <returns>The array of all defined bindings</returns>
         public override string[] GetAllBindingNames()

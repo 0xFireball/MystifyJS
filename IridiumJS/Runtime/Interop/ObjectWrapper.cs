@@ -1,26 +1,24 @@
-using System;
 using System.Linq;
 using System.Reflection;
 using Jint.Native;
 using Jint.Native.Object;
 using Jint.Runtime.Descriptors;
 using Jint.Runtime.Descriptors.Specialized;
-using System.Collections;
 
 namespace Jint.Runtime.Interop
 {
     /// <summary>
-    /// Wraps a CLR instance
+    ///     Wraps a CLR instance
     /// </summary>
     public sealed class ObjectWrapper : ObjectInstance, IObjectWrapper
     {
-        public Object Target { get; set; }
-
-        public ObjectWrapper(Engine engine, Object obj)
+        public ObjectWrapper(Engine engine, object obj)
             : base(engine)
         {
             Target = obj;
         }
+
+        public object Target { get; set; }
 
         public override void Put(string propertyName, JsValue value, bool throwOnError)
         {
@@ -42,10 +40,7 @@ namespace Jint.Runtime.Interop
                 {
                     throw new JavaScriptException(Engine.TypeError, "Unknown member: " + propertyName);
                 }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             ownDesc.Value = value;
@@ -88,7 +83,8 @@ namespace Jint.Runtime.Interop
 
             if (methods.Any())
             {
-                var descriptor = new PropertyDescriptor(new MethodInfoFunctionInstance(Engine, methods), false, true, false);
+                var descriptor = new PropertyDescriptor(new MethodInfoFunctionInstance(Engine, methods), false, true,
+                    false);
                 Properties.Add(propertyName, descriptor);
                 return descriptor;
             }
@@ -103,9 +99,9 @@ namespace Jint.Runtime.Interop
 
             // try to find a single explicit property implementation
             var explicitProperties = (from iface in interfaces
-                                      from iprop in iface.GetProperties()
-                                      where EqualsIgnoreCasing(iprop.Name, propertyName)
-                                      select iprop).ToArray();
+                from iprop in iface.GetProperties()
+                where EqualsIgnoreCasing(iprop.Name, propertyName)
+                select iprop).ToArray();
 
             if (explicitProperties.Length == 1)
             {
@@ -116,13 +112,14 @@ namespace Jint.Runtime.Interop
 
             // try to find explicit method implementations
             var explicitMethods = (from iface in interfaces
-                                   from imethod in iface.GetMethods()
-                                   where EqualsIgnoreCasing(imethod.Name, propertyName)
-                                   select imethod).ToArray();
+                from imethod in iface.GetMethods()
+                where EqualsIgnoreCasing(imethod.Name, propertyName)
+                select imethod).ToArray();
 
             if (explicitMethods.Length > 0)
             {
-                var descriptor = new PropertyDescriptor(new MethodInfoFunctionInstance(Engine, explicitMethods), false, true, false);
+                var descriptor = new PropertyDescriptor(new MethodInfoFunctionInstance(Engine, explicitMethods), false,
+                    true, false);
                 Properties.Add(propertyName, descriptor);
                 return descriptor;
             }
@@ -130,9 +127,9 @@ namespace Jint.Runtime.Interop
             // try to find explicit indexer implementations
             var explicitIndexers =
                 (from iface in interfaces
-                 from iprop in iface.GetProperties()
-                 where iprop.GetIndexParameters().Length != 0
-                 select iprop).ToArray();
+                    from iprop in iface.GetProperties()
+                    where iprop.GetIndexParameters().Length != 0
+                    select iprop).ToArray();
 
             if (explicitIndexers.Length == 1)
             {
@@ -144,14 +141,14 @@ namespace Jint.Runtime.Interop
 
         private bool EqualsIgnoreCasing(string s1, string s2)
         {
-            bool equals = false;
+            var equals = false;
             if (s1.Length == s2.Length)
             {
-                if (s1.Length > 0 && s2.Length > 0) 
+                if (s1.Length > 0 && s2.Length > 0)
                 {
-                    equals = (s1.ToLower()[0] == s2.ToLower()[0]);
+                    equals = s1.ToLower()[0] == s2.ToLower()[0];
                 }
-                if (s1.Length > 1 && s2.Length > 1) 
+                if (s1.Length > 1 && s2.Length > 1)
                 {
                     equals = equals && (s1.Substring(1) == s2.Substring(1));
                 }

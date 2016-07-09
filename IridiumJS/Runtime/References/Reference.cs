@@ -4,8 +4,8 @@ using Jint.Runtime.Environments;
 namespace Jint.Runtime.References
 {
     /// <summary>
-    /// Represents the Reference Specification Type
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-8.7
+    ///     Represents the Reference Specification Type
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-8.7
     /// </summary>
     public class Reference
     {

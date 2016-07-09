@@ -16,21 +16,19 @@ namespace Jint.Runtime.Descriptors.Specialized
             _fieldInfo = fieldInfo;
             _item = item;
 
-            Writable = !fieldInfo.Attributes.HasFlag(FieldAttributes.InitOnly); // don't write to fields marked as readonly
+            Writable = !fieldInfo.Attributes.HasFlag(FieldAttributes.InitOnly);
+                // don't write to fields marked as readonly
         }
 
         public override JsValue? Value
         {
-            get
-            {
-                return JsValue.FromObject(_engine, _fieldInfo.GetValue(_item));
-            }
+            get { return JsValue.FromObject(_engine, _fieldInfo.GetValue(_item)); }
 
             set
             {
                 var currentValue = value.GetValueOrDefault();
                 object obj;
-                if (_fieldInfo.FieldType == typeof (JsValue))
+                if (_fieldInfo.FieldType == typeof(JsValue))
                 {
                     obj = currentValue;
                 }
@@ -43,7 +41,7 @@ namespace Jint.Runtime.Descriptors.Specialized
                         obj = _engine.ClrTypeConverter.Convert(obj, _fieldInfo.FieldType, CultureInfo.InvariantCulture);
                     }
                 }
-                
+
                 _fieldInfo.SetValue(_item, obj);
             }
         }

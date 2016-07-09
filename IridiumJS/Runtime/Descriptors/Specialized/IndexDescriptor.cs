@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using Jint.Native;
 
@@ -8,11 +7,11 @@ namespace Jint.Runtime.Descriptors.Specialized
 {
     public sealed class IndexDescriptor : PropertyDescriptor
     {
-        private readonly Engine _engine;
-        private readonly object _key;
-        private readonly object _item;
-        private readonly PropertyInfo _indexer;
         private readonly MethodInfo _containsKey;
+        private readonly Engine _engine;
+        private readonly PropertyInfo _indexer;
+        private readonly object _item;
+        private readonly object _key;
 
         public IndexDescriptor(Engine engine, Type targetType, string key, object item)
         {
@@ -35,9 +34,8 @@ namespace Jint.Runtime.Descriptors.Specialized
                     {
                         _indexer = indexer;
                         // get contains key method to avoid index exception being thrown in dictionaries
-                        _containsKey = targetType.GetMethod("ContainsKey", new Type[] { paramType });
+                        _containsKey = targetType.GetMethod("ContainsKey", new[] {paramType});
                         break;
-
                     }
                 }
             }
@@ -68,16 +66,16 @@ namespace Jint.Runtime.Descriptors.Specialized
                     throw new InvalidOperationException("Indexer has no public getter.");
                 }
 
-                object[] parameters = { _key };
+                object[] parameters = {_key};
 
                 if (_containsKey != null)
                 {
-                    if ((_containsKey.Invoke(_item, parameters) as bool?) != true)
+                    if (_containsKey.Invoke(_item, parameters) as bool? != true)
                     {
                         return JsValue.Undefined;
                     }
                 }
-                
+
                 try
                 {
                     return JsValue.FromObject(_engine, getter.Invoke(_item, parameters));
@@ -96,7 +94,7 @@ namespace Jint.Runtime.Descriptors.Specialized
                     throw new InvalidOperationException("Indexer has no public setter.");
                 }
 
-                object[] parameters = { _key, value.HasValue ? value.Value.ToObject() : null };
+                object[] parameters = {_key, value.HasValue ? value.Value.ToObject() : null};
                 setter.Invoke(_item, parameters);
             }
         }

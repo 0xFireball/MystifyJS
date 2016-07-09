@@ -32,7 +32,6 @@ using System.Diagnostics;
 
 namespace Jint.Native.Number.Dtoa
 {
-
 // This "Do It Yourself Floating Point" class implements a floating-point number
 // with a uint64 significand and an int exponent. Normalized DiyFp numbers will
 // have the most significant bit of the significand set.
@@ -81,7 +80,7 @@ namespace Jint.Native.Number.Dtoa
         // than other. The result will not be normalized.
         internal static DiyFp Minus(DiyFp a, DiyFp b)
         {
-            DiyFp result = new DiyFp(a.F, a.E);
+            var result = new DiyFp(a.F, a.E);
             result.Subtract(b);
             return result;
         }
@@ -94,19 +93,19 @@ namespace Jint.Native.Number.Dtoa
             // significant 64 bits are only used for rounding the most significant 64
             // bits.
             const long kM32 = 0xFFFFFFFFL;
-            long a = F.UnsignedShift(32);
-            long b = F & kM32;
-            long c = other.F.UnsignedShift(32);
-            long d = other.F & kM32;
-            long ac = a*c;
-            long bc = b*c;
-            long ad = a*d;
-            long bd = b*d;
-            long tmp = bd.UnsignedShift(32) + (ad & kM32) + (bc & kM32);
+            var a = F.UnsignedShift(32);
+            var b = F & kM32;
+            var c = other.F.UnsignedShift(32);
+            var d = other.F & kM32;
+            var ac = a*c;
+            var bc = b*c;
+            var ad = a*d;
+            var bd = b*d;
+            var tmp = bd.UnsignedShift(32) + (ad & kM32) + (bc & kM32);
             // By adding 1U << 31 to tmp we round the final result.
             // Halfway cases will be round up.
             tmp += 1L << 31;
-            long resultF = ac + ad.UnsignedShift(32) + bc.UnsignedShift(32) + tmp.UnsignedShift(32);
+            var resultF = ac + ad.UnsignedShift(32) + bc.UnsignedShift(32) + tmp.UnsignedShift(32);
             E += other.E + 64;
             F = resultF;
         }
@@ -114,15 +113,15 @@ namespace Jint.Native.Number.Dtoa
         // returns a * b;
         internal static DiyFp Times(DiyFp a, DiyFp b)
         {
-            DiyFp result = new DiyFp(a.F, a.E);
+            var result = new DiyFp(a.F, a.E);
             result.Multiply(b);
             return result;
         }
 
         internal void Normalize()
         {
-            long f = F;
-            int e = E;
+            var f = F;
+            var e = E;
 
             // This method is mainly called for normalizing boundaries. In general
             // boundaries need to be shifted by 10 bits. We thus optimize for this case.

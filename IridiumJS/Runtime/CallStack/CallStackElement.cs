@@ -1,11 +1,11 @@
-﻿namespace Jint.Runtime
-{
-    using Jint.Native;
-    using Jint.Parser.Ast;
+﻿using Jint.Native;
+using Jint.Parser.Ast;
 
+namespace Jint.Runtime
+{
     public class CallStackElement
     {
-        private string _shortDescription;
+        private readonly string _shortDescription;
 
         public CallStackElement(CallExpression callExpression, JsValue function, string shortDescription)
         {

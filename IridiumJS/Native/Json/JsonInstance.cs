@@ -17,10 +17,7 @@ namespace Jint.Native.Json
 
         public override string Class
         {
-            get
-            {
-                return "JSON";
-            }
+            get { return "JSON"; }
         }
 
         public static JsonInstance CreateJsonObject(Engine engine)
@@ -45,8 +42,8 @@ namespace Jint.Native.Json
 
         public JsValue Stringify(JsValue thisObject, JsValue[] arguments)
         {
-            JsValue 
-                value = Undefined.Instance, 
+            JsValue
+                value = Undefined.Instance,
                 replacer = Undefined.Instance,
                 space = Undefined.Instance;
 
@@ -66,12 +63,11 @@ namespace Jint.Native.Json
             }
 
             var serializer = new JsonSerializer(_engine);
-            if (value == Undefined.Instance && replacer == Undefined.Instance) {
+            if (value == Undefined.Instance && replacer == Undefined.Instance)
+            {
                 return Undefined.Instance;
             }
-            else {
-                return serializer.Serialize(value, replacer, space);
-            }
+            return serializer.Serialize(value, replacer, space);
         }
     }
 }

@@ -37,18 +37,12 @@ namespace Jint.Native.Boolean
             {
                 return B;
             }
-            else
+            var o = B.TryCast<BooleanInstance>();
+            if (o != null)
             {
-                var o = B.TryCast<BooleanInstance>();
-                if (o != null)
-                {
-                    return o.PrimitiveValue;
-                }
-                else
-                {
-                    throw new JavaScriptException(Engine.TypeError);
-                }
+                return o.PrimitiveValue;
             }
+            throw new JavaScriptException(Engine.TypeError);
         }
 
         private JsValue ToBooleanString(JsValue thisObj, JsValue[] arguments)

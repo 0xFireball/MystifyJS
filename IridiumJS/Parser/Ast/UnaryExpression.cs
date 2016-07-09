@@ -12,13 +12,13 @@ namespace Jint.Parser.Ast
         Void,
         TypeOf,
         Increment,
-        Decrement,
+        Decrement
     }
 
     public class UnaryExpression : Expression
     {
-        public UnaryOperator Operator;
         public Expression Argument;
+        public UnaryOperator Operator;
         public bool Prefix;
 
         public static UnaryOperator ParseUnaryOperator(string op)
@@ -46,7 +46,6 @@ namespace Jint.Parser.Ast
 
                 default:
                     throw new ArgumentOutOfRangeException("Invalid unary operator: " + op);
-
             }
         }
     }

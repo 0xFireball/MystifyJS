@@ -2,8 +2,8 @@
 {
     public class Location
     {
-        public Position Start;
         public Position End;
         public string Source;
+        public Position Start;
     }
 }

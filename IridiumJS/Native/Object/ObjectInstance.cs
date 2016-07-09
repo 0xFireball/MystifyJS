@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Jint.Runtime;
 using Jint.Runtime.Descriptors;
-using System;
 
 namespace Jint.Native.Object
 {
@@ -15,22 +14,22 @@ namespace Jint.Native.Object
 
         public Engine Engine { get; set; }
 
-        protected IDictionary<string, PropertyDescriptor> Properties { get; private set; }
+        protected IDictionary<string, PropertyDescriptor> Properties { get; }
 
         /// <summary>
-        /// The prototype of this object.
+        ///     The prototype of this object.
         /// </summary>
         public ObjectInstance Prototype { get; set; }
-        
+
         /// <summary>
-        /// If true, own properties may be added to the 
-        /// object.
+        ///     If true, own properties may be added to the
+        ///     object.
         /// </summary>
         public bool Extensible { get; set; }
 
         /// <summary>
-        /// A String value indicating a specification defined 
-        /// classification of objects.
+        ///     A String value indicating a specification defined
+        ///     classification of objects.
         /// </summary>
         public virtual string Class
         {
@@ -56,8 +55,8 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Returns the value of the named property.
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.3
+        ///     Returns the value of the named property.
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.3
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -89,10 +88,10 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Returns the Property Descriptor of the named 
-        /// own property of this object, or undefined if 
-        /// absent.
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.1
+        ///     Returns the Property Descriptor of the named
+        ///     own property of this object, or undefined if
+        ///     absent.
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.1
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -120,7 +119,7 @@ namespace Jint.Native.Object
                 // optimmized implementation
                 return x;
             }
-            
+
             return PropertyDescriptor.Undefined;
         }
 
@@ -131,7 +130,7 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.2
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -143,8 +142,8 @@ namespace Jint.Native.Object
             {
                 return prop;
             }
-            
-            if(Prototype == null)
+
+            if (Prototype == null)
             {
                 return PropertyDescriptor.Undefined;
             }
@@ -153,9 +152,9 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Sets the specified named property to the value 
-        /// of the second parameter. The flag controls 
-        /// failure handling.
+        ///     Sets the specified named property to the value
+        ///     of the second parameter. The flag controls
+        ///     failure handling.
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
@@ -178,7 +177,7 @@ namespace Jint.Native.Object
             {
                 ownDesc.Value = value;
                 return;
-                
+
                 // as per specification
                 // var valueDesc = new PropertyDescriptor(value: value, writable: null, enumerable: null, configurable: null);
                 // DefineOwnProperty(propertyName, valueDesc, throwOnError);
@@ -191,7 +190,7 @@ namespace Jint.Native.Object
             if (desc.IsAccessorDescriptor())
             {
                 var setter = desc.Set.Value.TryCast<ICallable>();
-                setter.Call(new JsValue(this), new [] {value});
+                setter.Call(new JsValue(this), new[] {value});
             }
             else
             {
@@ -201,10 +200,10 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Returns a Boolean value indicating whether a 
-        /// [[Put]] operation with PropertyName can be 
-        /// performed.
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.4
+        ///     Returns a Boolean value indicating whether a
+        ///     [[Put]] operation with PropertyName can be
+        ///     performed.
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-8.12.4
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -253,16 +252,13 @@ namespace Jint.Native.Object
             {
                 return false;
             }
-            else
-            {
-                return inherited.Writable.HasValue && inherited.Writable.Value;
-            }
+            return inherited.Writable.HasValue && inherited.Writable.Value;
         }
 
         /// <summary>
-        /// Returns a Boolean value indicating whether the 
-        /// object already has a property with the given 
-        /// name.
+        ///     Returns a Boolean value indicating whether the
+        ///     object already has a property with the given
+        ///     name.
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -272,9 +268,9 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Removes the specified named own property 
-        /// from the object. The flag controls failure 
-        /// handling.
+        ///     Removes the specified named own property
+        ///     from the object. The flag controls failure
+        ///     handling.
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="throwOnError"></param>
@@ -282,7 +278,7 @@ namespace Jint.Native.Object
         public virtual bool Delete(string propertyName, bool throwOnError)
         {
             var desc = GetOwnProperty(propertyName);
-            
+
             if (desc == PropertyDescriptor.Undefined)
             {
                 return true;
@@ -293,20 +289,17 @@ namespace Jint.Native.Object
                 RemoveOwnProperty(propertyName);
                 return true;
             }
-            else
+            if (throwOnError)
             {
-                if (throwOnError)
-                {
-                    throw new JavaScriptException(Engine.TypeError);
-                }
-
-                return false;
+                throw new JavaScriptException(Engine.TypeError);
             }
+
+            return false;
         }
 
         /// <summary>
-        /// Hint is a String. Returns a default value for the 
-        /// object.
+        ///     Hint is a String. Returns a default value for the
+        ///     object.
         /// </summary>
         /// <param name="hint"></param>
         /// <returns></returns>
@@ -368,9 +361,9 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Creates or alters the named own property to 
-        /// have the state described by a Property 
-        /// Descriptor. The flag controls failure handling.
+        ///     Creates or alters the named own property to
+        ///     have the state described by a Property
+        ///     Descriptor. The flag controls failure handling.
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="desc"></param>
@@ -380,7 +373,8 @@ namespace Jint.Native.Object
         {
             var current = GetOwnProperty(propertyName);
 
-            if (current == desc) {
+            if (current == desc)
+            {
                 return true;
             }
 
@@ -395,42 +389,38 @@ namespace Jint.Native.Object
 
                     return false;
                 }
+                if (desc.IsGenericDescriptor() || desc.IsDataDescriptor())
+                {
+                    SetOwnProperty(propertyName, new PropertyDescriptor(desc)
+                    {
+                        Value = desc.Value.HasValue ? desc.Value : JsValue.Undefined,
+                        Writable = desc.Writable.HasValue ? desc.Writable.Value : false,
+                        Enumerable = desc.Enumerable.HasValue ? desc.Enumerable.Value : false,
+                        Configurable = desc.Configurable.HasValue ? desc.Configurable.Value : false
+                    });
+                }
                 else
                 {
-                    if (desc.IsGenericDescriptor() || desc.IsDataDescriptor())
+                    SetOwnProperty(propertyName, new PropertyDescriptor(desc)
                     {
-                        SetOwnProperty(propertyName, new PropertyDescriptor(desc)
-                        {
-                            Value = desc.Value.HasValue ? desc.Value : JsValue.Undefined,
-                            Writable = desc.Writable.HasValue ? desc.Writable.Value : false,
-                            Enumerable = desc.Enumerable.HasValue ? desc.Enumerable.Value : false,
-                            Configurable = desc.Configurable.HasValue ? desc.Configurable.Value : false
-                        });
-                    }
-                    else
-                    {
-                        SetOwnProperty(propertyName, new PropertyDescriptor(desc)
-                        {
-                            Get = desc.Get,
-                            Set = desc.Set,
-                            Enumerable = desc.Enumerable.HasValue ? desc.Enumerable : false,
-                            Configurable = desc.Configurable.HasValue ? desc.Configurable : false,
-                        });
-                    }
+                        Get = desc.Get,
+                        Set = desc.Set,
+                        Enumerable = desc.Enumerable.HasValue ? desc.Enumerable : false,
+                        Configurable = desc.Configurable.HasValue ? desc.Configurable : false
+                    });
                 }
 
                 return true;
             }
 
             // Step 5
-            if (!current.Configurable.HasValue && 
+            if (!current.Configurable.HasValue &&
                 !current.Enumerable.HasValue &&
                 !current.Writable.HasValue &&
                 !current.Get.HasValue &&
                 !current.Set.HasValue &&
                 !current.Value.HasValue)
             {
-
                 return true;
             }
 
@@ -439,11 +429,17 @@ namespace Jint.Native.Object
                 current.Configurable == desc.Configurable &&
                 current.Writable == desc.Writable &&
                 current.Enumerable == desc.Enumerable &&
-
-                ((!current.Get.HasValue && !desc.Get.HasValue) || (current.Get.HasValue && desc.Get.HasValue && ExpressionInterpreter.SameValue(current.Get.Value, desc.Get.Value))) &&
-                ((!current.Set.HasValue && !desc.Set.HasValue) || (current.Set.HasValue && desc.Set.HasValue && ExpressionInterpreter.SameValue(current.Set.Value, desc.Set.Value))) &&
-                ((!current.Value.HasValue && !desc.Value.HasValue) || (current.Value.HasValue && desc.Value.HasValue && ExpressionInterpreter.StrictlyEqual(current.Value.Value, desc.Value.Value)))
-            ) {
+                ((!current.Get.HasValue && !desc.Get.HasValue) ||
+                 (current.Get.HasValue && desc.Get.HasValue &&
+                  ExpressionInterpreter.SameValue(current.Get.Value, desc.Get.Value))) &&
+                ((!current.Set.HasValue && !desc.Set.HasValue) ||
+                 (current.Set.HasValue && desc.Set.HasValue &&
+                  ExpressionInterpreter.SameValue(current.Set.Value, desc.Set.Value))) &&
+                ((!current.Value.HasValue && !desc.Value.HasValue) ||
+                 (current.Value.HasValue && desc.Value.HasValue &&
+                  ExpressionInterpreter.StrictlyEqual(current.Value.Value, desc.Value.Value)))
+                )
+            {
                 return true;
             }
 
@@ -459,7 +455,8 @@ namespace Jint.Native.Object
                     return false;
                 }
 
-                if (desc.Enumerable.HasValue && (!current.Enumerable.HasValue || desc.Enumerable.Value != current.Enumerable.Value))
+                if (desc.Enumerable.HasValue &&
+                    (!current.Enumerable.HasValue || desc.Enumerable.Value != current.Enumerable.Value))
                 {
                     if (throwOnError)
                     {
@@ -472,7 +469,6 @@ namespace Jint.Native.Object
 
             if (!desc.IsGenericDescriptor())
             {
-
                 if (current.IsDataDescriptor() != desc.IsDataDescriptor())
                 {
                     if (!current.Configurable.HasValue || !current.Configurable.Value)
@@ -488,19 +484,19 @@ namespace Jint.Native.Object
                     if (current.IsDataDescriptor())
                     {
                         SetOwnProperty(propertyName, current = new PropertyDescriptor(
-                            get: Undefined.Instance,
-                            set: Undefined.Instance,
-                            enumerable: current.Enumerable,
-                            configurable: current.Configurable
+                            Undefined.Instance,
+                            Undefined.Instance,
+                            current.Enumerable,
+                            current.Configurable
                             ));
                     }
                     else
                     {
                         SetOwnProperty(propertyName, current = new PropertyDescriptor(
-                            value: Undefined.Instance, 
-                            writable: null,
-                            enumerable: current.Enumerable,
-                            configurable: current.Configurable
+                            Undefined.Instance,
+                            null,
+                            current.Enumerable,
+                            current.Configurable
                             ));
                     }
                 }
@@ -508,7 +504,8 @@ namespace Jint.Native.Object
                 {
                     if (!current.Configurable.HasValue || current.Configurable.Value == false)
                     {
-                        if (!current.Writable.HasValue || !current.Writable.Value && desc.Writable.HasValue && desc.Writable.Value)
+                        if (!current.Writable.HasValue ||
+                            !current.Writable.Value && desc.Writable.HasValue && desc.Writable.Value)
                         {
                             if (throwOnError)
                             {
@@ -520,7 +517,8 @@ namespace Jint.Native.Object
 
                         if (!current.Writable.Value)
                         {
-                            if (desc.Value.HasValue && !ExpressionInterpreter.SameValue(desc.Value.Value, current.Value.Value))
+                            if (desc.Value.HasValue &&
+                                !ExpressionInterpreter.SameValue(desc.Value.Value, current.Value.Value))
                             {
                                 if (throwOnError)
                                 {
@@ -536,9 +534,13 @@ namespace Jint.Native.Object
                 {
                     if (!current.Configurable.HasValue || !current.Configurable.Value)
                     {
-                        if ((desc.Set.HasValue && !ExpressionInterpreter.SameValue(desc.Set.Value, current.Set.HasValue ? current.Set.Value : Undefined.Instance))
+                        if ((desc.Set.HasValue &&
+                             !ExpressionInterpreter.SameValue(desc.Set.Value,
+                                 current.Set.HasValue ? current.Set.Value : Undefined.Instance))
                             ||
-                            (desc.Get.HasValue && !ExpressionInterpreter.SameValue(desc.Get.Value, current.Get.HasValue ? current.Get.Value : Undefined.Instance)))
+                            (desc.Get.HasValue &&
+                             !ExpressionInterpreter.SameValue(desc.Get.Value,
+                                 current.Get.HasValue ? current.Get.Value : Undefined.Instance)))
                         {
                             if (throwOnError)
                             {
@@ -585,7 +587,7 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Optimized version of [[Put]] when the property is known to be undeclared already
+        ///     Optimized version of [[Put]] when the property is known to be undeclared already
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
@@ -598,7 +600,7 @@ namespace Jint.Native.Object
         }
 
         /// <summary>
-        /// Optimized version of [[Put]] when the property is known to be already declared 
+        ///     Optimized version of [[Put]] when the property is known to be already declared
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
@@ -609,7 +611,6 @@ namespace Jint.Native.Object
 
         protected virtual void EnsureInitialized()
         {
-
         }
 
         public override string ToString()

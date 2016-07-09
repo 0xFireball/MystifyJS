@@ -4,11 +4,12 @@ using Jint.Runtime.Environments;
 
 namespace Jint.Native.Function
 {
-    public class EvalFunctionInstance: FunctionInstance
+    public class EvalFunctionInstance : FunctionInstance
     {
         private readonly Engine _engine;
 
-        public EvalFunctionInstance(Engine engine, string[] parameters, LexicalEnvironment scope, bool strict) : base(engine, parameters, scope, strict)
+        public EvalFunctionInstance(Engine engine, string[] parameters, LexicalEnvironment scope, bool strict)
+            : base(engine, parameters, scope, strict)
         {
             _engine = engine;
             Prototype = Engine.Function.PrototypeObject;
@@ -43,17 +44,21 @@ namespace Jint.Native.Function
                         {
                             if (!directCall)
                             {
-                                Engine.EnterExecutionContext(Engine.GlobalEnvironment, Engine.GlobalEnvironment, Engine.Global);
+                                Engine.EnterExecutionContext(Engine.GlobalEnvironment, Engine.GlobalEnvironment,
+                                    Engine.Global);
                             }
 
                             if (StrictModeScope.IsStrictModeCode)
                             {
-                                strictVarEnv = LexicalEnvironment.NewDeclarativeEnvironment(Engine, Engine.ExecutionContext.LexicalEnvironment);
-                                Engine.EnterExecutionContext(strictVarEnv, strictVarEnv, Engine.ExecutionContext.ThisBinding);
+                                strictVarEnv = LexicalEnvironment.NewDeclarativeEnvironment(Engine,
+                                    Engine.ExecutionContext.LexicalEnvironment);
+                                Engine.EnterExecutionContext(strictVarEnv, strictVarEnv,
+                                    Engine.ExecutionContext.ThisBinding);
                             }
 
-                            Engine.DeclarationBindingInstantiation(DeclarationBindingType.EvalCode, program.FunctionDeclarations, program.VariableDeclarations, this, arguments);
-                            
+                            Engine.DeclarationBindingInstantiation(DeclarationBindingType.EvalCode,
+                                program.FunctionDeclarations, program.VariableDeclarations, this, arguments);
+
                             var result = _engine.ExecuteStatement(program);
 
                             if (result.Type == Completion.Throw)

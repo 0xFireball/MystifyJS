@@ -10,10 +10,14 @@ using Jint.Runtime.Environments;
 namespace Jint.Native.Argument
 {
     /// <summary>
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-10.6
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-10.6
     /// </summary>
     public class ArgumentsInstance : ObjectInstance
     {
+        private bool _initialized;
+
+        private readonly Action<ArgumentsInstance> _initializer;
+
         private ArgumentsInstance(Engine engine, Action<ArgumentsInstance> initializer) : base(engine)
         {
             _initializer = initializer;
@@ -22,12 +26,16 @@ namespace Jint.Native.Argument
 
         public bool Strict { get; set; }
 
-        private Action<ArgumentsInstance> _initializer;
-        private bool _initialized;
+        public ObjectInstance ParameterMap { get; set; }
+
+        public override string Class
+        {
+            get { return "Arguments"; }
+        }
 
         protected override void EnsureInitialized()
         {
-            if(_initialized)
+            if (_initialized)
             {
                 return;
             }
@@ -37,10 +45,11 @@ namespace Jint.Native.Argument
             _initializer(this);
         }
 
-        public static ArgumentsInstance CreateArgumentsObject(Engine engine, FunctionInstance func, string[] names, JsValue[] args, EnvironmentRecord env, bool strict)
+        public static ArgumentsInstance CreateArgumentsObject(Engine engine, FunctionInstance func, string[] names,
+            JsValue[] args, EnvironmentRecord env, bool strict)
         {
-            var obj = new ArgumentsInstance(engine, self => 
-            {                
+            var obj = new ArgumentsInstance(engine, self =>
+            {
                 var len = args.Length;
                 self.FastAddProperty("length", len, true, false, true);
                 var map = engine.Object.Construct(Arguments.Empty);
@@ -60,7 +69,8 @@ namespace Jint.Native.Argument
                             Func<JsValue, JsValue> g = n => env.GetBindingValue(name, false);
                             var p = new Action<JsValue, JsValue>((n, o) => env.SetMutableBinding(name, o, true));
 
-                            map.DefineOwnProperty(indxStr, new ClrAccessDescriptor(engine, g, p) { Configurable = true }, false);
+                            map.DefineOwnProperty(indxStr, new ClrAccessDescriptor(engine, g, p) {Configurable = true},
+                                false);
                         }
                     }
                     indx++;
@@ -81,8 +91,8 @@ namespace Jint.Native.Argument
                 else
                 {
                     var thrower = engine.Function.ThrowTypeError;
-                    self.DefineOwnProperty("caller", new PropertyDescriptor(get: thrower, set: thrower, enumerable: false, configurable: false), false);
-                    self.DefineOwnProperty("callee", new PropertyDescriptor(get: thrower, set: thrower, enumerable: false, configurable: false), false);
+                    self.DefineOwnProperty("caller", new PropertyDescriptor(thrower, thrower, false, false), false);
+                    self.DefineOwnProperty("callee", new PropertyDescriptor(thrower, thrower, false, false), false);
                 }
             });
 
@@ -91,19 +101,9 @@ namespace Jint.Native.Argument
             obj.Prototype = engine.Object.PrototypeObject;
             obj.Extensible = true;
             obj.Strict = strict;
-            
+
 
             return obj;
-        }
-
-        public ObjectInstance ParameterMap { get; set; }
-
-        public override string Class
-        {
-            get
-            {
-                return "Arguments";
-            }
         }
 
 
@@ -152,7 +152,7 @@ namespace Jint.Native.Argument
 
             if (ownDesc.IsDataDescriptor())
             {
-                var valueDesc = new PropertyDescriptor(value: value, writable: null, enumerable: null, configurable: null);
+                var valueDesc = new PropertyDescriptor(value, null, null, null);
                 DefineOwnProperty(propertyName, valueDesc, throwOnError);
                 return;
             }
@@ -163,7 +163,7 @@ namespace Jint.Native.Argument
             if (desc.IsAccessorDescriptor())
             {
                 var setter = desc.Set.Value.TryCast<ICallable>();
-                setter.Call(new JsValue(this), new[] { value });
+                setter.Call(new JsValue(this), new[] {value});
             }
             else
             {
@@ -235,4 +235,3 @@ namespace Jint.Native.Argument
         }
     }
 }
- 

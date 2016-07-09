@@ -7,8 +7,8 @@ using Jint.Native.Function;
 namespace Jint.Runtime.Interop
 {
     /// <summary>
-    /// Represents a FunctionInstance wrapper around a CLR method. This is used by user to pass
-    /// custom methods to the engine.
+    ///     Represents a FunctionInstance wrapper around a CLR method. This is used by user to pass
+    ///     custom methods to the engine.
     /// </summary>
     public sealed class DelegateWrapper : FunctionInstance
     {
@@ -23,12 +23,15 @@ namespace Jint.Runtime.Interop
         {
             var parameterInfos = _d.Method.GetParameters();
 
-            bool delegateContainsParamsArgument = parameterInfos.Any(p => Attribute.IsDefined(p, typeof(ParamArrayAttribute)));
-            int delegateArgumentsCount = parameterInfos.Length;
-            int delegateNonParamsArgumentsCount = delegateContainsParamsArgument ? delegateArgumentsCount - 1 : delegateArgumentsCount;
+            var delegateContainsParamsArgument =
+                parameterInfos.Any(p => Attribute.IsDefined(p, typeof(ParamArrayAttribute)));
+            var delegateArgumentsCount = parameterInfos.Length;
+            var delegateNonParamsArgumentsCount = delegateContainsParamsArgument
+                ? delegateArgumentsCount - 1
+                : delegateArgumentsCount;
 
-            int jsArgumentsCount = jsArguments.Length;
-            int jsArgumentsWithoutParamsCount = Math.Min(jsArgumentsCount, delegateNonParamsArgumentsCount);
+            var jsArgumentsCount = jsArguments.Length;
+            var jsArgumentsWithoutParamsCount = Math.Min(jsArgumentsCount, delegateNonParamsArgumentsCount);
 
             var parameters = new object[delegateArgumentsCount];
 
@@ -37,7 +40,7 @@ namespace Jint.Runtime.Interop
             {
                 var parameterType = parameterInfos[i].ParameterType;
 
-                if (parameterType == typeof (JsValue))
+                if (parameterType == typeof(JsValue))
                 {
                     parameters[i] = jsArguments[i];
                 }
@@ -64,12 +67,12 @@ namespace Jint.Runtime.Interop
             }
 
             // assign params to array and converts each objet to expected type
-            if(delegateContainsParamsArgument)
+            if (delegateContainsParamsArgument)
             {
-                int paramsArgumentIndex = delegateArgumentsCount - 1;
-                int paramsCount = Math.Max(0, jsArgumentsCount - delegateNonParamsArgumentsCount);
+                var paramsArgumentIndex = delegateArgumentsCount - 1;
+                var paramsCount = Math.Max(0, jsArgumentsCount - delegateNonParamsArgumentsCount);
 
-                object[] paramsParameter = new object[paramsCount];
+                var paramsParameter = new object[paramsCount];
                 var paramsParameterType = parameterInfos[paramsArgumentIndex].ParameterType.GetElementType();
 
                 for (var i = paramsArgumentIndex; i < jsArgumentsCount; i++)
@@ -86,7 +89,7 @@ namespace Jint.Runtime.Interop
                             jsArguments[i].ToObject(),
                             paramsParameterType,
                             CultureInfo.InvariantCulture);
-                    }                    
+                    }
                 }
                 parameters[paramsArgumentIndex] = paramsParameter;
             }

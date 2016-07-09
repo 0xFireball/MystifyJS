@@ -19,21 +19,9 @@ namespace Jint.Runtime.Interop
 
         public Type Type { get; set; }
 
-        public static TypeReference CreateTypeReference(Engine engine, Type type)
+        public override string Class
         {
-            var obj = new TypeReference(engine);
-            obj.Extensible = false;
-            obj.Type = type;
-
-            // The value of the [[Prototype]] internal property of the TypeReference constructor is the Function prototype object 
-            obj.Prototype = engine.Function.PrototypeObject;
-
-            obj.FastAddProperty("length", 0, false, false, false);
-
-            // The initial value of Boolean.prototype is the Boolean prototype object
-            obj.FastAddProperty("prototype", engine.Object.PrototypeObject, false, false, false);
-
-            return obj;
+            get { return "TypeReference"; }
         }
 
         public override JsValue Call(JsValue thisObject, JsValue[] arguments)
@@ -53,7 +41,7 @@ namespace Jint.Runtime.Interop
             }
 
             var constructors = Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-            
+
             var methods = TypeConverter.FindBestMatch(Engine, constructors, arguments).ToList();
 
             foreach (var method in methods)
@@ -63,7 +51,7 @@ namespace Jint.Runtime.Interop
                 {
                     for (var i = 0; i < arguments.Length; i++)
                     {
-                        var parameterType =  method.GetParameters()[i].ParameterType;
+                        var parameterType = method.GetParameters()[i].ParameterType;
 
                         if (parameterType == typeof(JsValue))
                         {
@@ -78,7 +66,7 @@ namespace Jint.Runtime.Interop
                         }
                     }
 
-                    var constructor = (ConstructorInfo)method;
+                    var constructor = (ConstructorInfo) method;
                     var instance = constructor.Invoke(parameters.ToArray());
                     var result = TypeConverter.ToObject(Engine, JsValue.FromObject(Engine, instance));
 
@@ -93,7 +81,28 @@ namespace Jint.Runtime.Interop
             }
 
             throw new JavaScriptException(Engine.TypeError, "No public methods with the specified arguments were found.");
-            
+        }
+
+        public object Target
+        {
+            get { return Type; }
+        }
+
+        public static TypeReference CreateTypeReference(Engine engine, Type type)
+        {
+            var obj = new TypeReference(engine);
+            obj.Extensible = false;
+            obj.Type = type;
+
+            // The value of the [[Prototype]] internal property of the TypeReference constructor is the Function prototype object 
+            obj.Prototype = engine.Function.PrototypeObject;
+
+            obj.FastAddProperty("length", 0, false, false, false);
+
+            // The initial value of Boolean.prototype is the Boolean prototype object
+            obj.FastAddProperty("prototype", engine.Object.PrototypeObject, false, false, false);
+
+            return obj;
         }
 
         public override bool DefineOwnProperty(string propertyName, PropertyDescriptor desc, bool throwOnError)
@@ -136,10 +145,7 @@ namespace Jint.Runtime.Interop
                 {
                     throw new JavaScriptException(Engine.TypeError, "Unknown member: " + propertyName);
                 }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             ownDesc.Value = value;
@@ -151,14 +157,14 @@ namespace Jint.Runtime.Interop
 
             if (Type.IsEnum)
             {
-                Array enumValues = Enum.GetValues(Type);
+                var enumValues = Enum.GetValues(Type);
                 Array enumNames = Enum.GetNames(Type);
 
-                for (int i = 0; i < enumValues.Length; i++)
+                for (var i = 0; i < enumValues.Length; i++)
                 {
                     if (enumNames.GetValue(i) as string == propertyName)
                     {
-                        return new PropertyDescriptor((int)enumValues.GetValue(i), false, false, false);
+                        return new PropertyDescriptor((int) enumValues.GetValue(i), false, false, false);
                     }
                 }
                 return PropertyDescriptor.Undefined;
@@ -187,19 +193,6 @@ namespace Jint.Runtime.Interop
             }
 
             return new PropertyDescriptor(new MethodInfoFunctionInstance(Engine, methodInfo), false, false, false);
-        }
-
-        public object Target
-        {
-            get
-            {
-                return Type;
-            } 
-        }
-
-        public override string Class
-        {
-            get { return "TypeReference"; }
         }
     }
 }

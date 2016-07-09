@@ -8,20 +8,20 @@ using Jint.Runtime.Environments;
 namespace Jint.Native.Function
 {
     /// <summary>
-    /// 
     /// </summary>
     public sealed class ScriptFunctionInstance : FunctionInstance, IConstructor
     {
         private readonly IFunctionDeclaration _functionDeclaration;
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-13.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-13.2
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="functionDeclaration"></param>
         /// <param name="scope"></param>
         /// <param name="strict"></param>
-        public ScriptFunctionInstance(Engine engine, IFunctionDeclaration functionDeclaration, LexicalEnvironment scope, bool strict)
+        public ScriptFunctionInstance(Engine engine, IFunctionDeclaration functionDeclaration, LexicalEnvironment scope,
+            bool strict)
             : base(engine, functionDeclaration.Parameters.Select(x => x.Name).ToArray(), scope, strict)
         {
             _functionDeclaration = functionDeclaration;
@@ -30,11 +30,12 @@ namespace Jint.Native.Function
             Extensible = true;
             Prototype = engine.Function.PrototypeObject;
 
-            DefineOwnProperty("length", new PropertyDescriptor(new JsValue(FormalParameters.Length), false, false, false ), false);
+            DefineOwnProperty("length",
+                new PropertyDescriptor(new JsValue(FormalParameters.Length), false, false, false), false);
 
             var proto = engine.Object.Construct(Arguments.Empty);
             proto.DefineOwnProperty("constructor", new PropertyDescriptor(this, true, false, true), false);
-            DefineOwnProperty("prototype", new PropertyDescriptor(proto, true, false, false ), false);
+            DefineOwnProperty("prototype", new PropertyDescriptor(proto, true, false, false), false);
             if (_functionDeclaration.Id != null)
             {
                 DefineOwnProperty("name", new PropertyDescriptor(_functionDeclaration.Id.Name, null, null, null), false);
@@ -48,8 +49,10 @@ namespace Jint.Native.Function
             }
         }
 
+        public ObjectInstance PrototypeObject { get; private set; }
+
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.1
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.1
         /// </summary>
         /// <param name="thisArg"></param>
         /// <param name="arguments"></param>
@@ -85,8 +88,8 @@ namespace Jint.Native.Function
                 {
                     Engine.DeclarationBindingInstantiation(
                         DeclarationBindingType.FunctionCode,
-                        _functionDeclaration.FunctionDeclarations, 
-                        _functionDeclaration.VariableDeclarations, 
+                        _functionDeclaration.FunctionDeclarations,
+                        _functionDeclaration.VariableDeclarations,
                         this,
                         arguments);
 
@@ -94,7 +97,7 @@ namespace Jint.Native.Function
 
                     if (result.Type == Completion.Throw)
                     {
-                        JavaScriptException ex = new JavaScriptException(result.GetValueOrDefault());
+                        var ex = new JavaScriptException(result.GetValueOrDefault());
                         ex.Location = result.Location;
                         throw ex;
                     }
@@ -114,7 +117,7 @@ namespace Jint.Native.Function
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.2
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
@@ -130,10 +133,8 @@ namespace Jint.Native.Function
             {
                 return result;
             }
-            
+
             return obj;
         }
-
-        public ObjectInstance PrototypeObject { get; private set; }
     }
 }

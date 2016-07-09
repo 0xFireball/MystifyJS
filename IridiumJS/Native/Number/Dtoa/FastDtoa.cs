@@ -35,10 +35,9 @@ namespace Jint.Native.Number.Dtoa
 {
     public class FastDtoa
     {
-
         // FastDtoa will produce at most kFastDtoaMaximalLength digits.
         public const int KFastDtoaMaximalLength = 17;
-        
+
         // The minimal and maximal target exponent define the range of w's binary
         // exponent, where 'w' is the result of multiplying the input by a cached power
         // of ten.
@@ -47,6 +46,13 @@ namespace Jint.Native.Number.Dtoa
         // generation, but a smaller range requires more powers of ten to be cached.
         private const int MinimalTargetExponent = -60;
         private const int MaximalTargetExponent = -32;
+
+        private const int KTen4 = 10000;
+        private const int KTen5 = 100000;
+        private const int KTen6 = 1000000;
+        private const int KTen7 = 10000000;
+        private const int KTen8 = 100000000;
+        private const int KTen9 = 1000000000;
 
         // Adjusts the last digit of the generated number, and screens out generated
         // solutions that may be inaccurate. A solution may be inaccurate if it is
@@ -69,8 +75,8 @@ namespace Jint.Native.Number.Dtoa
             long tenKappa,
             long unit)
         {
-            long smallDistance = distanceTooHighW - unit;
-            long bigDistance = distanceTooHighW + unit;
+            var smallDistance = distanceTooHighW - unit;
+            var bigDistance = distanceTooHighW + unit;
             // Let w_low  = too_high - big_distance, and
             //     w_high = too_high - small_distance.
             // Note: w_low < w < w_high
@@ -167,13 +173,6 @@ namespace Jint.Native.Number.Dtoa
             //   Conceptually we have: rest ~= too_high - buffer
             return (2*unit <= rest) && (rest <= unsafeInterval - 4*unit);
         }
-        
-        private const int KTen4 = 10000;
-        private const int KTen5 = 100000;
-        private const int KTen6 = 1000000;
-        private const int KTen7 = 10000000;
-        private const int KTen8 = 100000000;
-        private const int KTen9 = 1000000000;
 
         // Returns the biggest power of ten that is less than or equal than the given
         // number. We furthermore receive the maximum number of bits 'number' has.
@@ -379,8 +378,8 @@ namespace Jint.Native.Number.Dtoa
             // Division by one is a shift.
             var integrals = (int) (tooHigh.F.UnsignedShift(-one.E) & 0xffffffffL);
             // Modulo by one is an and.
-            long fractionals = tooHigh.F & (one.F - 1);
-            long result = BiggestPowerTen(integrals, DiyFp.KSignificandSize - (-one.E));
+            var fractionals = tooHigh.F & (one.F - 1);
+            var result = BiggestPowerTen(integrals, DiyFp.KSignificandSize - -one.E);
             var divider = (int) (result.UnsignedShift(32) & 0xffffffffL);
             var dividerExponent = (int) (result & 0xffffffffL);
             var kappa = dividerExponent + 1;
@@ -390,13 +389,13 @@ namespace Jint.Native.Number.Dtoa
             // that is smaller than integrals.
             while (kappa > 0)
             {
-                int digit = integrals/divider;
+                var digit = integrals/divider;
                 buffer.Append((char) ('0' + digit));
                 integrals %= divider;
                 kappa--;
                 // Note that kappa now equals the exponent of the divider and that the
                 // invariant thus holds again.
-                long rest =
+                var rest =
                     ((long) integrals << -one.E) + fractionals;
                 // Invariant: too_high = buffer * 10^kappa + DiyFp(rest, one.e())
                 // Reminder: unsafe_interval.e() == one.e()
@@ -435,7 +434,7 @@ namespace Jint.Native.Number.Dtoa
                 one.F = one.F.UnsignedShift(1);
                 one.E = one.E + 1;
                 // Integer division by one.
-                var digit = (int) ((fractionals.UnsignedShift(-one.E)) & 0xffffffffL);
+                var digit = (int) (fractionals.UnsignedShift(-one.E) & 0xffffffffL);
                 buffer.Append((char) ('0' + digit));
                 fractionals &= one.F - 1; // Modulo by one.
                 kappa--;
@@ -461,8 +460,8 @@ namespace Jint.Native.Number.Dtoa
         // computed.
         private static bool Grisu3(double v, FastDtoaBuilder buffer)
         {
-            long bits = BitConverter.DoubleToInt64Bits(v);
-            DiyFp w = DoubleHelper.AsNormalizedDiyFp(bits);
+            var bits = BitConverter.DoubleToInt64Bits(v);
+            var w = DoubleHelper.AsNormalizedDiyFp(bits);
             // boundary_minus and boundary_plus are the boundaries between v and its
             // closest floating-point neighbors. Any number strictly between
             // boundary_minus and boundary_plus will round to v when convert to a double.
@@ -471,7 +470,7 @@ namespace Jint.Native.Number.Dtoa
             DoubleHelper.NormalizedBoundaries(bits, boundaryMinus, boundaryPlus);
             Debug.Assert(boundaryPlus.E == w.E);
             var tenMk = new DiyFp(); // Cached power of ten: 10^-k
-            int mk = CachedPowers.GetCachedPower(w.E + DiyFp.KSignificandSize,
+            var mk = CachedPowers.GetCachedPower(w.E + DiyFp.KSignificandSize,
                 MinimalTargetExponent, MaximalTargetExponent, tenMk);
             Debug.Assert(MinimalTargetExponent <= w.E + tenMk.E +
                          DiyFp.KSignificandSize &&
@@ -486,7 +485,7 @@ namespace Jint.Native.Number.Dtoa
             // In fact: scaled_w - w*10^k < 1ulp (unit in the last place) of scaled_w.
             // In other words: let f = scaled_w.f() and e = scaled_w.e(), then
             //           (f-1) * 2^e < w*10^k < (f+1) * 2^e
-            DiyFp scaledW = DiyFp.Times(w, tenMk);
+            var scaledW = DiyFp.Times(w, tenMk);
             Debug.Assert(scaledW.E ==
                          boundaryPlus.E + tenMk.E + DiyFp.KSignificandSize);
             // In theory it would be possible to avoid some recomputations by computing
@@ -494,8 +493,8 @@ namespace Jint.Native.Number.Dtoa
             // compute scaled_boundary_minus/plus by subtracting/adding from
             // scaled_w. However the code becomes much less readable and the speed
             // enhancements are not terriffic.
-            DiyFp scaledBoundaryMinus = DiyFp.Times(boundaryMinus, tenMk);
-            DiyFp scaledBoundaryPlus = DiyFp.Times(boundaryPlus, tenMk);
+            var scaledBoundaryMinus = DiyFp.Times(boundaryMinus, tenMk);
+            var scaledBoundaryPlus = DiyFp.Times(boundaryPlus, tenMk);
 
             // DigitGen will generate the digits of scaled_w. Therefore we have
             // v == (double) (scaled_w * 10^-mk).
@@ -509,8 +508,8 @@ namespace Jint.Native.Number.Dtoa
         public static bool Dtoa(double v, FastDtoaBuilder buffer)
         {
             Debug.Assert(v > 0);
-            Debug.Assert(!Double.IsNaN(v));
-            Debug.Assert(!Double.IsInfinity(v));
+            Debug.Assert(!double.IsNaN(v));
+            Debug.Assert(!double.IsInfinity(v));
 
             return Grisu3(v, buffer);
         }

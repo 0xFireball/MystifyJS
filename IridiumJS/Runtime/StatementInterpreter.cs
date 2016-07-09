@@ -60,20 +60,20 @@ namespace Jint.Runtime
             var result = ExecuteStatement(labelledStatement.Body);
             if (result.Type == Completion.Break && result.Identifier == labelledStatement.Label.Name)
             {
-                return new Completion(Completion.Normal, result.Value, null);    
+                return new Completion(Completion.Normal, result.Value, null);
             }
 
             return result;
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.1
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.1
         /// </summary>
         /// <param name="doWhileStatement"></param>
         /// <returns></returns>
         public Completion ExecuteDoWhileStatement(DoWhileStatement doWhileStatement)
         {
-            JsValue v = Undefined.Instance;
+            var v = Undefined.Instance;
             bool iterating;
 
             do
@@ -85,7 +85,8 @@ namespace Jint.Runtime
                 }
                 if (stmt.Type != Completion.Continue || stmt.Identifier != doWhileStatement.LabelSet)
                 {
-                    if (stmt.Type == Completion.Break && (stmt.Identifier == null || stmt.Identifier == doWhileStatement.LabelSet))
+                    if (stmt.Type == Completion.Break &&
+                        (stmt.Identifier == null || stmt.Identifier == doWhileStatement.LabelSet))
                     {
                         return new Completion(Completion.Normal, v, null);
                     }
@@ -97,20 +98,19 @@ namespace Jint.Runtime
                 }
                 var exprRef = _engine.EvaluateExpression(doWhileStatement.Test);
                 iterating = TypeConverter.ToBoolean(_engine.GetValue(exprRef));
-
             } while (iterating);
 
             return new Completion(Completion.Normal, v, null);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.2
         /// </summary>
         /// <param name="whileStatement"></param>
         /// <returns></returns>
         public Completion ExecuteWhileStatement(WhileStatement whileStatement)
         {
-            JsValue v = Undefined.Instance; 
+            var v = Undefined.Instance;
             while (true)
             {
                 var exprRef = _engine.EvaluateExpression(whileStatement.Test);
@@ -129,7 +129,8 @@ namespace Jint.Runtime
 
                 if (stmt.Type != Completion.Continue || stmt.Identifier != whileStatement.LabelSet)
                 {
-                    if (stmt.Type == Completion.Break && (stmt.Identifier == null || stmt.Identifier == whileStatement.LabelSet))
+                    if (stmt.Type == Completion.Break &&
+                        (stmt.Identifier == null || stmt.Identifier == whileStatement.LabelSet))
                     {
                         return new Completion(Completion.Normal, v, null);
                     }
@@ -143,13 +144,12 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.3
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.3
         /// </summary>
         /// <param name="forStatement"></param>
         /// <returns></returns>
         public Completion ExecuteForStatement(ForStatement forStatement)
         {
-            
             if (forStatement.Init != null)
             {
                 if (forStatement.Init.Type == SyntaxNodes.VariableDeclaration)
@@ -162,7 +162,7 @@ namespace Jint.Runtime
                 }
             }
 
-            JsValue v = Undefined.Instance;
+            var v = Undefined.Instance;
             while (true)
             {
                 if (forStatement.Test != null)
@@ -179,11 +179,13 @@ namespace Jint.Runtime
                 {
                     v = stmt.Value.Value;
                 }
-                if (stmt.Type == Completion.Break && (stmt.Identifier == null || stmt.Identifier == forStatement.LabelSet))
+                if (stmt.Type == Completion.Break &&
+                    (stmt.Identifier == null || stmt.Identifier == forStatement.LabelSet))
                 {
                     return new Completion(Completion.Normal, v, null);
                 }
-                if (stmt.Type != Completion.Continue || ((stmt.Identifier != null) && stmt.Identifier != forStatement.LabelSet))
+                if (stmt.Type != Completion.Continue ||
+                    ((stmt.Identifier != null) && stmt.Identifier != forStatement.LabelSet))
                 {
                     if (stmt.Type != Completion.Normal)
                     {
@@ -199,15 +201,15 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.4
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.6.4
         /// </summary>
         /// <param name="forInStatement"></param>
         /// <returns></returns>
         public Completion ExecuteForInStatement(ForInStatement forInStatement)
         {
-            Identifier identifier = forInStatement.Left.Type == SyntaxNodes.VariableDeclaration 
-                                        ? forInStatement.Left.As<VariableDeclaration>().Declarations.First().Id 
-                                        : forInStatement.Left.As<Identifier>();
+            var identifier = forInStatement.Left.Type == SyntaxNodes.VariableDeclaration
+                ? forInStatement.Left.As<VariableDeclaration>().Declarations.First().Id
+                : forInStatement.Left.As<Identifier>();
 
             var varRef = _engine.EvaluateExpression(identifier) as Reference;
             var exprRef = _engine.EvaluateExpression(forInStatement.Right);
@@ -219,8 +221,8 @@ namespace Jint.Runtime
 
 
             var obj = TypeConverter.ToObject(_engine, experValue);
-            JsValue v = Null.Instance;
-            
+            var v = Null.Instance;
+
             // keys are constructed using the prototype chain
             var cursor = obj;
             var processedKeys = new HashSet<string>();
@@ -236,7 +238,7 @@ namespace Jint.Runtime
                     }
 
                     processedKeys.Add(p);
-                    
+
                     // collection might be modified by inner statement 
                     if (!cursor.HasOwnProperty(p))
                     {
@@ -276,27 +278,29 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.7
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.7
         /// </summary>
         /// <param name="continueStatement"></param>
         /// <returns></returns>
         public Completion ExecuteContinueStatement(ContinueStatement continueStatement)
         {
-            return new Completion(Completion.Continue, null, continueStatement.Label != null ? continueStatement.Label.Name : null);
+            return new Completion(Completion.Continue, null,
+                continueStatement.Label != null ? continueStatement.Label.Name : null);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.8
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.8
         /// </summary>
         /// <param name="breakStatement"></param>
         /// <returns></returns>
         public Completion ExecuteBreakStatement(BreakStatement breakStatement)
         {
-            return new Completion(Completion.Break, null, breakStatement.Label != null ? breakStatement.Label.Name : null);
+            return new Completion(Completion.Break, null,
+                breakStatement.Label != null ? breakStatement.Label.Name : null);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.9
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.9
         /// </summary>
         /// <param name="statement"></param>
         /// <returns></returns>
@@ -306,13 +310,13 @@ namespace Jint.Runtime
             {
                 return new Completion(Completion.Return, Undefined.Instance, null);
             }
-            
-            var exprRef = _engine.EvaluateExpression(statement.Argument);    
+
+            var exprRef = _engine.EvaluateExpression(statement.Argument);
             return new Completion(Completion.Return, _engine.GetValue(exprRef), null);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.10
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.10
         /// </summary>
         /// <param name="withStatement"></param>
         /// <returns></returns>
@@ -343,7 +347,7 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.11
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.11
         /// </summary>
         /// <param name="switchStatement"></param>
         /// <returns></returns>
@@ -360,9 +364,9 @@ namespace Jint.Runtime
 
         public Completion ExecuteSwitchBlock(IEnumerable<SwitchCase> switchBlock, JsValue input)
         {
-            JsValue v = Undefined.Instance;
+            var v = Undefined.Instance;
             SwitchCase defaultCase = null;
-            bool hit = false;
+            var hit = false;
             foreach (var clause in switchBlock)
             {
                 if (clause.Test == null)
@@ -385,10 +389,9 @@ namespace Jint.Runtime
                     {
                         return r;
                     }
-                    
+
                     v = r.Value.HasValue ? r.Value.Value : Undefined.Instance;
                 }
-
             }
 
             // do we need to execute the default case ?
@@ -409,7 +412,7 @@ namespace Jint.Runtime
         public Completion ExecuteStatementList(IEnumerable<Statement> statementList)
         {
             var c = new Completion(Completion.Normal, null, null);
-            Completion sl = c;
+            var sl = c;
             Statement s = null;
 
             try
@@ -429,7 +432,7 @@ namespace Jint.Runtime
                     sl = c;
                 }
             }
-            catch(JavaScriptException v)
+            catch (JavaScriptException v)
             {
                 c = new Completion(Completion.Throw, v.Error, null);
                 c.Location = s.Location;
@@ -440,20 +443,20 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.13
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.13
         /// </summary>
         /// <param name="throwStatement"></param>
         /// <returns></returns>
         public Completion ExecuteThrowStatement(ThrowStatement throwStatement)
         {
             var exprRef = _engine.EvaluateExpression(throwStatement.Argument);
-            Completion c = new Completion(Completion.Throw, _engine.GetValue(exprRef), null);
+            var c = new Completion(Completion.Throw, _engine.GetValue(exprRef), null);
             c.Location = throwStatement.Location;
             return c;
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-12.14
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-12.14
         /// </summary>
         /// <param name="tryStatement"></param>
         /// <returns></returns>
@@ -486,7 +489,7 @@ namespace Jint.Runtime
                 {
                     return b;
                 }
-            
+
                 return f;
             }
 

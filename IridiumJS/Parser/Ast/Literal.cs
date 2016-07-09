@@ -4,16 +4,14 @@ namespace Jint.Parser.Ast
 {
     public class Literal : Expression, IPropertyKeyExpression
     {
-        public object Value;
-        public string Raw;
-
         public bool Cached;
-        public JsValue CachedValue; 
+        public JsValue CachedValue;
+        public string Raw;
+        public object Value;
 
         public string GetKey()
         {
             return Value.ToString();
         }
-
     }
 }

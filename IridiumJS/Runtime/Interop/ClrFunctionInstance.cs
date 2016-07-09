@@ -5,7 +5,7 @@ using Jint.Native.Function;
 namespace Jint.Runtime.Interop
 {
     /// <summary>
-    /// Wraps a Clr method into a FunctionInstance
+    ///     Wraps a Clr method into a FunctionInstance
     /// </summary>
     public sealed class ClrFunctionInstance : FunctionInstance
     {

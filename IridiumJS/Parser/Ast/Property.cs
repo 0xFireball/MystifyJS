@@ -8,13 +8,13 @@ namespace Jint.Parser.Ast
         Data = 1,
         Get = 2,
         Set = 4
-    };
+    }
 
 
     public class Property : Expression
     {
-        public PropertyKind Kind;
         public IPropertyKeyExpression Key;
+        public PropertyKind Kind;
         public Expression Value;
     }
 }

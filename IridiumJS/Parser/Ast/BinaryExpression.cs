@@ -24,13 +24,13 @@ namespace Jint.Parser.Ast
         RightShift,
         UnsignedRightShift,
         InstanceOf,
-        In,
+        In
     }
 
     public class BinaryExpression : Expression
     {
-        public BinaryOperator Operator;
         public Expression Left;
+        public BinaryOperator Operator;
         public Expression Right;
 
         public static BinaryOperator ParseBinaryOperator(string op)
@@ -80,7 +80,7 @@ namespace Jint.Parser.Ast
                 case "in":
                     return BinaryOperator.In;
 
-                default: 
+                default:
                     throw new ArgumentOutOfRangeException("Invalid binary operator: " + op);
             }
         }

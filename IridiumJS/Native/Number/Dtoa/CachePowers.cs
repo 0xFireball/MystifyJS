@@ -32,38 +32,9 @@ using System.Diagnostics;
 
 namespace Jint.Native.Number.Dtoa
 {
-
     public class CachedPowers
     {
         private const double Kd1Log210 = 0.30102999566398114; //  1 / lg(10)
-
-        private class CachedPower
-        {
-            internal readonly long Significand;
-            internal readonly short BinaryExponent;
-            internal readonly short DecimalExponent;
-
-            internal CachedPower(ulong significand, short binaryExponent, short decimalExponent)
-            {
-                Significand = (long) significand;
-                BinaryExponent = binaryExponent;
-                DecimalExponent = decimalExponent;
-            }
-        }
-
-
-        internal static int GetCachedPower(int e, int alpha, int gamma, DiyFp cMk)
-        {
-            const int kQ = DiyFp.KSignificandSize;
-            double k = System.Math.Ceiling((alpha - e + kQ - 1)*Kd1Log210);
-            int index = (GrisuCacheOffset + (int) k - 1)/CachedPowersSpacing + 1;
-            CachedPower cachedPower = CACHED_POWERS[index];
-
-            cMk.F = cachedPower.Significand;
-            cMk.E = cachedPower.BinaryExponent;
-            Debug.Assert((alpha <= cMk.E + e) && (cMk.E + e <= gamma));
-            return cachedPower.DecimalExponent;
-        }
 
         // Code below is converted from GRISU_CACHE_NAME(8) in file "powers-ten.h"
         // Regexp to convert this from original C++ source:
@@ -71,6 +42,8 @@ namespace Jint.Native.Number.Dtoa
 
         // interval between entries  of the powers cache below
         private const int CachedPowersSpacing = 8;
+
+        private const int GrisuCacheOffset = 308;
 
         private static readonly CachedPower[] CACHED_POWERS =
         {
@@ -158,8 +131,32 @@ namespace Jint.Native.Number.Dtoa
             new CachedPower(0xaf87023b9bf0ee6bL, 1066, 340)
         };
 
-        private const int GrisuCacheOffset = 308;
 
+        internal static int GetCachedPower(int e, int alpha, int gamma, DiyFp cMk)
+        {
+            const int kQ = DiyFp.KSignificandSize;
+            var k = System.Math.Ceiling((alpha - e + kQ - 1)*Kd1Log210);
+            var index = (GrisuCacheOffset + (int) k - 1)/CachedPowersSpacing + 1;
+            var cachedPower = CACHED_POWERS[index];
 
+            cMk.F = cachedPower.Significand;
+            cMk.E = cachedPower.BinaryExponent;
+            Debug.Assert((alpha <= cMk.E + e) && (cMk.E + e <= gamma));
+            return cachedPower.DecimalExponent;
+        }
+
+        private class CachedPower
+        {
+            internal readonly short BinaryExponent;
+            internal readonly short DecimalExponent;
+            internal readonly long Significand;
+
+            internal CachedPower(ulong significand, short binaryExponent, short decimalExponent)
+            {
+                Significand = (long) significand;
+                BinaryExponent = binaryExponent;
+                DecimalExponent = decimalExponent;
+            }
+        }
     }
 }

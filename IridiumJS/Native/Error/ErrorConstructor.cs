@@ -12,28 +12,7 @@ namespace Jint.Native.Error
         {
         }
 
-        public static ErrorConstructor CreateErrorConstructor(Engine engine, string name)
-        {
-            var obj = new ErrorConstructor(engine);
-            obj.Extensible = true;
-            obj._name = name;
-
-            // The value of the [[Prototype]] internal property of the Error constructor is the Function prototype object (15.11.3)
-            obj.Prototype = engine.Function.PrototypeObject;
-            obj.PrototypeObject = ErrorPrototype.CreatePrototypeObject(engine, obj, name);
-
-            obj.FastAddProperty("length", 1, false, false, false);
-
-            // The initial value of Error.prototype is the Error prototype object
-            obj.FastAddProperty("prototype", obj.PrototypeObject, false, false, false);
-
-            return obj;
-        }
-
-        public void Configure()
-        {
-            
-        }
+        public ErrorPrototype PrototypeObject { get; private set; }
 
         public override JsValue Call(JsValue thisObject, JsValue[] arguments)
         {
@@ -54,6 +33,26 @@ namespace Jint.Native.Error
             return instance;
         }
 
-        public ErrorPrototype PrototypeObject { get; private set; }
+        public static ErrorConstructor CreateErrorConstructor(Engine engine, string name)
+        {
+            var obj = new ErrorConstructor(engine);
+            obj.Extensible = true;
+            obj._name = name;
+
+            // The value of the [[Prototype]] internal property of the Error constructor is the Function prototype object (15.11.3)
+            obj.Prototype = engine.Function.PrototypeObject;
+            obj.PrototypeObject = ErrorPrototype.CreatePrototypeObject(engine, obj, name);
+
+            obj.FastAddProperty("length", 1, false, false, false);
+
+            // The initial value of Error.prototype is the Error prototype object
+            obj.FastAddProperty("prototype", obj.PrototypeObject, false, false, false);
+
+            return obj;
+        }
+
+        public void Configure()
+        {
+        }
     }
 }

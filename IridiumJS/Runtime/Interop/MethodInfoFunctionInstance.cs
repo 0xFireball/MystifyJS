@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Jint.Native;
-using Jint.Native.Array;
 using Jint.Native.Function;
 
 namespace Jint.Runtime.Interop
@@ -64,7 +63,9 @@ namespace Jint.Runtime.Interop
                     }
                     else
                     {
-                        if (!converter.TryConvert(arguments[i].ToObject(), parameterType, CultureInfo.InvariantCulture, out parameters[i]))
+                        if (
+                            !converter.TryConvert(arguments[i].ToObject(), parameterType, CultureInfo.InvariantCulture,
+                                out parameters[i]))
                         {
                             argumentsMatch = false;
                             break;
@@ -91,7 +92,7 @@ namespace Jint.Runtime.Interop
         }
 
         /// <summary>
-        /// Reduces a flat list of parameters to a params array
+        ///     Reduces a flat list of parameters to a params array
         /// </summary>
         private JsValue[] ProcessParamsArrays(JsValue[] jsArguments, IEnumerable<MethodInfo> methodInfos)
         {
@@ -120,6 +121,5 @@ namespace Jint.Runtime.Interop
 
             return jsArguments;
         }
-
     }
 }

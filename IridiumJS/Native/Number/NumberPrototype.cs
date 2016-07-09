@@ -8,10 +8,12 @@ using Jint.Runtime.Interop;
 namespace Jint.Native.Number
 {
     /// <summary>
-    /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.4
+    ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.4
     /// </summary>
     public sealed class NumberPrototype : NumberInstance
     {
+        private const double Ten21 = 1e21;
+
         private NumberPrototype(Engine engine)
             : base(engine)
         {
@@ -87,11 +89,9 @@ namespace Jint.Native.Number
             return number.PrimitiveValue;
         }
 
-        private const double Ten21 = 1e21;
-
         private JsValue ToFixed(JsValue thisObj, JsValue[] arguments)
         {
-            var f = (int)TypeConverter.ToInteger(arguments.At(0, 0));
+            var f = (int) TypeConverter.ToInteger(arguments.At(0, 0));
             if (f < 0 || f > 20)
             {
                 throw new JavaScriptException(Engine.RangeError, "fractionDigits argument must be between 0 and 20");
@@ -114,7 +114,7 @@ namespace Jint.Native.Number
 
         private JsValue ToExponential(JsValue thisObj, JsValue[] arguments)
         {
-            var f = (int)TypeConverter.ToInteger(arguments.At(0, 16));
+            var f = (int) TypeConverter.ToInteger(arguments.At(0, 16));
             if (f < 0 || f > 20)
             {
                 throw new JavaScriptException(Engine.RangeError, "fractionDigits argument must be between 0 and 20");
@@ -127,7 +127,7 @@ namespace Jint.Native.Number
                 return "NaN";
             }
 
-            string format = System.String.Concat("#.", new System.String('0', f), "e+0");
+            var format = string.Concat("#.", new string('0', f), "e+0");
             return x.ToString(format, CultureInfo.InvariantCulture);
         }
 
@@ -153,8 +153,8 @@ namespace Jint.Native.Number
             }
 
             // Get the number of decimals
-            string str = x.ToString("e23", CultureInfo.InvariantCulture);
-            int decimals = str.IndexOfAny(new [] { '.', 'e' });
+            var str = x.ToString("e23", CultureInfo.InvariantCulture);
+            var decimals = str.IndexOfAny(new[] {'.', 'e'});
             decimals = decimals == -1 ? str.Length : decimals;
 
             p -= decimals;
@@ -201,13 +201,13 @@ namespace Jint.Native.Number
 
             if (radix == 10)
             {
-                return ToNumberString(x);    
+                return ToNumberString(x);
             }
 
             var integer = (long) x;
-            var fraction = x -  integer;
+            var fraction = x - integer;
 
-            string result = ToBase(integer, radix);
+            var result = ToBase(integer, radix);
             if (!fraction.Equals(0))
             {
                 result += "." + ToFractionBase(fraction, radix);
@@ -227,8 +227,8 @@ namespace Jint.Native.Number
             var result = new StringBuilder();
             while (n > 0)
             {
-                var digit = (int)(n % radix);
-                n = n / radix;
+                var digit = (int) (n%radix);
+                n = n/radix;
                 result.Insert(0, digits[digit].ToString());
             }
 
@@ -259,7 +259,7 @@ namespace Jint.Native.Number
             return result.ToString();
         }
 
-        public static string ToNumberString(double m) 
+        public static string ToNumberString(double m)
         {
             if (double.IsNaN(m))
             {
@@ -300,7 +300,7 @@ namespace Jint.Native.Number
             {
                 s = rFormat.Replace(".", "").TrimStart('0').TrimEnd('0');
             }
-        
+
             const string format = "0.00000000000000000e0";
             var parts = m.ToString(format, CultureInfo.InvariantCulture).Split('e');
             if (s == null)
@@ -310,7 +310,7 @@ namespace Jint.Native.Number
 
             var n = int.Parse(parts[1]) + 1;
             var k = s.Length;
-            
+
             if (k <= n && n <= 21)
             {
                 return s + new string('0', n - k);

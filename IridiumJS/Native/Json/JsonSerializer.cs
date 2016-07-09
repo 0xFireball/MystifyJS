@@ -12,16 +12,17 @@ namespace Jint.Native.Json
     public class JsonSerializer
     {
         private readonly Engine _engine;
+        private string _indent;
+        private string _gap;
+        private List<string> _propertyList;
+        private JsValue _replacerFunction = Undefined.Instance;
+
+        private Stack<object> _stack;
 
         public JsonSerializer(Engine engine)
         {
             _engine = engine;
         }
-
-        Stack<object> _stack;
-        string _indent, _gap;
-        List<string> _propertyList;
-        JsValue _replacerFunction = Undefined.Instance;
 
         public JsValue Serialize(JsValue value, JsValue replacer, JsValue space)
         {
@@ -29,7 +30,7 @@ namespace Jint.Native.Json
 
             // for JSON.stringify(), any function passed as the first argument will return undefined
             // if the replacer is not defined. The function is not called either.
-            if (value.Is<ICallable>() && replacer == Undefined.Instance) 
+            if (value.Is<ICallable>() && replacer == Undefined.Instance)
             {
                 return Undefined.Instance;
             }
@@ -50,7 +51,7 @@ namespace Jint.Native.Json
 
                     foreach (var property in replacerObj.GetOwnProperties().Select(x => x.Value))
                     {
-                        JsValue v = _engine.GetValue(property);
+                        var v = _engine.GetValue(property);
                         string item = null;
                         if (v.IsString())
                         {
@@ -73,7 +74,6 @@ namespace Jint.Native.Json
                         {
                             _propertyList.Add(item);
                         }
-
                     }
                 }
             }
@@ -94,10 +94,11 @@ namespace Jint.Native.Json
             // defining the gap
             if (space.IsNumber())
             {
-                if (space.AsNumber() > 0) {
-                    _gap = new System.String(' ', (int)System.Math.Min(10, space.AsNumber()));
+                if (space.AsNumber() > 0)
+                {
+                    _gap = new string(' ', (int) System.Math.Min(10, space.AsNumber()));
                 }
-                else 
+                else
                 {
                     _gap = string.Empty;
                 }
@@ -120,7 +121,6 @@ namespace Jint.Native.Json
 
         private JsValue Str(string key, ObjectInstance holder)
         {
-            
             var value = holder.Get(key);
             if (value.IsObject())
             {
@@ -134,14 +134,14 @@ namespace Jint.Native.Json
                     }
                 }
             }
-            
+
             if (_replacerFunction != Undefined.Instance)
             {
-                var replacerFunctionCallable = (ICallable)_replacerFunction.AsObject();
+                var replacerFunctionCallable = (ICallable) _replacerFunction.AsObject();
                 value = replacerFunctionCallable.Call(holder, Arguments.From(key, value));
             }
 
-            
+
             if (value.IsObject())
             {
                 var valueObj = value.AsObject();
@@ -156,7 +156,7 @@ namespace Jint.Native.Json
                     case "Boolean":
                         value = TypeConverter.ToPrimitive(value);
                         break;
-                    case "Array": 
+                    case "Array":
                         value = SerializeArray(value.As<ArrayInstance>());
                         return value;
                     case "Object":
@@ -164,7 +164,7 @@ namespace Jint.Native.Json
                         return value;
                 }
             }
-           
+
             if (value == Null.Instance)
             {
                 return "null";
@@ -191,7 +191,7 @@ namespace Jint.Native.Json
                 {
                     return TypeConverter.ToString(value);
                 }
-                
+
                 return "null";
             }
 
@@ -214,7 +214,7 @@ namespace Jint.Native.Json
         {
             var product = "\"";
 
-            foreach (char c in value)
+            foreach (var c in value)
             {
                 switch (c)
                 {
@@ -263,7 +263,7 @@ namespace Jint.Native.Json
             _indent = _indent + _gap;
             var partial = new List<string>();
             var len = TypeConverter.ToUint32(value.Get("length"));
-            for (int i = 0; i < len; i++)
+            for (var i = 0; i < len; i++)
             {
                 var strP = Str(TypeConverter.ToString(i), value);
                 if (strP == JsValue.Undefined)
@@ -279,16 +279,16 @@ namespace Jint.Native.Json
             if (_gap == "")
             {
                 var separator = ",";
-                var properties = System.String.Join(separator, partial.ToArray());
+                var properties = string.Join(separator, partial.ToArray());
                 final = "[" + properties + "]";
             }
             else
             {
                 var separator = ",\n" + _indent;
-                var properties = System.String.Join(separator, partial.ToArray());
+                var properties = string.Join(separator, partial.ToArray());
                 final = "[\n" + _indent + properties + "\n" + stepback + "]";
             }
-            
+
             _stack.Pop();
             _indent = stepback;
             return final;
@@ -315,9 +315,9 @@ namespace Jint.Native.Json
             _stack.Push(value);
             var stepback = _indent;
             _indent += _gap;
-            
+
             var k = _propertyList ?? value.GetOwnProperties()
-                .Where(x => x.Value.Enumerable.HasValue && x.Value.Enumerable.Value == true)
+                .Where(x => x.Value.Enumerable.HasValue && x.Value.Enumerable.Value)
                 .Select(x => x.Key)
                 .ToList();
 
@@ -345,15 +345,15 @@ namespace Jint.Native.Json
                 if (_gap == "")
                 {
                     var separator = ",";
-                    var properties = System.String.Join(separator, partial.ToArray());
+                    var properties = string.Join(separator, partial.ToArray());
                     final = "{" + properties + "}";
                 }
                 else
                 {
                     var separator = ",\n" + _indent;
-                    var properties = System.String.Join(separator, partial.ToArray());
+                    var properties = string.Join(separator, partial.ToArray());
                     final = "{\n" + _indent + properties + "\n" + stepback + "}";
-                }                
+                }
             }
             _stack.Pop();
             _indent = stepback;

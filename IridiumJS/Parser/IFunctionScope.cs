@@ -4,9 +4,9 @@ using Jint.Parser.Ast;
 namespace Jint.Parser
 {
     /// <summary>
-    /// Used to safe references to all function delcarations in a specific scope.
+    ///     Used to safe references to all function delcarations in a specific scope.
     /// </summary>
-    public interface IFunctionScope: IVariableScope
+    public interface IFunctionScope : IVariableScope
     {
         IList<FunctionDeclaration> FunctionDeclarations { get; set; }
     }

@@ -15,6 +15,37 @@ namespace Jint.Native.Date
         {
         }
 
+        public DatePrototype PrototypeObject { get; private set; }
+
+        public override JsValue Call(JsValue thisObject, JsValue[] arguments)
+        {
+            return PrototypeObject.ToString(Construct(Arguments.Empty), Arguments.Empty);
+        }
+
+        /// <summary>
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.3
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public ObjectInstance Construct(JsValue[] arguments)
+        {
+            if (arguments.Length == 0)
+            {
+                return Construct(DateTime.UtcNow);
+            }
+            if (arguments.Length == 1)
+            {
+                var v = TypeConverter.ToPrimitive(arguments[0]);
+                if (v.IsString())
+                {
+                    return Construct(Parse(Undefined.Instance, Arguments.From(v)).AsNumber());
+                }
+
+                return Construct(TypeConverter.ToNumber(v));
+            }
+            return Construct(ConstructTimeValue(arguments, false));
+        }
+
         public static DateConstructor CreateDateConstructor(Engine engine)
         {
             var obj = new DateConstructor(engine);
@@ -52,7 +83,8 @@ namespace Jint.Native.Date
                 "yyyy-MM-dd",
                 "yyyy-MM",
                 "yyyy"
-            }, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out result))
+            }, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
+                out result))
             {
                 if (!DateTime.TryParseExact(date, new[]
                 {
@@ -87,7 +119,9 @@ namespace Jint.Native.Date
                 {
                     if (!DateTime.TryParse(date, Engine.Options._Culture, DateTimeStyles.AdjustToUniversal, out result))
                     {
-                        if (!DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out result))
+                        if (
+                            !DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal,
+                                out result))
                         {
                             // unrecognized dates should return NaN (15.9.4.2)
                             return double.NaN;
@@ -101,44 +135,12 @@ namespace Jint.Native.Date
 
         private JsValue Utc(JsValue thisObj, JsValue[] arguments)
         {
-            return TimeClip(ConstructTimeValue(arguments, useUtc: true));
+            return TimeClip(ConstructTimeValue(arguments, true));
         }
 
         private JsValue Now(JsValue thisObj, JsValue[] arguments)
         {
             return System.Math.Floor((DateTime.UtcNow - Epoch).TotalMilliseconds);
-        }
-
-        public override JsValue Call(JsValue thisObject, JsValue[] arguments)
-        {
-            return PrototypeObject.ToString(Construct(Arguments.Empty), Arguments.Empty);
-        }
-
-        /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.3
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        public ObjectInstance Construct(JsValue[] arguments)
-        {
-            if (arguments.Length == 0)
-            {
-                return Construct(DateTime.UtcNow);
-            }
-            else if (arguments.Length == 1)
-            {
-                var v = TypeConverter.ToPrimitive(arguments[0]);
-                if (v.IsString())
-                {
-                    return Construct(Parse(Undefined.Instance, Arguments.From(v)).AsNumber());
-                }
-
-                return Construct(TypeConverter.ToNumber(v));
-            }
-            else
-            {
-                return Construct(ConstructTimeValue(arguments, useUtc: false));
-            }
         }
 
         private double ConstructTimeValue(JsValue[] arguments, bool useUtc)
@@ -149,14 +151,14 @@ namespace Jint.Native.Date
             }
 
             var y = TypeConverter.ToNumber(arguments[0]);
-            var m = (int)TypeConverter.ToInteger(arguments[1]);
-            var dt = arguments.Length > 2 ? (int)TypeConverter.ToInteger(arguments[2]) : 1;
-            var h = arguments.Length > 3 ? (int)TypeConverter.ToInteger(arguments[3]) : 0;
-            var min = arguments.Length > 4 ? (int)TypeConverter.ToInteger(arguments[4]) : 0;
-            var s = arguments.Length > 5 ? (int)TypeConverter.ToInteger(arguments[5]) : 0;
-            var milli = arguments.Length > 6 ? (int)TypeConverter.ToInteger(arguments[6]) : 0;
+            var m = (int) TypeConverter.ToInteger(arguments[1]);
+            var dt = arguments.Length > 2 ? (int) TypeConverter.ToInteger(arguments[2]) : 1;
+            var h = arguments.Length > 3 ? (int) TypeConverter.ToInteger(arguments[3]) : 0;
+            var min = arguments.Length > 4 ? (int) TypeConverter.ToInteger(arguments[4]) : 0;
+            var s = arguments.Length > 5 ? (int) TypeConverter.ToInteger(arguments[5]) : 0;
+            var milli = arguments.Length > 6 ? (int) TypeConverter.ToInteger(arguments[6]) : 0;
 
-            for (int i = 2; i < arguments.Length; i++)
+            for (var i = 2; i < arguments.Length; i++)
             {
                 if (double.IsNaN(TypeConverter.ToNumber(arguments[i])))
                 {
@@ -164,7 +166,7 @@ namespace Jint.Native.Date
                 }
             }
 
-            if ((!double.IsNaN(y)) && (0 <= TypeConverter.ToInteger(y)) && (TypeConverter.ToInteger(y) <= 99))
+            if (!double.IsNaN(y) && (0 <= TypeConverter.ToInteger(y)) && (TypeConverter.ToInteger(y) <= 99))
             {
                 y += 1900;
             }
@@ -175,8 +177,6 @@ namespace Jint.Native.Date
             return useUtc ? finalDate : PrototypeObject.Utc(finalDate);
         }
 
-        public DatePrototype PrototypeObject { get; private set; }
-
         public DateInstance Construct(DateTimeOffset value)
         {
             return Construct(value.UtcDateTime);
@@ -185,11 +185,11 @@ namespace Jint.Native.Date
         public DateInstance Construct(DateTime value)
         {
             var instance = new DateInstance(Engine)
-                {
-                    Prototype = PrototypeObject,
-                    PrimitiveValue = FromDateTime(value),
-                    Extensible = true
-                };
+            {
+                Prototype = PrototypeObject,
+                PrimitiveValue = FromDateTime(value),
+                Extensible = true
+            };
 
             return instance;
         }
@@ -197,11 +197,11 @@ namespace Jint.Native.Date
         public DateInstance Construct(double time)
         {
             var instance = new DateInstance(Engine)
-                {
-                    Prototype = PrototypeObject,
-                    PrimitiveValue = TimeClip(time),
-                    Extensible = true
-                };
+            {
+                Prototype = PrototypeObject,
+                PrimitiveValue = TimeClip(time),
+                Extensible = true
+            };
 
             return instance;
         }
@@ -223,7 +223,7 @@ namespace Jint.Native.Date
 
         public double FromDateTime(DateTime dt)
         {
-            var convertToUtcAfter = (dt.Kind == DateTimeKind.Unspecified);
+            var convertToUtcAfter = dt.Kind == DateTimeKind.Unspecified;
 
             var dateAsUtc = dt.Kind == DateTimeKind.Local
                 ? dt.ToUniversalTime()

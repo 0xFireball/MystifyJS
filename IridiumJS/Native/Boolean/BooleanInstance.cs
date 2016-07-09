@@ -12,11 +12,10 @@ namespace Jint.Native.Boolean
 
         public override string Class
         {
-            get
-            {
-                return "Boolean";
-            }
+            get { return "Boolean"; }
         }
+
+        public JsValue PrimitiveValue { get; set; }
 
         Types IPrimitiveInstance.Type
         {
@@ -27,7 +26,5 @@ namespace Jint.Native.Boolean
         {
             get { return PrimitiveValue; }
         }
-
-        public JsValue PrimitiveValue { get; set; }
     }
 }

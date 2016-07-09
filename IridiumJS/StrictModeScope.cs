@@ -4,12 +4,11 @@ namespace Jint
 {
     public class StrictModeScope : IDisposable
     {
-        private readonly bool _strict;
+        [ThreadStatic] private static int _refCount;
+
         private readonly bool _force;
         private readonly int _forcedRefCount;
-
-        [ThreadStatic] 
-        private static int _refCount;
+        private readonly bool _strict;
 
         public StrictModeScope(bool strict = true, bool force = false)
         {
@@ -26,7 +25,17 @@ namespace Jint
             {
                 _refCount++;
             }
+        }
 
+        public static bool IsStrictModeCode
+        {
+            get { return _refCount > 0; }
+        }
+
+        public static int RefCount
+        {
+            get { return _refCount; }
+            set { _refCount = value; }
         }
 
         public void Dispose()
@@ -39,23 +48,6 @@ namespace Jint
             if (_force)
             {
                 _refCount = _forcedRefCount;
-            } 
-        }
-
-        public static bool IsStrictModeCode
-        {
-            get { return _refCount > 0; }
-        }
-
-        public static int RefCount
-        {
-            get
-            {
-                return _refCount;
-            }
-            set
-            {
-                _refCount = value;
             }
         }
     }

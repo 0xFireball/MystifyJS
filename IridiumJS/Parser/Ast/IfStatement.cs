@@ -2,8 +2,8 @@ namespace Jint.Parser.Ast
 {
     public class IfStatement : Statement
     {
-        public Expression Test;
-        public Statement Consequent;
         public Statement Alternate;
+        public Statement Consequent;
+        public Expression Test;
     }
 }

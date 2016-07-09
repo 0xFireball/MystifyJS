@@ -29,12 +29,24 @@
         public static string StrictFunctionName = "Function name may not be eval or arguments in strict mode";
         public static string StrictOctalLiteral = "Octal literals are not allowed in strict mode.";
         public static string StrictDelete = "Delete of an unqualified identifier in strict mode.";
-        public static string StrictDuplicateProperty = "Duplicate data property in object literal not allowed in strict mode";
-        public static string AccessorDataProperty = "Object literal may not have data and accessor property with the same name";
-        public static string AccessorGetSet = "Object literal may not have multiple get/set accessors with the same name";
+
+        public static string StrictDuplicateProperty =
+            "Duplicate data property in object literal not allowed in strict mode";
+
+        public static string AccessorDataProperty =
+            "Object literal may not have data and accessor property with the same name";
+
+        public static string AccessorGetSet =
+            "Object literal may not have multiple get/set accessors with the same name";
+
         public static string StrictLHSAssignment = "Assignment to eval or arguments is not allowed in strict mode";
-        public static string StrictLHSPostfix = "Postfix increment/decrement may not have eval or arguments operand in strict mode";
-        public static string StrictLHSPrefix = "Prefix increment/decrement may not have eval or arguments operand in strict mode";
+
+        public static string StrictLHSPostfix =
+            "Postfix increment/decrement may not have eval or arguments operand in strict mode";
+
+        public static string StrictLHSPrefix =
+            "Prefix increment/decrement may not have eval or arguments operand in strict mode";
+
         public static string StrictReservedWord = "Use of future reserved word in strict mode";
-    };
+    }
 }

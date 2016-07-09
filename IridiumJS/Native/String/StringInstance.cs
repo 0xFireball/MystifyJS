@@ -13,11 +13,10 @@ namespace Jint.Native.String
 
         public override string Class
         {
-            get
-            {
-                return "String";
-            }
+            get { return "String"; }
         }
+
+        public JsValue PrimitiveValue { get; set; }
 
         Types IPrimitiveInstance.Type
         {
@@ -29,22 +28,19 @@ namespace Jint.Native.String
             get { return PrimitiveValue; }
         }
 
-        public JsValue PrimitiveValue { get; set; }
-
         private static bool IsInt(double d)
         {
             if (d >= long.MinValue && d <= long.MaxValue)
             {
-                var l = (long)d;
+                var l = (long) d;
                 return l >= int.MinValue && l <= int.MaxValue;
             }
-            else 
-                return false;
+            return false;
         }
 
         public override PropertyDescriptor GetOwnProperty(string propertyName)
         {
-            if(propertyName == "Infinity")
+            if (propertyName == "Infinity")
                 return PropertyDescriptor.Undefined;
 
             var desc = base.GetOwnProperty(propertyName);
@@ -60,10 +56,10 @@ namespace Jint.Native.String
 
             var str = PrimitiveValue;
             var dIndex = TypeConverter.ToInteger(propertyName);
-            if(!IsInt(dIndex))
+            if (!IsInt(dIndex))
                 return PropertyDescriptor.Undefined;
 
-            var index = (int)dIndex;
+            var index = (int) dIndex;
             var len = str.AsString().Length;
             if (len <= index || index < 0)
             {

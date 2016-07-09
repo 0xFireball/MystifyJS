@@ -10,10 +10,10 @@ namespace Jint.Parser.Ast
 
     public class LogicalExpression : Expression
     {
-        public LogicalOperator Operator;
         public Expression Left;
+        public LogicalOperator Operator;
         public Expression Right;
-        
+
         public static LogicalOperator ParseLogicalOperator(string op)
         {
             switch (op)

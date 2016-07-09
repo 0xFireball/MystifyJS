@@ -15,11 +15,10 @@ namespace Jint.Native.Number
 
         public override string Class
         {
-            get
-            {
-                return "Number";
-            }
+            get { return "Number"; }
         }
+
+        public JsValue PrimitiveValue { get; set; }
 
         Types IPrimitiveInstance.Type
         {
@@ -31,8 +30,6 @@ namespace Jint.Native.Number
             get { return PrimitiveValue; }
         }
 
-        public JsValue PrimitiveValue { get; set; }
-
         public static bool IsNegativeZero(double x)
         {
             return x == 0 && BitConverter.DoubleToInt64Bits(x) == NegativeZeroBits;
@@ -42,6 +39,5 @@ namespace Jint.Native.Number
         {
             return x == 0 && BitConverter.DoubleToInt64Bits(x) != NegativeZeroBits;
         }
-
     }
 }

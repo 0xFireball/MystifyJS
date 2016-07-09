@@ -40,11 +40,8 @@ namespace Jint.Native.Function
 
         private JsValue Bind(JsValue thisObj, JsValue[] arguments)
         {
-            var target = thisObj.TryCast<ICallable>(x =>
-            {
-                throw new JavaScriptException(Engine.TypeError);
-            });
-            
+            var target = thisObj.TryCast<ICallable>(x => { throw new JavaScriptException(Engine.TypeError); });
+
             var thisArg = arguments.At(0);
             var f = new BindFunctionInstance(Engine) {Extensible = true};
             f.TargetFunction = thisObj;
@@ -56,13 +53,13 @@ namespace Jint.Native.Function
             if (o != null)
             {
                 var l = TypeConverter.ToNumber(o.Get("length")) - (arguments.Length - 1);
-                f.FastAddProperty("length", System.Math.Max(l, 0), false, false, false); 
+                f.FastAddProperty("length", System.Math.Max(l, 0), false, false, false);
             }
             else
             {
-                f.FastAddProperty("length", 0, false, false, false); 
+                f.FastAddProperty("length", 0, false, false, false);
             }
-            
+
 
             var thrower = Engine.Function.ThrowTypeError;
             f.DefineOwnProperty("caller", new PropertyDescriptor(thrower, thrower, false, false), false);
@@ -78,10 +75,10 @@ namespace Jint.Native.Function
 
             if (func == null)
             {
-                throw new JavaScriptException(Engine.TypeError, "Function object expected.");       
+                throw new JavaScriptException(Engine.TypeError, "Function object expected.");
             }
 
-            return System.String.Format("function() {{ ... }}");
+            return "function() { ... }";
         }
 
         public JsValue Apply(JsValue thisObject, JsValue[] arguments)
@@ -107,11 +104,11 @@ namespace Jint.Native.Function
             }
 
             var len = argArrayObj.Get("length").AsNumber();
-            uint n = TypeConverter.ToUint32(len);
+            var n = TypeConverter.ToUint32(len);
             var argList = new List<JsValue>();
-            for (int index = 0; index < n; index++)
+            for (var index = 0; index < n; index++)
             {
-                string indexName = index.ToString();
+                var indexName = index.ToString();
                 var nextArg = argArrayObj.Get(indexName);
                 argList.Add(nextArg);
             }

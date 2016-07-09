@@ -9,7 +9,10 @@ namespace Jint.Native.Array
     public class ArrayInstance : ObjectInstance
     {
         private readonly Engine _engine;
-        private IDictionary<uint, PropertyDescriptor> _array = new MruPropertyCache2<uint, PropertyDescriptor>();
+
+        private readonly IDictionary<uint, PropertyDescriptor> _array =
+            new MruPropertyCache2<uint, PropertyDescriptor>();
+
         private PropertyDescriptor _length;
 
         public ArrayInstance(Engine engine) : base(engine)
@@ -19,10 +22,7 @@ namespace Jint.Native.Array
 
         public override string Class
         {
-            get
-            {
-                return "Array";
-            }
+            get { return "Array"; }
         }
 
         /// Implementation from ObjectInstance official specs as the one 
@@ -44,7 +44,7 @@ namespace Jint.Native.Array
 
             if (ownDesc.IsDataDescriptor())
             {
-                var valueDesc = new PropertyDescriptor(value: value, writable: null, enumerable: null, configurable: null);
+                var valueDesc = new PropertyDescriptor(value, null, null, null);
                 DefineOwnProperty(propertyName, valueDesc, throwOnError);
                 return;
             }
@@ -55,7 +55,7 @@ namespace Jint.Native.Array
             if (desc.IsAccessorDescriptor())
             {
                 var setter = desc.Set.Value.TryCast<ICallable>();
-                setter.Call(new JsValue(this), new[] { value });
+                setter.Call(new JsValue(this), new[] {value});
             }
             else
             {
@@ -67,7 +67,7 @@ namespace Jint.Native.Array
         public override bool DefineOwnProperty(string propertyName, PropertyDescriptor desc, bool throwOnError)
         {
             var oldLenDesc = GetOwnProperty("length");
-            var oldLen = (uint)TypeConverter.ToNumber(oldLenDesc.Value.Value);
+            var oldLen = (uint) TypeConverter.ToNumber(oldLenDesc.Value.Value);
             uint index;
 
             if (propertyName == "length")
@@ -78,7 +78,7 @@ namespace Jint.Native.Array
                 }
 
                 var newLenDesc = new PropertyDescriptor(desc);
-                uint newLen = TypeConverter.ToUint32(desc.Value.Value);
+                var newLen = TypeConverter.ToUint32(desc.Value.Value);
                 if (newLen != TypeConverter.ToNumber(desc.Value.Value))
                 {
                     throw new JavaScriptException(_engine.RangeError);
@@ -174,11 +174,11 @@ namespace Jint.Native.Array
                 }
                 if (!newWritable)
                 {
-                    DefineOwnProperty("length", new PropertyDescriptor(value: null, writable: false, enumerable: null, configurable: null), false);
+                    DefineOwnProperty("length", new PropertyDescriptor(null, false, null, null), false);
                 }
                 return true;
             }
-            else if (IsArrayIndex(propertyName, out index))
+            if (IsArrayIndex(propertyName, out index))
             {
                 if (index >= oldLen && !oldLenDesc.Writable.Value)
                 {
@@ -217,12 +217,12 @@ namespace Jint.Native.Array
 
         public override IEnumerable<KeyValuePair<string, PropertyDescriptor>> GetOwnProperties()
         {
-            foreach(var entry in _array)
+            foreach (var entry in _array)
             {
                 yield return new KeyValuePair<string, PropertyDescriptor>(entry.Key.ToString(), entry.Value);
             }
 
-            foreach(var entry in base.GetOwnProperties())
+            foreach (var entry in base.GetOwnProperties())
             {
                 yield return entry;
             }
@@ -238,10 +238,7 @@ namespace Jint.Native.Array
                 {
                     return result;
                 }
-                else
-                {
-                    return PropertyDescriptor.Undefined;
-                } 
+                return PropertyDescriptor.Undefined;
             }
 
             return base.GetOwnProperty(propertyName);
@@ -256,13 +253,13 @@ namespace Jint.Native.Array
             }
             else
             {
-                if(propertyName == "length")
+                if (propertyName == "length")
                 {
                     _length = desc;
                 }
 
                 base.SetOwnProperty(propertyName, desc);
-            }            
+            }
         }
 
         public override bool HasOwnProperty(string p)
@@ -279,7 +276,7 @@ namespace Jint.Native.Array
         public override void RemoveOwnProperty(string p)
         {
             uint index;
-            if(IsArrayIndex(p, out index))
+            if (IsArrayIndex(p, out index))
             {
                 _array.Remove(index);
             }
@@ -299,26 +296,26 @@ namespace Jint.Native.Array
 
         internal static uint ParseArrayIndex(string p)
         {
-            int d = p[0] - '0';
+            var d = p[0] - '0';
 
             if (d < 0 || d > 9)
             {
                 return uint.MaxValue;
             }
 
-            if(d == 0 && p.Length > 1)
+            if (d == 0 && p.Length > 1)
             {
                 // If p is a number that start with '0' and is not '0' then
                 // its ToString representation can't be the same a p. This is 
                 // not a valid array index. '01' !== ToString(ToUInt32('01'))
                 // http://www.ecma-international.org/ecma-262/5.1/#sec-15.4
 
-                return uint.MaxValue; 
+                return uint.MaxValue;
             }
 
-            ulong result = (uint)d;
+            ulong result = (uint) d;
 
-            for (int i = 1; i < p.Length; i++)
+            for (var i = 1; i < p.Length; i++)
             {
                 d = p[i] - '0';
 
@@ -327,15 +324,15 @@ namespace Jint.Native.Array
                     return uint.MaxValue;
                 }
 
-                result = result * 10 + (uint)d;
-                
+                result = result*10 + (uint) d;
+
                 if (result >= uint.MaxValue)
                 {
                     return uint.MaxValue;
                 }
             }
 
-            return (uint)result;
+            return (uint) result;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Jint.Runtime
     public class TypeConverter
     {
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.1
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.1
         /// </summary>
         /// <param name="input"></param>
         /// <param name="preferredType"></param>
@@ -44,9 +44,9 @@ namespace Jint.Runtime
             return input.AsObject().DefaultValue(preferredType);
         }
 
-    
+
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.2
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
@@ -61,7 +61,7 @@ namespace Jint.Runtime
             {
                 return false;
             }
-            
+
             if (o.IsBoolean())
             {
                 return o.AsBoolean();
@@ -74,30 +74,24 @@ namespace Jint.Runtime
                 {
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
+                return true;
             }
 
             if (o.IsString())
             {
                 var s = o.AsString();
-                if (String.IsNullOrEmpty(s))
+                if (string.IsNullOrEmpty(s))
                 {
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
+                return true;
             }
 
             return true;
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.3
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.3
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
@@ -107,8 +101,8 @@ namespace Jint.Runtime
             if (o.IsNumber())
             {
                 return o.AsNumber();
-            } 
-            
+            }
+
             if (o.IsObject())
             {
                 var p = o.AsObject() as IPrimitiveInstance;
@@ -137,7 +131,7 @@ namespace Jint.Runtime
             {
                 var s = StringPrototype.TrimEx(o.AsString());
 
-                if (String.IsNullOrEmpty(s))
+                if (string.IsNullOrEmpty(s))
                 {
                     return 0;
                 }
@@ -163,7 +157,7 @@ namespace Jint.Runtime
                             return double.NaN;
                         }
 
-                        double n = Double.Parse(s,
+                        var n = double.Parse(s,
                             NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign |
                             NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite |
                             NumberStyles.AllowExponent, CultureInfo.InvariantCulture);
@@ -175,8 +169,8 @@ namespace Jint.Runtime
                         return n;
                     }
 
-                    int i = int.Parse(s.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-                 
+                    var i = int.Parse(s.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+
                     return i;
                 }
                 catch (OverflowException)
@@ -193,7 +187,7 @@ namespace Jint.Runtime
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.4
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.4
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
@@ -205,47 +199,47 @@ namespace Jint.Runtime
             {
                 return 0;
             }
-            
+
             if (number.Equals(0) || double.IsInfinity(number))
             {
                 return number;
             }
 
-            return (long)number;
+            return (long) number;
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.5
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.5
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
         public static int ToInt32(JsValue o)
         {
-            return (int)(uint)ToNumber(o);
+            return (int) (uint) ToNumber(o);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.6
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.6
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
         public static uint ToUint32(JsValue o)
         {
-            return (uint)ToNumber(o);
+            return (uint) ToNumber(o);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.7
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.7
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
         public static ushort ToUint16(JsValue o)
         {
-            return (ushort)(uint)ToNumber(o);
+            return (ushort) (uint) ToNumber(o);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-9.8
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-9.8
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
@@ -274,7 +268,7 @@ namespace Jint.Runtime
             {
                 return Null.Text;
             }
-            
+
             if (o.IsBoolean())
             {
                 return o.AsBoolean() ? "true" : "false";
@@ -368,7 +362,7 @@ namespace Jint.Runtime
                 {
                     var arg = objectArguments[i];
                     var paramType = parameters[i].ParameterType;
-                    
+
                     if (arg == null)
                     {
                         if (!TypeIsNullable(paramType))

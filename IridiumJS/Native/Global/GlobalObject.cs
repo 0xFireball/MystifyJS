@@ -10,6 +10,18 @@ namespace Jint.Native.Global
 {
     public sealed class GlobalObject : ObjectInstance
     {
+        private const string HexaMap = "0123456789ABCDEF";
+
+        private static readonly char[] UriReserved = {';', '/', '?', ':', '@', '&', '=', '+', '$', ','};
+
+        private static readonly char[] UriUnescaped =
+        {
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+            'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_', '.', '!',
+            '~', '*', '\'', '(', ')'
+        };
+
         private GlobalObject(Engine engine) : base(engine)
         {
         }
@@ -56,27 +68,29 @@ namespace Jint.Native.Global
             FastAddProperty("isNaN", new ClrFunctionInstance(Engine, IsNaN, 1), true, false, true);
             FastAddProperty("isFinite", new ClrFunctionInstance(Engine, IsFinite, 1), true, false, true);
             FastAddProperty("decodeURI", new ClrFunctionInstance(Engine, DecodeUri, 1), true, false, true);
-            FastAddProperty("decodeURIComponent", new ClrFunctionInstance(Engine, DecodeUriComponent, 1), true, false, true);
+            FastAddProperty("decodeURIComponent", new ClrFunctionInstance(Engine, DecodeUriComponent, 1), true, false,
+                true);
             FastAddProperty("encodeURI", new ClrFunctionInstance(Engine, EncodeUri, 1), true, false, true);
-            FastAddProperty("encodeURIComponent", new ClrFunctionInstance(Engine, EncodeUriComponent, 1), true, false, true);
+            FastAddProperty("encodeURIComponent", new ClrFunctionInstance(Engine, EncodeUriComponent, 1), true, false,
+                true);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.2
         /// </summary>
         public static JsValue ParseInt(JsValue thisObject, JsValue[] arguments)
         {
-            string inputString = TypeConverter.ToString(arguments.At(0));
+            var inputString = TypeConverter.ToString(arguments.At(0));
             var s = StringPrototype.TrimEx(inputString);
 
             var sign = 1;
-            if (!System.String.IsNullOrEmpty(s))
+            if (!string.IsNullOrEmpty(s))
             {
                 if (s[0] == '-')
                 {
                     sign = -1;
                 }
-                
+
                 if (s[0] == '-' || s[0] == '+')
                 {
                     s = s.Substring(1);
@@ -85,7 +99,7 @@ namespace Jint.Native.Global
 
             var stripPrefix = true;
 
-            int radix = arguments.Length > 1 ? TypeConverter.ToInt32(arguments[1]) : 0;
+            var radix = arguments.Length > 1 ? TypeConverter.ToInt32(arguments[1]) : 0;
 
             if (radix == 0)
             {
@@ -102,7 +116,7 @@ namespace Jint.Native.Global
             {
                 return double.NaN;
             }
-            else if(radix != 16)
+            else if (radix != 16)
             {
                 stripPrefix = false;
             }
@@ -114,13 +128,12 @@ namespace Jint.Native.Global
 
             try
             {
-                return sign * Parse(s, radix).AsNumber();
+                return sign*Parse(s, radix).AsNumber();
             }
             catch
             {
                 return double.NaN;
             }
-
         }
 
         private static JsValue Parse(string number, int radix)
@@ -132,10 +145,10 @@ namespace Jint.Native.Global
 
             double result = 0;
             double pow = 1;
-            for (int i = number.Length - 1; i >= 0 ; i--)
+            for (var i = number.Length - 1; i >= 0; i--)
             {
-                double index = double.NaN;
-                char digit = number[i];
+                var index = double.NaN;
+                var digit = number[i];
 
                 if (digit >= '0' && digit <= '9')
                 {
@@ -156,14 +169,14 @@ namespace Jint.Native.Global
                 }
 
                 result += index*pow;
-                pow = pow * radix;
+                pow = pow*radix;
             }
 
             return result;
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.3
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.3
         /// </summary>
         public static JsValue ParseFloat(JsValue thisObject, JsValue[] arguments)
         {
@@ -171,7 +184,7 @@ namespace Jint.Native.Global
             var trimmedString = StringPrototype.TrimStartEx(inputString);
 
             var sign = 1;
-            if (trimmedString.Length > 0 )
+            if (trimmedString.Length > 0)
             {
                 if (trimmedString[0] == '-')
                 {
@@ -196,7 +209,7 @@ namespace Jint.Native.Global
 
             var separator = (char) 0;
 
-            bool isNan = true;
+            var isNan = true;
             decimal number = 0;
             var i = 0;
             for (; i < trimmedString.Length; i++)
@@ -208,8 +221,8 @@ namespace Jint.Native.Global
                     separator = '.';
                     break;
                 }
-                
-                if(c == 'e' || c == 'E')
+
+                if (c == 'e' || c == 'E')
                 {
                     i++;
                     separator = 'e';
@@ -221,7 +234,7 @@ namespace Jint.Native.Global
                 if (digit >= 0 && digit <= 9)
                 {
                     isNan = false;
-                    number = number * 10 + digit;
+                    number = number*10 + digit;
                 }
                 else
                 {
@@ -229,7 +242,7 @@ namespace Jint.Native.Global
                 }
             }
 
-            decimal pow = 0.1m;
+            var pow = 0.1m;
 
             if (separator == '.')
             {
@@ -242,7 +255,7 @@ namespace Jint.Native.Global
                     if (digit >= 0 && digit <= 9)
                     {
                         isNan = false;
-                        number += digit * pow;
+                        number += digit*pow;
                         pow *= 0.1m;
                     }
                     else if (c == 'e' || c == 'E')
@@ -284,7 +297,7 @@ namespace Jint.Native.Global
 
                     if (digit >= 0 && digit <= 9)
                     {
-                        exp = exp * 10 + digit;
+                        exp = exp*10 + digit;
                     }
                     else
                     {
@@ -309,12 +322,12 @@ namespace Jint.Native.Global
                     number /= 10;
                 }
             }
-            
-            return (double) (sign * number);
+
+            return (double) (sign*number);
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.4
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.4
         /// </summary>
         public static JsValue IsNaN(JsValue thisObject, JsValue[] arguments)
         {
@@ -323,7 +336,7 @@ namespace Jint.Native.Global
         }
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.5
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.2.5
         /// </summary>
         public static JsValue IsFinite(JsValue thisObject, JsValue[] arguments)
         {
@@ -341,18 +354,6 @@ namespace Jint.Native.Global
             return true;
         }
 
-        private static readonly char[] UriReserved = {';', '/', '?', ':', '@', '&', '=', '+', '$', ','};
-
-        private static readonly char[] UriUnescaped =
-        {
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-            'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_', '.', '!',
-            '~', '*', '\'', '(', ')'
-        };
-
-        private const string HexaMap = "0123456789ABCDEF";
-
         private static bool IsValidHexaChar(char c)
         {
             return
@@ -360,8 +361,9 @@ namespace Jint.Native.Global
                 c >= 'a' && c <= 'f' ||
                 c >= 'A' && c <= 'F';
         }
+
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.3.2
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.3.2
         /// </summary>
         /// <param name="thisObject"></param>
         /// <param name="arguments"></param>
@@ -369,14 +371,14 @@ namespace Jint.Native.Global
         public JsValue EncodeUri(JsValue thisObject, JsValue[] arguments)
         {
             var uriString = TypeConverter.ToString(arguments.At(0));
-            var unescapedUriSet = UriReserved.Concat(UriUnescaped).Concat(new [] {'#'}).ToArray();
+            var unescapedUriSet = UriReserved.Concat(UriUnescaped).Concat(new[] {'#'}).ToArray();
 
             return Encode(uriString, unescapedUriSet);
         }
 
 
         /// <summary>
-        /// http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.3.4
+        ///     http://www.ecma-international.org/ecma-262/5.1/#sec-15.1.3.4
         /// </summary>
         /// <param name="thisObject"></param>
         /// <param name="arguments"></param>
@@ -392,7 +394,7 @@ namespace Jint.Native.Global
         {
             var strLen = uriString.Length;
             var r = new StringBuilder(uriString.Length);
-            for (var k = 0; k< strLen; k++)
+            for (var k = 0; k < strLen; k++)
             {
                 var c = uriString[k];
                 if (System.Array.IndexOf(unescapedUriSet, c) != -1)
@@ -425,7 +427,7 @@ namespace Jint.Native.Global
                             throw new JavaScriptException(Engine.UriError);
                         }
 
-                        v = (c - 0xD800) * 0x400 + (kChar - 0xDC00) + 0x10000;
+                        v = (c - 0xD800)*0x400 + (kChar - 0xDC00) + 0x10000;
                     }
 
                     byte[] octets;
@@ -433,15 +435,15 @@ namespace Jint.Native.Global
                     if (v >= 0 && v <= 0x007F)
                     {
                         // 00000000 0zzzzzzz -> 0zzzzzzz
-                        octets = new[] { (byte)v };
+                        octets = new[] {(byte) v};
                     }
                     else if (v <= 0x07FF)
                     {
                         // 00000yyy yyzzzzzz ->	110yyyyy ; 10zzzzzz
                         octets = new[]
                         {
-                            (byte)(0xC0 | (v >> 6)), 
-                            (byte)(0x80 | (v & 0x3F))
+                            (byte) (0xC0 | (v >> 6)),
+                            (byte) (0x80 | (v & 0x3F))
                         };
                     }
                     else if (v <= 0xD7FF)
@@ -449,9 +451,9 @@ namespace Jint.Native.Global
                         // xxxxyyyy yyzzzzzz -> 1110xxxx; 10yyyyyy; 10zzzzzz	
                         octets = new[]
                         {
-                            (byte)(0xE0 | (v >> 12)), 
-                            (byte)(0x80 | ((v >> 6) & 0x3F)), 
-                            (byte)(0x80 | (v & 0x3F))
+                            (byte) (0xE0 | (v >> 12)),
+                            (byte) (0x80 | ((v >> 6) & 0x3F)),
+                            (byte) (0x80 | (v & 0x3F))
                         };
                     }
                     else if (v <= 0xDFFF)
@@ -481,8 +483,8 @@ namespace Jint.Native.Global
                     for (var j = 0; j < octets.Length; j++)
                     {
                         var jOctet = octets[j];
-                        var x1 = HexaMap[jOctet / 16];
-                        var x2 = HexaMap[jOctet % 16];
+                        var x1 = HexaMap[jOctet/16];
+                        var x2 = HexaMap[jOctet%16];
                         r.Append('%').Append(x1).Append(x2);
                     }
                 }
@@ -494,7 +496,7 @@ namespace Jint.Native.Global
         public JsValue DecodeUri(JsValue thisObject, JsValue[] arguments)
         {
             var uriString = TypeConverter.ToString(arguments.At(0));
-            var reservedUriSet = UriReserved.Concat(new[] { '#' }).ToArray();
+            var reservedUriSet = UriReserved.Concat(new[] {'#'}).ToArray();
 
             return Decode(uriString, reservedUriSet);
         }
@@ -528,7 +530,7 @@ namespace Jint.Native.Global
 
                     if (!IsValidHexaChar(uriString[k + 1]) || !IsValidHexaChar(uriString[k + 2]))
                     {
-                        throw new JavaScriptException(Engine.UriError);    
+                        throw new JavaScriptException(Engine.UriError);
                     }
 
                     var B = Convert.ToByte(uriString[k + 1].ToString() + uriString[k + 2], 16);
@@ -555,16 +557,16 @@ namespace Jint.Native.Global
                         {
                             throw new JavaScriptException(Engine.UriError);
                         }
-                        
+
                         var Octets = new byte[n];
                         Octets[0] = B;
-                        
-                        if (k + (3*(n - 1)) >= strLen)
+
+                        if (k + 3*(n - 1) >= strLen)
                         {
                             throw new JavaScriptException(Engine.UriError);
                         }
-                        
-                        for(var j=1; j <n; j++)
+
+                        for (var j = 1; j < n; j++)
                         {
                             k++;
                             if (uriString[k] != '%')
@@ -594,9 +596,8 @@ namespace Jint.Native.Global
                     }
                 }
             }
-            
+
             return R.ToString();
         }
-
     }
 }
