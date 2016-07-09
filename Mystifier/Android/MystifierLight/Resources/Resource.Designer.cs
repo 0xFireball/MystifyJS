@@ -113,35 +113,47 @@ namespace MystifierLight
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080008
-			public const int btnBackToEditor = 2131230728;
+			// aapt resource value: 0x7f090009
+			public const int btnBackToEditor = 2131296265;
 			
-			// aapt resource value: 0x7f080002
-			public const int btnBeautify = 2131230722;
+			// aapt resource value: 0x7f090002
+			public const int btnBeautify = 2131296258;
 			
-			// aapt resource value: 0x7f080001
-			public const int btnExecute = 2131230721;
+			// aapt resource value: 0x7f090001
+			public const int btnExecute = 2131296257;
 			
-			// aapt resource value: 0x7f080006
-			public const int btnLaunchEditor = 2131230726;
+			// aapt resource value: 0x7f090007
+			public const int btnLaunchEditor = 2131296263;
 			
-			// aapt resource value: 0x7f080005
-			public const int infoTv = 2131230725;
+			// aapt resource value: 0x7f090003
+			public const int btnTools = 2131296259;
 			
-			// aapt resource value: 0x7f080000
-			public const int jsEditor = 2131230720;
+			// aapt resource value: 0x7f090006
+			public const int infoTv = 2131296262;
 			
-			// aapt resource value: 0x7f080007
-			public const int logTxViewScrollView = 2131230727;
+			// aapt resource value: 0x7f090000
+			public const int jsEditor = 2131296256;
 			
-			// aapt resource value: 0x7f080009
-			public const int outputTxView = 2131230729;
+			// aapt resource value: 0x7f090008
+			public const int logTxViewScrollView = 2131296264;
 			
-			// aapt resource value: 0x7f080003
-			public const int textView = 2131230723;
+			// aapt resource value: 0x7f09000b
+			public const int one = 2131296267;
 			
-			// aapt resource value: 0x7f080004
-			public const int textView2 = 2131230724;
+			// aapt resource value: 0x7f09000a
+			public const int outputTxView = 2131296266;
+			
+			// aapt resource value: 0x7f090004
+			public const int textView = 2131296260;
+			
+			// aapt resource value: 0x7f090005
+			public const int textView2 = 2131296261;
+			
+			// aapt resource value: 0x7f09000d
+			public const int three = 2131296269;
+			
+			// aapt resource value: 0x7f09000c
+			public const int two = 2131296268;
 			
 			static Id()
 			{
@@ -174,6 +186,22 @@ namespace MystifierLight
 			}
 			
 			private Layout()
+			{
+			}
+		}
+		
+		public partial class Menu
+		{
+			
+			// aapt resource value: 0x7f080000
+			public const int EditorToolsMenu = 2131230720;
+			
+			static Menu()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Menu()
 			{
 			}
 		}

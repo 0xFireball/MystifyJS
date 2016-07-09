@@ -25,6 +25,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MystifierMicro", "CrossPlat
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CrossPlatform\MystifierMicro\MystifierMicro\MystifierMicro.projitems*{f3e57ea5-849b-41f0-98b4-c9474ed18bb1}*SharedItemsImports = 4
+		CrossPlatform\MystifierMicro\MystifierMicro\MystifierMicro.projitems*{5a444cd7-9c11-4af1-8609-d3d5048f9063}*SharedItemsImports = 4
 		CrossPlatform\MystifierMicro\MystifierMicro\MystifierMicro.projitems*{820dc28e-eb6f-47b8-b6c2-10ccfddda37b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

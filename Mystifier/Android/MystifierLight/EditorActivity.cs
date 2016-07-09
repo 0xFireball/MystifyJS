@@ -15,6 +15,7 @@ namespace MystifierLight
         private Button btnExecute;
         private Button btnBeautify;
         private bool _isUnsaved;
+        private Button btnTools;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -30,6 +31,15 @@ namespace MystifierLight
         {
             btnExecute.Click += BtnExecuteOnClick;
             btnBeautify.Click += BtnBeautifyOnClick;
+            btnTools.Click += BtnToolsOnClick;
+        }
+
+        private void BtnToolsOnClick(object sender, EventArgs eventArgs)
+        {
+            var popup = new PopupMenu(this, btnTools);
+            popup.MenuInflater.Inflate(Resource.Menu.EditorToolsMenu, popup.Menu);
+            //Wire popup events
+            popup.Show();
         }
 
         private async void BtnBeautifyOnClick(object sender, EventArgs eventArgs)
@@ -64,6 +74,7 @@ namespace MystifierLight
             jsEditor = FindViewById<EditText>(Resource.Id.jsEditor);
             btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
             btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
+            btnTools = FindViewById<Button>(Resource.Id.btnTools);
         }
     }
 }
