@@ -106,32 +106,32 @@
         <StackPanel Grid.Column="0">
             <Menu Margin="10,0,-0.2,0">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New..." Click="OnNewFile"/>
+                    <MenuItem Header="_New..." Click="OnNewFile" />
                     <Separator />
                     <MenuItem Header="_Open..." Click="OnLoadFile" />
                     <Separator />
-                    <MenuItem Header="_Save" Click="OnSaveFile"/>
-                    <MenuItem Header="_Save As..." Click="OnSaveFileAs"/>
+                    <MenuItem Header="_Save" Click="OnSaveFile" />
+                    <MenuItem Header="_Save As..." Click="OnSaveFileAs" />
                     <Separator />
-                    <MenuItem Header="_Exit" Click="OnClickExit"/>
+                    <MenuItem Header="_Exit" Click="OnClickExit" />
                 </MenuItem>
                 <MenuItem Header="_Tools">
                     <MenuItem Header="DarkMagic">
-                        <MenuItem Header="Obfuscate" Click="BtnObfuscate_OnClick"/>
+                        <MenuItem Header="Obfuscate" Click="BtnObfuscate_OnClick" />
                     </MenuItem>
-                    <MenuItem Header="Beautify (Shift+Alt+F)" Click="BtnBeautify_OnClick"/>
-                    <MenuItem Header="Execute (F5)" Click="BtnLocalVmExecute_OnClick"/>
+                    <MenuItem Header="Beautify (Shift+Alt+F)" Click="BtnBeautify_OnClick" />
+                    <MenuItem Header="Execute (F5)" Click="BtnLocalVmExecute_OnClick" />
                     <Separator />
                     <MenuItem Header="Open from URL" Click="OnOpenFromUrl" />
                 </MenuItem>
                 <MenuItem Header="_GitHub" Name="menuGitHub" IsEnabled="False">
-                    <MenuItem Header="[auth]" Name="menuGitHubAuth" Click="ToggleGitHubAuth"/>
+                    <MenuItem Header="[auth]" Name="menuGitHubAuth" Click="ToggleGitHubAuth" />
                     <Separator />
-                    <MenuItem Header="Create Gist" IsEnabled="False"  Click="OnCreateGist" Name="btnCreateGist"/>
-                    <MenuItem Header="Open Gist" IsEnabled="False" Click="OnOpenGist"  Name="btnOpenGist"/>
+                    <MenuItem Header="Create Gist" IsEnabled="False"  Click="OnCreateGist" Name="btnCreateGist" />
+                    <MenuItem Header="Open Gist" IsEnabled="False" Click="OnOpenGist"  Name="btnOpenGist" />
                 </MenuItem>
                 <MenuItem Header="_Help">
-                    <MenuItem Header="About" Click="MenuItem_OnClick"/>
+                    <MenuItem Header="About" Click="MenuItem_OnClick" />
                 </MenuItem>
             </Menu>
         </StackPanel>
@@ -199,8 +199,7 @@
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Name="btnVersion" Content="v0.2.2" />
-            <Button Name="btnZetaPhase" Content="ExaPhaser Industries" FontSize="14" Click="BtnZetaPhase_OnClick" />
-            <Button Name="btnActivate" Content="Loading..." Click="BtnActivate_OnClick" />
+            <Button Name="btnExaPhaser" Content="ExaPhaser Industries" FontSize="14" Click="BtnExaPhaser_OnClick" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 </controls:MetroWindow>
