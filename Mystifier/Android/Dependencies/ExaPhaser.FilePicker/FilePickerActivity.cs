@@ -96,6 +96,7 @@ namespace ExaPhaser.FilePicker
             var newDirName = Intent.GetStringExtra(ExtraNewDirName);
             var initialDir = Intent.GetStringExtra(ExtraInitialDirectory);
             var filePickerMode = (FilePickerMode)Intent.GetIntExtra(ExtraMode, 1);
+            var requestDesc = Intent.GetStringExtra(RequestDescriptor);
 
             if (bundle == null)
             {
@@ -110,6 +111,7 @@ namespace ExaPhaser.FilePicker
                 {
                     var intent = new Intent();
                     intent.PutExtra(ResultSelectedDir, path);
+                    intent.PutExtra(RequestDescriptor, requestDesc); //For letting the receiver switch code paths
                     SetResult(Result.Ok, intent); // should be firstuser?
                     Finish();
                 };
