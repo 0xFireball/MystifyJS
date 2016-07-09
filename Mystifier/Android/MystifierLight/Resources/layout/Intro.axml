@@ -30,7 +30,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textAppearance="?android:attr/textAppearanceSmall"
-      android:text="MystifierLight for Android is an experimental Android port of Mystifier Studio for Desktop. It is completely free for nom-commercial use. Please be aware that this application is still largely unfinished, and you may experience a number of issues."
+      android:text="MystifierLight for Android is an experimental Android port of Mystifier Studio for Desktop. It is completely free for non-commercial use. Please be aware that this application is still largely unfinished, and you may experience a number of issues."
       android:id="@+id/infoTv"
       android:layout_below="@+id/textView"
       android:layout_alignParentStart="true" />

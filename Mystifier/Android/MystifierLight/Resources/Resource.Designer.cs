@@ -26,6 +26,65 @@ namespace MystifierLight
 		
 		public static void UpdateIdValues()
 		{
+			global::ExaPhaser.FilePicker.Resource.Color.bright_blue = global::MystifierLight.Resource.Color.bright_blue;
+			global::ExaPhaser.FilePicker.Resource.Color.custom_black = global::MystifierLight.Resource.Color.custom_black;
+			global::ExaPhaser.FilePicker.Resource.Color.dark_red = global::MystifierLight.Resource.Color.dark_red;
+			global::ExaPhaser.FilePicker.Resource.Color.dark_red_pressed = global::MystifierLight.Resource.Color.dark_red_pressed;
+			global::ExaPhaser.FilePicker.Resource.Color.lightgraybackground = global::MystifierLight.Resource.Color.lightgraybackground;
+			global::ExaPhaser.FilePicker.Resource.Color.selection_background_color = global::MystifierLight.Resource.Color.selection_background_color;
+			global::ExaPhaser.FilePicker.Resource.Color.solid_blue = global::MystifierLight.Resource.Color.solid_blue;
+			global::ExaPhaser.FilePicker.Resource.Color.solid_green = global::MystifierLight.Resource.Color.solid_green;
+			global::ExaPhaser.FilePicker.Resource.Color.solid_red = global::MystifierLight.Resource.Color.solid_red;
+			global::ExaPhaser.FilePicker.Resource.Color.solid_yellow = global::MystifierLight.Resource.Color.solid_yellow;
+			global::ExaPhaser.FilePicker.Resource.Color.whitesmoke = global::MystifierLight.Resource.Color.whitesmoke;
+			global::ExaPhaser.FilePicker.Resource.Drawable.blue = global::MystifierLight.Resource.Drawable.blue;
+			global::ExaPhaser.FilePicker.Resource.Drawable.borderless_button = global::MystifierLight.Resource.Drawable.borderless_button;
+			global::ExaPhaser.FilePicker.Resource.Drawable.filepicker_file = global::MystifierLight.Resource.Drawable.filepicker_file;
+			global::ExaPhaser.FilePicker.Resource.Drawable.filepicker_folder = global::MystifierLight.Resource.Drawable.filepicker_folder;
+			global::ExaPhaser.FilePicker.Resource.Drawable.filepicker_new_folder = global::MystifierLight.Resource.Drawable.filepicker_new_folder;
+			global::ExaPhaser.FilePicker.Resource.Drawable.filepicker_previous = global::MystifierLight.Resource.Drawable.filepicker_previous;
+			global::ExaPhaser.FilePicker.Resource.Drawable.green = global::MystifierLight.Resource.Drawable.green;
+			global::ExaPhaser.FilePicker.Resource.Drawable.red = global::MystifierLight.Resource.Drawable.red;
+			global::ExaPhaser.FilePicker.Resource.Drawable.screen_background_black = global::MystifierLight.Resource.Drawable.screen_background_black;
+			global::ExaPhaser.FilePicker.Resource.Drawable.translucent_background = global::MystifierLight.Resource.Drawable.translucent_background;
+			global::ExaPhaser.FilePicker.Resource.Drawable.transparent_background = global::MystifierLight.Resource.Drawable.transparent_background;
+			global::ExaPhaser.FilePicker.Resource.Drawable.white = global::MystifierLight.Resource.Drawable.white;
+			global::ExaPhaser.FilePicker.Resource.Drawable.yellow = global::MystifierLight.Resource.Drawable.yellow;
+			global::ExaPhaser.FilePicker.Resource.Id.btnCancel = global::MystifierLight.Resource.Id.btnCancel;
+			global::ExaPhaser.FilePicker.Resource.Id.btnConfirm = global::MystifierLight.Resource.Id.btnConfirm;
+			global::ExaPhaser.FilePicker.Resource.Id.btnCreateFolder2 = global::MystifierLight.Resource.Id.btnCreateFolder2;
+			global::ExaPhaser.FilePicker.Resource.Id.btnNavUp = global::MystifierLight.Resource.Id.btnNavUp;
+			global::ExaPhaser.FilePicker.Resource.Id.directoryInfo = global::MystifierLight.Resource.Id.directoryInfo;
+			global::ExaPhaser.FilePicker.Resource.Id.directoryList = global::MystifierLight.Resource.Id.directoryList;
+			global::ExaPhaser.FilePicker.Resource.Id.divider = global::MystifierLight.Resource.Id.divider;
+			global::ExaPhaser.FilePicker.Resource.Id.file_picker_image = global::MystifierLight.Resource.Id.file_picker_image;
+			global::ExaPhaser.FilePicker.Resource.Id.file_picker_text = global::MystifierLight.Resource.Id.file_picker_text;
+			global::ExaPhaser.FilePicker.Resource.Id.filepicker_main = global::MystifierLight.Resource.Id.filepicker_main;
+			global::ExaPhaser.FilePicker.Resource.Id.filepicker_new_folder_item = global::MystifierLight.Resource.Id.filepicker_new_folder_item;
+			global::ExaPhaser.FilePicker.Resource.Id.folderName = global::MystifierLight.Resource.Id.folderName;
+			global::ExaPhaser.FilePicker.Resource.Id.footer = global::MystifierLight.Resource.Id.footer;
+			global::ExaPhaser.FilePicker.Resource.Id.horizontalDivider = global::MystifierLight.Resource.Id.horizontalDivider;
+			global::ExaPhaser.FilePicker.Resource.Id.txtvSelectedFolder = global::MystifierLight.Resource.Id.txtvSelectedFolder;
+			global::ExaPhaser.FilePicker.Resource.Id.txtvSelectedFolderLabel = global::MystifierLight.Resource.Id.txtvSelectedFolderLabel;
+			global::ExaPhaser.FilePicker.Resource.Layout.filepicker_createfolder = global::MystifierLight.Resource.Layout.filepicker_createfolder;
+			global::ExaPhaser.FilePicker.Resource.Layout.filepicker_fragment = global::MystifierLight.Resource.Layout.filepicker_fragment;
+			global::ExaPhaser.FilePicker.Resource.Layout.filepicker_listitem = global::MystifierLight.Resource.Layout.filepicker_listitem;
+			global::ExaPhaser.FilePicker.Resource.Layout.filepicker_mainactivity = global::MystifierLight.Resource.Layout.filepicker_mainactivity;
+			global::ExaPhaser.FilePicker.Resource.Menu.filepicker_menu = global::MystifierLight.Resource.Menu.filepicker_menu;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_ApplicationName = global::MystifierLight.Resource.String.filepicker_ApplicationName;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_cancel_label = global::MystifierLight.Resource.String.filepicker_cancel_label;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_confirm_label = global::MystifierLight.Resource.String.filepicker_confirm_label;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_create_folder_error = global::MystifierLight.Resource.String.filepicker_create_folder_error;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_create_folder_error_already_exists = global::MystifierLight.Resource.String.filepicker_create_folder_error_already_exists;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_create_folder_error_no_write_access = global::MystifierLight.Resource.String.filepicker_create_folder_error_no_write_access;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_create_folder_label = global::MystifierLight.Resource.String.filepicker_create_folder_label;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_create_folder_msg = global::MystifierLight.Resource.String.filepicker_create_folder_msg;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_create_folder_success = global::MystifierLight.Resource.String.filepicker_create_folder_success;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_enter_folder_msg = global::MystifierLight.Resource.String.filepicker_enter_folder_msg;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_ok = global::MystifierLight.Resource.String.filepicker_ok;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_selected_file_label = global::MystifierLight.Resource.String.filepicker_selected_file_label;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_selected_folder_label = global::MystifierLight.Resource.String.filepicker_selected_folder_label;
+			global::ExaPhaser.FilePicker.Resource.String.filepicker_up_label = global::MystifierLight.Resource.String.filepicker_up_label;
 		}
 		
 		public partial class Attribute
@@ -44,20 +103,53 @@ namespace MystifierLight
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f040002
-			public const int accent = 2130968578;
+			// aapt resource value: 0x7f04000d
+			public const int accent = 2130968589;
 			
-			// aapt resource value: 0x7f040000
-			public const int primary = 2130968576;
+			// aapt resource value: 0x7f040009
+			public const int bright_blue = 2130968585;
 			
-			// aapt resource value: 0x7f040001
-			public const int primaryDark = 2130968577;
+			// aapt resource value: 0x7f040005
+			public const int custom_black = 2130968581;
+			
+			// aapt resource value: 0x7f040006
+			public const int dark_red = 2130968582;
+			
+			// aapt resource value: 0x7f040007
+			public const int dark_red_pressed = 2130968583;
 			
 			// aapt resource value: 0x7f040004
-			public const int splash_background = 2130968580;
+			public const int lightgraybackground = 2130968580;
+			
+			// aapt resource value: 0x7f04000b
+			public const int primary = 2130968587;
+			
+			// aapt resource value: 0x7f04000c
+			public const int primaryDark = 2130968588;
+			
+			// aapt resource value: 0x7f04000a
+			public const int selection_background_color = 2130968586;
+			
+			// aapt resource value: 0x7f040001
+			public const int solid_blue = 2130968577;
+			
+			// aapt resource value: 0x7f040002
+			public const int solid_green = 2130968578;
+			
+			// aapt resource value: 0x7f040000
+			public const int solid_red = 2130968576;
 			
 			// aapt resource value: 0x7f040003
-			public const int window_background = 2130968579;
+			public const int solid_yellow = 2130968579;
+			
+			// aapt resource value: 0x7f04000f
+			public const int splash_background = 2130968591;
+			
+			// aapt resource value: 0x7f040008
+			public const int whitesmoke = 2130968584;
+			
+			// aapt resource value: 0x7f04000e
+			public const int window_background = 2130968590;
 			
 			static Color()
 			{
@@ -72,11 +164,11 @@ namespace MystifierLight
 		public partial class Dimension
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int activity_horizontal_margin = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int activity_horizontal_margin = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int activity_vertical_margin = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int activity_vertical_margin = 2131099649;
 			
 			static Dimension()
 			{
@@ -91,14 +183,53 @@ namespace MystifierLight
 		public partial class Drawable
 		{
 			
+			// aapt resource value: 0x7f020009
+			public const int blue = 2130837513;
+			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int borderless_button = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int splash_logo = 2130837505;
+			public const int filepicker_file = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int splash_screen = 2130837506;
+			public const int filepicker_folder = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int filepicker_new_folder = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int filepicker_previous = 2130837508;
+			
+			// aapt resource value: 0x7f02000a
+			public const int green = 2130837514;
+			
+			// aapt resource value: 0x7f020005
+			public const int Icon = 2130837509;
+			
+			// aapt resource value: 0x7f020008
+			public const int red = 2130837512;
+			
+			// aapt resource value: 0x7f02000d
+			public const int screen_background_black = 2130837517;
+			
+			// aapt resource value: 0x7f020006
+			public const int splash_logo = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int splash_screen = 2130837511;
+			
+			// aapt resource value: 0x7f02000e
+			public const int translucent_background = 2130837518;
+			
+			// aapt resource value: 0x7f02000f
+			public const int transparent_background = 2130837519;
+			
+			// aapt resource value: 0x7f02000c
+			public const int white = 2130837516;
+			
+			// aapt resource value: 0x7f02000b
+			public const int yellow = 2130837515;
 			
 			static Drawable()
 			{
@@ -113,47 +244,95 @@ namespace MystifierLight
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f090009
-			public const int btnBackToEditor = 2131296265;
+			// aapt resource value: 0x7f090018
+			public const int btnBackToEditor = 2131296280;
 			
 			// aapt resource value: 0x7f090002
 			public const int btnBeautify = 2131296258;
 			
+			// aapt resource value: 0x7f090007
+			public const int btnCancel = 2131296263;
+			
+			// aapt resource value: 0x7f090008
+			public const int btnConfirm = 2131296264;
+			
+			// aapt resource value: 0x7f09000d
+			public const int btnCreateFolder2 = 2131296269;
+			
+			// aapt resource value: 0x7f09001b
+			public const int btnEdToolsOpenFile = 2131296283;
+			
+			// aapt resource value: 0x7f09001c
+			public const int btnEdToolsOpenFromUrl = 2131296284;
+			
+			// aapt resource value: 0x7f09001a
+			public const int btnEdToolsSaveFile = 2131296282;
+			
 			// aapt resource value: 0x7f090001
 			public const int btnExecute = 2131296257;
 			
-			// aapt resource value: 0x7f090007
-			public const int btnLaunchEditor = 2131296263;
+			// aapt resource value: 0x7f090016
+			public const int btnLaunchEditor = 2131296278;
+			
+			// aapt resource value: 0x7f09000a
+			public const int btnNavUp = 2131296266;
 			
 			// aapt resource value: 0x7f090003
 			public const int btnTools = 2131296259;
 			
+			// aapt resource value: 0x7f090009
+			public const int directoryInfo = 2131296265;
+			
+			// aapt resource value: 0x7f09000f
+			public const int directoryList = 2131296271;
+			
+			// aapt resource value: 0x7f09000e
+			public const int divider = 2131296270;
+			
+			// aapt resource value: 0x7f090010
+			public const int file_picker_image = 2131296272;
+			
+			// aapt resource value: 0x7f090011
+			public const int file_picker_text = 2131296273;
+			
+			// aapt resource value: 0x7f090012
+			public const int filepicker_main = 2131296274;
+			
+			// aapt resource value: 0x7f09001d
+			public const int filepicker_new_folder_item = 2131296285;
+			
+			// aapt resource value: 0x7f090004
+			public const int folderName = 2131296260;
+			
+			// aapt resource value: 0x7f090005
+			public const int footer = 2131296261;
+			
 			// aapt resource value: 0x7f090006
-			public const int infoTv = 2131296262;
+			public const int horizontalDivider = 2131296262;
+			
+			// aapt resource value: 0x7f090015
+			public const int infoTv = 2131296277;
 			
 			// aapt resource value: 0x7f090000
 			public const int jsEditor = 2131296256;
 			
-			// aapt resource value: 0x7f090008
-			public const int logTxViewScrollView = 2131296264;
+			// aapt resource value: 0x7f090017
+			public const int logTxViewScrollView = 2131296279;
 			
-			// aapt resource value: 0x7f09000b
-			public const int one = 2131296267;
+			// aapt resource value: 0x7f090019
+			public const int outputTxView = 2131296281;
 			
-			// aapt resource value: 0x7f09000a
-			public const int outputTxView = 2131296266;
+			// aapt resource value: 0x7f090013
+			public const int textView = 2131296275;
 			
-			// aapt resource value: 0x7f090004
-			public const int textView = 2131296260;
-			
-			// aapt resource value: 0x7f090005
-			public const int textView2 = 2131296261;
-			
-			// aapt resource value: 0x7f09000d
-			public const int three = 2131296269;
+			// aapt resource value: 0x7f090014
+			public const int textView2 = 2131296276;
 			
 			// aapt resource value: 0x7f09000c
-			public const int two = 2131296268;
+			public const int txtvSelectedFolder = 2131296268;
+			
+			// aapt resource value: 0x7f09000b
+			public const int txtvSelectedFolderLabel = 2131296267;
 			
 			static Id()
 			{
@@ -172,13 +351,25 @@ namespace MystifierLight
 			public const int Editor = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Intro = 2130903041;
+			public const int filepicker_createfolder = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int JExecute = 2130903042;
+			public const int filepicker_fragment = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int SplashScreen = 2130903043;
+			public const int filepicker_listitem = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int filepicker_mainactivity = 2130903044;
+			
+			// aapt resource value: 0x7f030005
+			public const int Intro = 2130903045;
+			
+			// aapt resource value: 0x7f030006
+			public const int JExecute = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int SplashScreen = 2130903047;
 			
 			static Layout()
 			{
@@ -196,6 +387,9 @@ namespace MystifierLight
 			// aapt resource value: 0x7f080000
 			public const int EditorToolsMenu = 2131230720;
 			
+			// aapt resource value: 0x7f080001
+			public const int filepicker_menu = 2131230721;
+			
 			static Menu()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -209,11 +403,53 @@ namespace MystifierLight
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int ApplicationName = 2131099649;
+			// aapt resource value: 0x7f05000f
+			public const int ApplicationName = 2131034127;
 			
-			// aapt resource value: 0x7f060000
-			public const int Hello = 2131099648;
+			// aapt resource value: 0x7f05000e
+			public const int Hello = 2131034126;
+			
+			// aapt resource value: 0x7f050000
+			public const int filepicker_ApplicationName = 2131034112;
+			
+			// aapt resource value: 0x7f050002
+			public const int filepicker_cancel_label = 2131034114;
+			
+			// aapt resource value: 0x7f050003
+			public const int filepicker_confirm_label = 2131034115;
+			
+			// aapt resource value: 0x7f05000c
+			public const int filepicker_create_folder_error = 2131034124;
+			
+			// aapt resource value: 0x7f05000b
+			public const int filepicker_create_folder_error_already_exists = 2131034123;
+			
+			// aapt resource value: 0x7f05000a
+			public const int filepicker_create_folder_error_no_write_access = 2131034122;
+			
+			// aapt resource value: 0x7f050006
+			public const int filepicker_create_folder_label = 2131034118;
+			
+			// aapt resource value: 0x7f050008
+			public const int filepicker_create_folder_msg = 2131034120;
+			
+			// aapt resource value: 0x7f050009
+			public const int filepicker_create_folder_success = 2131034121;
+			
+			// aapt resource value: 0x7f050007
+			public const int filepicker_enter_folder_msg = 2131034119;
+			
+			// aapt resource value: 0x7f050001
+			public const int filepicker_ok = 2131034113;
+			
+			// aapt resource value: 0x7f050005
+			public const int filepicker_selected_file_label = 2131034117;
+			
+			// aapt resource value: 0x7f050004
+			public const int filepicker_selected_folder_label = 2131034116;
+			
+			// aapt resource value: 0x7f05000d
+			public const int filepicker_up_label = 2131034125;
 			
 			static String()
 			{
