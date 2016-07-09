@@ -127,11 +127,14 @@
     <AndroidResource Include="Resources\menu\EditorToolsMenu.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
      Other similar extension points exist, see Microsoft.Common.targets.
 		<Target Name="BeforeBuild">
 		</Target>
 		<Target Name="AfterBuild">
 		</Target>
  -->
+  <Target Name="Obfuscate" AfterTargets="_CopyIntermediateAssemblies" Condition="'$(Configuration)' == 'Release'">
+    <Exec Command="$(ProjectDir)AdditionalTools\bin\Confuser.CLI.exe -n $(ProjectDir)AdditionalTools\obfuscateandroid.crproj" />
+  </Target>
 </Project>
