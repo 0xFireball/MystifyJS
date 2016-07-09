@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>IridiumJS</id>
+    <version>1.1</version>
+    <owners>IridiumIon Software</owners>
+    <authors>Sebastien Ros, 0xFireball</authors>
+    <description>A Javascript Interpreter for .NET based on Jint by Sebastien Ros</description>
+    <language>en-US</language>
+    <projectUrl>http://github.com/sebastienros/jint</projectUrl>
+    <releaseNotes>IridiumJS
+    </releaseNotes>
+    <tags>javascript interpreter iridiumjs</tags>
+  </metadata>
+</package>
