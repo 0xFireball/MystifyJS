@@ -134,7 +134,7 @@
 		<Target Name="AfterBuild">
 		</Target>
  -->
-  <Target Name="Obfuscate" AfterTargets="_CopyIntermediateAssemblies" Condition="'$(Configuration)' == 'Release'">
+  <Target Name="Obfuscate" AfterTargets="_LinkAssembliesShrink" Condition="'$(Configuration)' == 'Release'">
     <Exec Command="$(ProjectDir)AdditionalTools\bin\Confuser.CLI.exe -n $(ProjectDir)AdditionalTools\obfuscateandroid.crproj" />
   </Target>
 </Project>

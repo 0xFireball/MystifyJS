@@ -1,11 +1,10 @@
-<project outputDir="C:\Git\MystifyJS\Mystifier\Android\MystifierLight\bin\Release" baseDir="C:\Git\MystifyJS\Mystifier\Android\MystifierLight\bin\Release" xmlns="http://confuser.codeplex.com">
+<project outputDir="C:\Git\MystifyJS\Mystifier\Android\MystifierLight\obj\Release\android\assets" baseDir="C:\Git\MystifyJS\Mystifier\Android\MystifierLight\obj\Release\android\assets" xmlns="http://confuser.codeplex.com">
   <module path="ExaPhaser.FilePicker.dll" />
   <module path="Jint.dll" />
   <module path="Mystifier.DarkMagic.dll">
     <rule pattern="true" inherit="false">
       <protection id="anti ildasm" />
       <protection id="ctrl flow" />
-      <protection id="anti tamper" />
     </rule>
   </module>
   <module path="MystifierLight.dll" />
