@@ -25,7 +25,6 @@ namespace MystifierLight
             SetContentView(Resource.Layout.JExecute);
             _codeToExecute = Intent.GetStringExtra("code") ?? "";
             InitializeComponent();
-
             WireEvents();
 
             ExecuteLoadedCode();

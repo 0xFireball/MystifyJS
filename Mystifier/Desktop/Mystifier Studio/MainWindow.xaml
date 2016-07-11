@@ -9,7 +9,6 @@
                       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       Loaded="MainWindow_OnLoaded"
                       Closing="MainWindow_OnClosing"
-                      ContentRendered="MainWindow_OnContentRendered"
                       mc:Ignorable="d"
                       Title="Mystifier Studio" Height="509.256" Width="823.512" Icon="icon.ico">
     <Grid>

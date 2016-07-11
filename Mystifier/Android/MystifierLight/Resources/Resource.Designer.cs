@@ -85,6 +85,8 @@ namespace MystifierLight
 			global::ExaPhaser.FilePicker.Resource.String.filepicker_selected_file_label = global::MystifierLight.Resource.String.filepicker_selected_file_label;
 			global::ExaPhaser.FilePicker.Resource.String.filepicker_selected_folder_label = global::MystifierLight.Resource.String.filepicker_selected_folder_label;
 			global::ExaPhaser.FilePicker.Resource.String.filepicker_up_label = global::MystifierLight.Resource.String.filepicker_up_label;
+			global::MystifierLightEditor.Resource.String.ApplicationName = global::MystifierLight.Resource.String.ApplicationName;
+			global::MystifierLightEditor.Resource.String.Hello = global::MystifierLight.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
@@ -103,53 +105,53 @@ namespace MystifierLight
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f04000d
-			public const int accent = 2130968589;
+			// aapt resource value: 0x7f05000d
+			public const int accent = 2131034125;
 			
-			// aapt resource value: 0x7f040009
-			public const int bright_blue = 2130968585;
+			// aapt resource value: 0x7f050009
+			public const int bright_blue = 2131034121;
 			
-			// aapt resource value: 0x7f040005
-			public const int custom_black = 2130968581;
+			// aapt resource value: 0x7f050005
+			public const int custom_black = 2131034117;
 			
-			// aapt resource value: 0x7f040006
-			public const int dark_red = 2130968582;
+			// aapt resource value: 0x7f050006
+			public const int dark_red = 2131034118;
 			
-			// aapt resource value: 0x7f040007
-			public const int dark_red_pressed = 2130968583;
+			// aapt resource value: 0x7f050007
+			public const int dark_red_pressed = 2131034119;
 			
-			// aapt resource value: 0x7f040004
-			public const int lightgraybackground = 2130968580;
+			// aapt resource value: 0x7f050004
+			public const int lightgraybackground = 2131034116;
 			
-			// aapt resource value: 0x7f04000b
-			public const int primary = 2130968587;
+			// aapt resource value: 0x7f05000b
+			public const int primary = 2131034123;
 			
-			// aapt resource value: 0x7f04000c
-			public const int primaryDark = 2130968588;
+			// aapt resource value: 0x7f05000c
+			public const int primaryDark = 2131034124;
 			
-			// aapt resource value: 0x7f04000a
-			public const int selection_background_color = 2130968586;
+			// aapt resource value: 0x7f05000a
+			public const int selection_background_color = 2131034122;
 			
-			// aapt resource value: 0x7f040001
-			public const int solid_blue = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int solid_blue = 2131034113;
 			
-			// aapt resource value: 0x7f040002
-			public const int solid_green = 2130968578;
+			// aapt resource value: 0x7f050002
+			public const int solid_green = 2131034114;
 			
-			// aapt resource value: 0x7f040000
-			public const int solid_red = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int solid_red = 2131034112;
 			
-			// aapt resource value: 0x7f040003
-			public const int solid_yellow = 2130968579;
+			// aapt resource value: 0x7f050003
+			public const int solid_yellow = 2131034115;
 			
-			// aapt resource value: 0x7f04000f
-			public const int splash_background = 2130968591;
+			// aapt resource value: 0x7f05000f
+			public const int splash_background = 2131034127;
 			
-			// aapt resource value: 0x7f040008
-			public const int whitesmoke = 2130968584;
+			// aapt resource value: 0x7f050008
+			public const int whitesmoke = 2131034120;
 			
-			// aapt resource value: 0x7f04000e
-			public const int window_background = 2130968590;
+			// aapt resource value: 0x7f05000e
+			public const int window_background = 2131034126;
 			
 			static Color()
 			{
@@ -244,95 +246,98 @@ namespace MystifierLight
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f090018
-			public const int btnBackToEditor = 2131296280;
+			// aapt resource value: 0x7f090019
+			public const int btnBackToEditor = 2131296281;
 			
-			// aapt resource value: 0x7f090002
-			public const int btnBeautify = 2131296258;
-			
-			// aapt resource value: 0x7f090007
-			public const int btnCancel = 2131296263;
+			// aapt resource value: 0x7f090003
+			public const int btnBeautify = 2131296259;
 			
 			// aapt resource value: 0x7f090008
-			public const int btnConfirm = 2131296264;
+			public const int btnCancel = 2131296264;
 			
-			// aapt resource value: 0x7f09000d
-			public const int btnCreateFolder2 = 2131296269;
+			// aapt resource value: 0x7f090009
+			public const int btnConfirm = 2131296265;
 			
-			// aapt resource value: 0x7f09001b
-			public const int btnEdToolsOpenFile = 2131296283;
+			// aapt resource value: 0x7f09000e
+			public const int btnCreateFolder2 = 2131296270;
 			
 			// aapt resource value: 0x7f09001c
-			public const int btnEdToolsOpenFromUrl = 2131296284;
+			public const int btnEdToolsOpenFile = 2131296284;
 			
-			// aapt resource value: 0x7f09001a
-			public const int btnEdToolsSaveFile = 2131296282;
+			// aapt resource value: 0x7f09001d
+			public const int btnEdToolsOpenFromUrl = 2131296285;
+			
+			// aapt resource value: 0x7f09001b
+			public const int btnEdToolsSaveFile = 2131296283;
 			
 			// aapt resource value: 0x7f090001
 			public const int btnExecute = 2131296257;
 			
-			// aapt resource value: 0x7f090016
-			public const int btnLaunchEditor = 2131296278;
-			
-			// aapt resource value: 0x7f09000a
-			public const int btnNavUp = 2131296266;
-			
-			// aapt resource value: 0x7f090003
-			public const int btnTools = 2131296259;
-			
-			// aapt resource value: 0x7f090009
-			public const int directoryInfo = 2131296265;
-			
-			// aapt resource value: 0x7f09000f
-			public const int directoryList = 2131296271;
-			
-			// aapt resource value: 0x7f09000e
-			public const int divider = 2131296270;
-			
-			// aapt resource value: 0x7f090010
-			public const int file_picker_image = 2131296272;
-			
-			// aapt resource value: 0x7f090011
-			public const int file_picker_text = 2131296273;
-			
-			// aapt resource value: 0x7f090012
-			public const int filepicker_main = 2131296274;
-			
-			// aapt resource value: 0x7f09001d
-			public const int filepicker_new_folder_item = 2131296285;
-			
-			// aapt resource value: 0x7f090004
-			public const int folderName = 2131296260;
-			
-			// aapt resource value: 0x7f090005
-			public const int footer = 2131296261;
-			
-			// aapt resource value: 0x7f090006
-			public const int horizontalDivider = 2131296262;
-			
-			// aapt resource value: 0x7f090015
-			public const int infoTv = 2131296277;
-			
-			// aapt resource value: 0x7f090000
-			public const int jsEditor = 2131296256;
-			
 			// aapt resource value: 0x7f090017
-			public const int logTxViewScrollView = 2131296279;
-			
-			// aapt resource value: 0x7f090019
-			public const int outputTxView = 2131296281;
-			
-			// aapt resource value: 0x7f090013
-			public const int textView = 2131296275;
-			
-			// aapt resource value: 0x7f090014
-			public const int textView2 = 2131296276;
-			
-			// aapt resource value: 0x7f09000c
-			public const int txtvSelectedFolder = 2131296268;
+			public const int btnLaunchEditor = 2131296279;
 			
 			// aapt resource value: 0x7f09000b
-			public const int txtvSelectedFolderLabel = 2131296267;
+			public const int btnNavUp = 2131296267;
+			
+			// aapt resource value: 0x7f090004
+			public const int btnTools = 2131296260;
+			
+			// aapt resource value: 0x7f09000a
+			public const int directoryInfo = 2131296266;
+			
+			// aapt resource value: 0x7f090010
+			public const int directoryList = 2131296272;
+			
+			// aapt resource value: 0x7f09000f
+			public const int divider = 2131296271;
+			
+			// aapt resource value: 0x7f090011
+			public const int file_picker_image = 2131296273;
+			
+			// aapt resource value: 0x7f090012
+			public const int file_picker_text = 2131296274;
+			
+			// aapt resource value: 0x7f090013
+			public const int filepicker_main = 2131296275;
+			
+			// aapt resource value: 0x7f09001e
+			public const int filepicker_new_folder_item = 2131296286;
+			
+			// aapt resource value: 0x7f090005
+			public const int folderName = 2131296261;
+			
+			// aapt resource value: 0x7f090006
+			public const int footer = 2131296262;
+			
+			// aapt resource value: 0x7f090007
+			public const int horizontalDivider = 2131296263;
+			
+			// aapt resource value: 0x7f090016
+			public const int infoTv = 2131296278;
+			
+			// aapt resource value: 0x7f090002
+			public const int jsEditor = 2131296258;
+			
+			// aapt resource value: 0x7f090000
+			public const int jsEditorScroller = 2131296256;
+			
+			// aapt resource value: 0x7f090018
+			public const int logTxViewScrollView = 2131296280;
+			
+			// aapt resource value: 0x7f09001a
+			public const int outputTxView = 2131296282;
+			
+			// aapt resource value: 0x7f090014
+			public const int textView = 2131296276;
+			
+			// aapt resource value: 0x7f090015
+			public const int textView2 = 2131296277;
+			
+			// aapt resource value: 0x7f09000d
+			public const int txtvSelectedFolder = 2131296269;
+			
+			// aapt resource value: 0x7f09000c
+			public const int txtvSelectedFolderLabel = 2131296268;
 			
 			static Id()
 			{
@@ -403,53 +408,53 @@ namespace MystifierLight
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f05000f
-			public const int ApplicationName = 2131034127;
+			// aapt resource value: 0x7f040001
+			public const int ApplicationName = 2130968577;
 			
-			// aapt resource value: 0x7f05000e
-			public const int Hello = 2131034126;
+			// aapt resource value: 0x7f040000
+			public const int Hello = 2130968576;
 			
-			// aapt resource value: 0x7f050000
-			public const int filepicker_ApplicationName = 2131034112;
+			// aapt resource value: 0x7f040002
+			public const int filepicker_ApplicationName = 2130968578;
 			
-			// aapt resource value: 0x7f050002
-			public const int filepicker_cancel_label = 2131034114;
+			// aapt resource value: 0x7f040004
+			public const int filepicker_cancel_label = 2130968580;
 			
-			// aapt resource value: 0x7f050003
-			public const int filepicker_confirm_label = 2131034115;
+			// aapt resource value: 0x7f040005
+			public const int filepicker_confirm_label = 2130968581;
 			
-			// aapt resource value: 0x7f05000c
-			public const int filepicker_create_folder_error = 2131034124;
+			// aapt resource value: 0x7f04000e
+			public const int filepicker_create_folder_error = 2130968590;
 			
-			// aapt resource value: 0x7f05000b
-			public const int filepicker_create_folder_error_already_exists = 2131034123;
+			// aapt resource value: 0x7f04000d
+			public const int filepicker_create_folder_error_already_exists = 2130968589;
 			
-			// aapt resource value: 0x7f05000a
-			public const int filepicker_create_folder_error_no_write_access = 2131034122;
+			// aapt resource value: 0x7f04000c
+			public const int filepicker_create_folder_error_no_write_access = 2130968588;
 			
-			// aapt resource value: 0x7f050006
-			public const int filepicker_create_folder_label = 2131034118;
+			// aapt resource value: 0x7f040008
+			public const int filepicker_create_folder_label = 2130968584;
 			
-			// aapt resource value: 0x7f050008
-			public const int filepicker_create_folder_msg = 2131034120;
+			// aapt resource value: 0x7f04000a
+			public const int filepicker_create_folder_msg = 2130968586;
 			
-			// aapt resource value: 0x7f050009
-			public const int filepicker_create_folder_success = 2131034121;
+			// aapt resource value: 0x7f04000b
+			public const int filepicker_create_folder_success = 2130968587;
 			
-			// aapt resource value: 0x7f050007
-			public const int filepicker_enter_folder_msg = 2131034119;
+			// aapt resource value: 0x7f040009
+			public const int filepicker_enter_folder_msg = 2130968585;
 			
-			// aapt resource value: 0x7f050001
-			public const int filepicker_ok = 2131034113;
+			// aapt resource value: 0x7f040003
+			public const int filepicker_ok = 2130968579;
 			
-			// aapt resource value: 0x7f050005
-			public const int filepicker_selected_file_label = 2131034117;
+			// aapt resource value: 0x7f040007
+			public const int filepicker_selected_file_label = 2130968583;
 			
-			// aapt resource value: 0x7f050004
-			public const int filepicker_selected_folder_label = 2131034116;
+			// aapt resource value: 0x7f040006
+			public const int filepicker_selected_folder_label = 2130968582;
 			
-			// aapt resource value: 0x7f05000d
-			public const int filepicker_up_label = 2131034125;
+			// aapt resource value: 0x7f04000f
+			public const int filepicker_up_label = 2130968591;
 			
 			static String()
 			{

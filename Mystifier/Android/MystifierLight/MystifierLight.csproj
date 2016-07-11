@@ -129,13 +129,15 @@
       <Project>{605f69aa-93a8-4aea-9bbd-bf3ae649506a}</Project>
       <Name>ExaPhaser.FilePicker</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MystifierLightEditor\MystifierLightEditor.csproj">
+      <Project>{37dfefba-886f-403d-b8a5-eba67633c235}</Project>
+      <Name>MystifierLightEditor</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\EditorToolsMenu.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
      Other similar extension points exist, see Microsoft.Common.targets.
