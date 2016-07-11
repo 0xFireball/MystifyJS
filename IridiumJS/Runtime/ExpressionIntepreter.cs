@@ -13,9 +13,9 @@ namespace IridiumJS.Runtime
 {
     public class ExpressionInterpreter
     {
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
 
-        public ExpressionInterpreter(Engine engine)
+        public ExpressionInterpreter(IridiumJSEngine engine)
         {
             _engine = engine;
         }

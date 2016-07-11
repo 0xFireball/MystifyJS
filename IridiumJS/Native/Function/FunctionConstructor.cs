@@ -14,7 +14,7 @@ namespace IridiumJS.Native.Function
     {
         private FunctionInstance _throwTypeError;
 
-        private FunctionConstructor(Engine engine) : base(engine, null, null, false)
+        private FunctionConstructor(IridiumJSEngine engine) : base(engine, null, null, false)
         {
         }
 
@@ -101,7 +101,7 @@ namespace IridiumJS.Native.Function
             return functionObject;
         }
 
-        public static FunctionConstructor CreateFunctionConstructor(Engine engine)
+        public static FunctionConstructor CreateFunctionConstructor(IridiumJSEngine engine)
         {
             var obj = new FunctionConstructor(engine);
             obj.Extensible = true;

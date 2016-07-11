@@ -12,7 +12,7 @@ namespace IridiumJS.Runtime.Interop
     /// </summary>
     public sealed class ObjectWrapper : ObjectInstance, IObjectWrapper
     {
-        public ObjectWrapper(Engine engine, object obj)
+        public ObjectWrapper(IridiumJSEngine engine, object obj)
             : base(engine)
         {
             Target = obj;

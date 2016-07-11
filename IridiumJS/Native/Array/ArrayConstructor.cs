@@ -8,7 +8,7 @@ namespace IridiumJS.Native.Array
 {
     public sealed class ArrayConstructor : FunctionInstance, IConstructor
     {
-        private ArrayConstructor(Engine engine) : base(engine, null, null, false)
+        private ArrayConstructor(IridiumJSEngine engine) : base(engine, null, null, false)
         {
         }
 
@@ -60,7 +60,7 @@ namespace IridiumJS.Native.Array
             return instance;
         }
 
-        public static ArrayConstructor CreateArrayConstructor(Engine engine)
+        public static ArrayConstructor CreateArrayConstructor(IridiumJSEngine engine)
         {
             var obj = new ArrayConstructor(engine);
             obj.Extensible = true;

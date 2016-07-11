@@ -8,12 +8,12 @@ namespace IridiumJS.Native.RegExp
 {
     public sealed class RegExpPrototype : RegExpInstance
     {
-        private RegExpPrototype(Engine engine)
+        private RegExpPrototype(IridiumJSEngine engine)
             : base(engine)
         {
         }
 
-        public static RegExpPrototype CreatePrototypeObject(Engine engine, RegExpConstructor regExpConstructor)
+        public static RegExpPrototype CreatePrototypeObject(IridiumJSEngine engine, RegExpConstructor regExpConstructor)
         {
             var obj = new RegExpPrototype(engine);
             obj.Prototype = engine.Object.PrototypeObject;

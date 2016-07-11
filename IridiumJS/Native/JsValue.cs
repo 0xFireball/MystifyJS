@@ -273,7 +273,7 @@ namespace IridiumJS.Native
         /// <param name="engine"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static JsValue FromObject(Engine engine, object value)
+        public static JsValue FromObject(IridiumJSEngine engine, object value)
         {
             if (value == null)
             {

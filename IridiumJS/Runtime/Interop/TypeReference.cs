@@ -12,7 +12,7 @@ namespace IridiumJS.Runtime.Interop
 {
     public class TypeReference : FunctionInstance, IConstructor, IObjectWrapper
     {
-        private TypeReference(Engine engine)
+        private TypeReference(IridiumJSEngine engine)
             : base(engine, null, null, false)
         {
         }
@@ -88,7 +88,7 @@ namespace IridiumJS.Runtime.Interop
             get { return Type; }
         }
 
-        public static TypeReference CreateTypeReference(Engine engine, Type type)
+        public static TypeReference CreateTypeReference(IridiumJSEngine engine, Type type)
         {
             var obj = new TypeReference(engine);
             obj.Extensible = false;

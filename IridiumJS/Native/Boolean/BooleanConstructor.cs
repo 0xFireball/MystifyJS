@@ -6,7 +6,7 @@ namespace IridiumJS.Native.Boolean
 {
     public sealed class BooleanConstructor : FunctionInstance, IConstructor
     {
-        private BooleanConstructor(Engine engine) : base(engine, null, null, false)
+        private BooleanConstructor(IridiumJSEngine engine) : base(engine, null, null, false)
         {
         }
 
@@ -32,7 +32,7 @@ namespace IridiumJS.Native.Boolean
             return Construct(TypeConverter.ToBoolean(arguments.At(0)));
         }
 
-        public static BooleanConstructor CreateBooleanConstructor(Engine engine)
+        public static BooleanConstructor CreateBooleanConstructor(IridiumJSEngine engine)
         {
             var obj = new BooleanConstructor(engine);
             obj.Extensible = true;

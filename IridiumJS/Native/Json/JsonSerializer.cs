@@ -11,7 +11,7 @@ namespace IridiumJS.Native.Json
 {
     public class JsonSerializer
     {
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
         private string _indent;
         private string _gap;
         private List<string> _propertyList;
@@ -19,7 +19,7 @@ namespace IridiumJS.Native.Json
 
         private Stack<object> _stack;
 
-        public JsonSerializer(Engine engine)
+        public JsonSerializer(IridiumJSEngine engine)
         {
             _engine = engine;
         }

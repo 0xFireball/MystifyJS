@@ -6,13 +6,13 @@ namespace IridiumJS.Native.Object
 {
     public class ObjectInstance
     {
-        public ObjectInstance(Engine engine)
+        public ObjectInstance(IridiumJSEngine engine)
         {
             Engine = engine;
             Properties = new MruPropertyCache2<string, PropertyDescriptor>();
         }
 
-        public Engine Engine { get; set; }
+        public IridiumJSEngine Engine { get; set; }
 
         protected IDictionary<string, PropertyDescriptor> Properties { get; }
 

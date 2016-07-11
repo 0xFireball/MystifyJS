@@ -9,11 +9,11 @@ namespace IridiumJS.Runtime.Debugger
     internal class DebugHandler
     {
         private readonly Stack<string> _debugCallStack;
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
         private int _callBackStepOverDepth;
         private StepMode _stepMode;
 
-        public DebugHandler(Engine engine)
+        public DebugHandler(IridiumJSEngine engine)
         {
             _engine = engine;
             _debugCallStack = new Stack<string>();

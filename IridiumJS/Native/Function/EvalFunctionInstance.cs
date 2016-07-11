@@ -6,9 +6,9 @@ namespace IridiumJS.Native.Function
 {
     public class EvalFunctionInstance : FunctionInstance
     {
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
 
-        public EvalFunctionInstance(Engine engine, string[] parameters, LexicalEnvironment scope, bool strict)
+        public EvalFunctionInstance(IridiumJSEngine engine, string[] parameters, LexicalEnvironment scope, bool strict)
             : base(engine, parameters, scope, strict)
         {
             _engine = engine;

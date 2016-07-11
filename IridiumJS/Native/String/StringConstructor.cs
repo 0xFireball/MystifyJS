@@ -7,7 +7,7 @@ namespace IridiumJS.Native.String
 {
     public sealed class StringConstructor : FunctionInstance, IConstructor
     {
-        public StringConstructor(Engine engine)
+        public StringConstructor(IridiumJSEngine engine)
             : base(engine, null, null, false)
         {
         }
@@ -34,7 +34,7 @@ namespace IridiumJS.Native.String
             return Construct(arguments.Length > 0 ? TypeConverter.ToString(arguments[0]) : "");
         }
 
-        public static StringConstructor CreateStringConstructor(Engine engine)
+        public static StringConstructor CreateStringConstructor(IridiumJSEngine engine)
         {
             var obj = new StringConstructor(engine);
             obj.Extensible = true;

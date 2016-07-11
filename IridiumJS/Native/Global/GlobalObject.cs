@@ -22,11 +22,11 @@ namespace IridiumJS.Native.Global
             '~', '*', '\'', '(', ')'
         };
 
-        private GlobalObject(Engine engine) : base(engine)
+        private GlobalObject(IridiumJSEngine engine) : base(engine)
         {
         }
 
-        public static GlobalObject CreateGlobalObject(Engine engine)
+        public static GlobalObject CreateGlobalObject(IridiumJSEngine engine)
         {
             var global = new GlobalObject(engine) {Prototype = null, Extensible = true};
 

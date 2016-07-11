@@ -6,11 +6,11 @@ namespace IridiumJS.Native.Object
 {
     public sealed class ObjectPrototype : ObjectInstance
     {
-        private ObjectPrototype(Engine engine) : base(engine)
+        private ObjectPrototype(IridiumJSEngine engine) : base(engine)
         {
         }
 
-        public static ObjectPrototype CreatePrototypeObject(Engine engine, ObjectConstructor objectConstructor)
+        public static ObjectPrototype CreatePrototypeObject(IridiumJSEngine engine, ObjectConstructor objectConstructor)
         {
             var obj = new ObjectPrototype(engine) {Extensible = true};
 

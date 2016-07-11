@@ -8,12 +8,12 @@ namespace IridiumJS.Runtime.Descriptors.Specialized
     public sealed class IndexDescriptor : PropertyDescriptor
     {
         private readonly MethodInfo _containsKey;
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
         private readonly PropertyInfo _indexer;
         private readonly object _item;
         private readonly object _key;
 
-        public IndexDescriptor(Engine engine, Type targetType, string key, object item)
+        public IndexDescriptor(IridiumJSEngine engine, Type targetType, string key, object item)
         {
             _engine = engine;
             _item = item;
@@ -50,7 +50,7 @@ namespace IridiumJS.Runtime.Descriptors.Specialized
         }
 
 
-        public IndexDescriptor(Engine engine, string key, object item)
+        public IndexDescriptor(IridiumJSEngine engine, string key, object item)
             : this(engine, item.GetType(), key, item)
         {
         }

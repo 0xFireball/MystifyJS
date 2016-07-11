@@ -27,7 +27,7 @@ using IridiumJS.Runtime.References;
 
 namespace IridiumJS
 {
-    public class Engine
+    public class IridiumJSEngine
     {
         private readonly Stack<ExecutionContext> _executionContexts;
         private readonly ExpressionInterpreter _expressions;
@@ -46,11 +46,11 @@ namespace IridiumJS
         // cache of types used when resolving CLR type names
         internal Dictionary<string, Type> TypeCache = new Dictionary<string, Type>();
 
-        public Engine() : this(null)
+        public IridiumJSEngine() : this(null)
         {
         }
 
-        public Engine(Action<Options> options)
+        public IridiumJSEngine(Action<Options> options)
         {
             _executionContexts = new Stack<ExecutionContext>();
 
@@ -119,10 +119,7 @@ namespace IridiumJS
 
             Options = new Options();
 
-            if (options != null)
-            {
-                options(Options);
-            }
+            options?.Invoke(Options);
 
             Eval = new EvalFunctionInstance(this, new string[0],
                 LexicalEnvironment.NewDeclarativeEnvironment(this, ExecutionContext.LexicalEnvironment),
@@ -135,12 +132,9 @@ namespace IridiumJS
             if (Options._IsClrAllowed)
             {
                 Global.FastAddProperty("System", new NamespaceReference(this, "System"), false, false, false);
-                Global.FastAddProperty("importNamespace",
+                Global.FastAddProperty("clrimport",
                     new ClrFunctionInstance(this,
-                        (thisObj, arguments) =>
-                        {
-                            return new NamespaceReference(this, TypeConverter.ToString(arguments.At(0)));
-                        }), false, false,
+                        (thisObj, arguments) => new NamespaceReference(this, TypeConverter.ToString(arguments.At(0)))), false, false,
                     false);
             }
 
@@ -191,34 +185,34 @@ namespace IridiumJS
             return executionContext;
         }
 
-        public Engine SetValue(string name, Delegate value)
+        public IridiumJSEngine SetValue(string name, Delegate value)
         {
             Global.FastAddProperty(name, new DelegateWrapper(this, value), true, false, true);
             return this;
         }
 
-        public Engine SetValue(string name, string value)
+        public IridiumJSEngine SetValue(string name, string value)
         {
             return SetValue(name, new JsValue(value));
         }
 
-        public Engine SetValue(string name, double value)
+        public IridiumJSEngine SetValue(string name, double value)
         {
             return SetValue(name, new JsValue(value));
         }
 
-        public Engine SetValue(string name, bool value)
+        public IridiumJSEngine SetValue(string name, bool value)
         {
             return SetValue(name, new JsValue(value));
         }
 
-        public Engine SetValue(string name, JsValue value)
+        public IridiumJSEngine SetValue(string name, JsValue value)
         {
             Global.Put(name, value, false);
             return this;
         }
 
-        public Engine SetValue(string name, object obj)
+        public IridiumJSEngine SetValue(string name, object obj)
         {
             return SetValue(name, JsValue.FromObject(this, obj));
         }
@@ -250,19 +244,19 @@ namespace IridiumJS
             CallStack.Clear();
         }
 
-        public Engine Execute(string source)
+        public IridiumJSEngine Execute(string source)
         {
             var parser = new JavaScriptParser();
             return Execute(parser.Parse(source));
         }
 
-        public Engine Execute(string source, ParserOptions parserOptions)
+        public IridiumJSEngine Execute(string source, ParserOptions parserOptions)
         {
             var parser = new JavaScriptParser();
             return Execute(parser.Parse(source, parserOptions));
         }
 
-        public Engine Execute(Program program)
+        public IridiumJSEngine Execute(Program program)
         {
             ResetStatementsCount();
             ResetTimeoutTicks();
@@ -469,7 +463,7 @@ namespace IridiumJS
                     return GetValue(completion.Value);
                 }
 
-                return (JsValue) value;
+                return (JsValue)value;
             }
 
             if (reference.IsUnresolvableReference())
@@ -506,7 +500,7 @@ namespace IridiumJS
                         return Undefined.Instance;
                     }
 
-                    var callable = (ICallable) getter.AsObject();
+                    var callable = (ICallable)getter.AsObject();
                     return callable.Call(baseValue, Arguments.Empty);
                 }
             }
@@ -598,8 +592,8 @@ namespace IridiumJS
 
             if (desc.IsAccessorDescriptor())
             {
-                var setter = (ICallable) desc.Set.Value.AsObject();
-                setter.Call(b, new[] {value});
+                var setter = (ICallable)desc.Set.Value.AsObject();
+                setter.Call(b, new[] { value });
             }
             else
             {
@@ -786,7 +780,9 @@ namespace IridiumJS
         public delegate StepMode BreakDelegate(object sender, DebugInformation e);
 
         public event DebugStepDelegate Step;
+
         public event BreakDelegate Break;
+
         internal DebugHandler DebugHandler { get; }
         public List<BreakPoint> BreakPoints { get; private set; }
 
@@ -808,6 +804,6 @@ namespace IridiumJS
             return null;
         }
 
-        #endregion
+        #endregion Debugger
     }
 }

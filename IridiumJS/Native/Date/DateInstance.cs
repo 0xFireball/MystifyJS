@@ -14,7 +14,7 @@ namespace IridiumJS.Native.Date
         internal static readonly double Min =
             -(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) - DateTime.MinValue).TotalMilliseconds;
 
-        public DateInstance(Engine engine)
+        public DateInstance(IridiumJSEngine engine)
             : base(engine)
         {
         }

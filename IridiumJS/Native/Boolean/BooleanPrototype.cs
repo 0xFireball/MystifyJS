@@ -8,11 +8,11 @@ namespace IridiumJS.Native.Boolean
     /// </summary>
     public sealed class BooleanPrototype : BooleanInstance
     {
-        private BooleanPrototype(Engine engine) : base(engine)
+        private BooleanPrototype(IridiumJSEngine engine) : base(engine)
         {
         }
 
-        public static BooleanPrototype CreatePrototypeObject(Engine engine, BooleanConstructor booleanConstructor)
+        public static BooleanPrototype CreatePrototypeObject(IridiumJSEngine engine, BooleanConstructor booleanConstructor)
         {
             var obj = new BooleanPrototype(engine);
             obj.Prototype = engine.Object.PrototypeObject;

@@ -14,12 +14,12 @@ namespace IridiumJS.Native.Number
     {
         private const double Ten21 = 1e21;
 
-        private NumberPrototype(Engine engine)
+        private NumberPrototype(IridiumJSEngine engine)
             : base(engine)
         {
         }
 
-        public static NumberPrototype CreatePrototypeObject(Engine engine, NumberConstructor numberConstructor)
+        public static NumberPrototype CreatePrototypeObject(IridiumJSEngine engine, NumberConstructor numberConstructor)
         {
             var obj = new NumberPrototype(engine);
             obj.Prototype = engine.Object.PrototypeObject;

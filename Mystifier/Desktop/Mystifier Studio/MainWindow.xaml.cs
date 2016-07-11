@@ -146,7 +146,7 @@ namespace Mystifier
 
         private async void ExecuteSourceInTextEditor()
         {
-            var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
+            var jsEngine = new IridiumJSEngine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
             var console = new JSConsole(outputTb);
             await Task.Run(() => console.clear());
             jsEngine.SetValue("console", console);

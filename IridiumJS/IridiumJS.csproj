@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="DeclarationBindingType.cs" />
     <Compile Include="EvalCodeScope.cs" />
-    <Compile Include="Engine.cs" />
+    <Compile Include="IridiumJSEngine.cs" />
     <Compile Include="Native\Array\ArrayConstructor.cs" />
     <Compile Include="Native\Array\ArrayInstance.cs" />
     <Compile Include="Native\Array\ArrayPrototype.cs" />

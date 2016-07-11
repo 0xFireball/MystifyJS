@@ -8,7 +8,7 @@ namespace IridiumJS.Native.Error
     {
         private string _name;
 
-        public ErrorConstructor(Engine engine) : base(engine, null, null, false)
+        public ErrorConstructor(IridiumJSEngine engine) : base(engine, null, null, false)
         {
         }
 
@@ -33,7 +33,7 @@ namespace IridiumJS.Native.Error
             return instance;
         }
 
-        public static ErrorConstructor CreateErrorConstructor(Engine engine, string name)
+        public static ErrorConstructor CreateErrorConstructor(IridiumJSEngine engine, string name)
         {
             var obj = new ErrorConstructor(engine);
             obj.Extensible = true;

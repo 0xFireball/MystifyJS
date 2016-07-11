@@ -19,9 +19,9 @@ namespace IridiumJS.Runtime.Interop
 
         private static readonly MethodInfo jsValueFromObject = typeof(JsValue).GetMethod("FromObject");
         private static readonly MethodInfo jsValueToObject = typeof(JsValue).GetMethod("ToObject");
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
 
-        public DefaultTypeConverter(Engine engine)
+        public DefaultTypeConverter(IridiumJSEngine engine)
         {
             _engine = engine;
         }
@@ -83,12 +83,12 @@ namespace IridiumJS.Runtime.Interop
                             {
                                 var boxing = Expression.Convert(param, typeof(object));
                                 tmpVars[i] = Expression.Call(null, jsValueFromObject,
-                                    Expression.Constant(_engine, typeof(Engine)), boxing);
+                                    Expression.Constant(_engine, typeof(IridiumJSEngine)), boxing);
                             }
                             else
                             {
                                 tmpVars[i] = Expression.Call(null, jsValueFromObject,
-                                    Expression.Constant(_engine, typeof(Engine)), param);
+                                    Expression.Constant(_engine, typeof(IridiumJSEngine)), param);
                             }
                         }
                         var vars = Expression.NewArrayInit(typeof(JsValue), tmpVars);
@@ -119,7 +119,7 @@ namespace IridiumJS.Runtime.Interop
                                 {
                                     var boxingExpression = Expression.Convert(p, typeof(object));
                                     return Expression.Call(null, jsValueFromObject,
-                                        Expression.Constant(_engine, typeof(Engine)), boxingExpression);
+                                        Expression.Constant(_engine, typeof(IridiumJSEngine)), boxingExpression);
                                 })
                                 );
 
@@ -163,7 +163,7 @@ namespace IridiumJS.Runtime.Interop
                             @params.Select(
                                 p =>
                                     Expression.Call(null, typeof(JsValue).GetMethod("FromObject"),
-                                        Expression.Constant(_engine, typeof(Engine)), p)));
+                                        Expression.Constant(_engine, typeof(IridiumJSEngine)), p)));
 
                         var callExpression = Expression.Block(
                             Expression.Call(

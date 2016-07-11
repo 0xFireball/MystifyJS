@@ -18,7 +18,7 @@ namespace IridiumJS.Native.Argument
 
         private readonly Action<ArgumentsInstance> _initializer;
 
-        private ArgumentsInstance(Engine engine, Action<ArgumentsInstance> initializer) : base(engine)
+        private ArgumentsInstance(IridiumJSEngine engine, Action<ArgumentsInstance> initializer) : base(engine)
         {
             _initializer = initializer;
             _initialized = false;
@@ -45,7 +45,7 @@ namespace IridiumJS.Native.Argument
             _initializer(this);
         }
 
-        public static ArgumentsInstance CreateArgumentsObject(Engine engine, FunctionInstance func, string[] names,
+        public static ArgumentsInstance CreateArgumentsObject(IridiumJSEngine engine, FunctionInstance func, string[] names,
             JsValue[] args, EnvironmentRecord env, bool strict)
         {
             var obj = new ArgumentsInstance(engine, self =>

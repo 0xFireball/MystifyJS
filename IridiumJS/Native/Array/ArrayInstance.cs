@@ -8,14 +8,14 @@ namespace IridiumJS.Native.Array
 {
     public class ArrayInstance : ObjectInstance
     {
-        private readonly Engine _engine;
+        private readonly IridiumJSEngine _engine;
 
         private readonly IDictionary<uint, PropertyDescriptor> _array =
             new MruPropertyCache2<uint, PropertyDescriptor>();
 
         private PropertyDescriptor _length;
 
-        public ArrayInstance(Engine engine) : base(engine)
+        public ArrayInstance(IridiumJSEngine engine) : base(engine)
         {
             _engine = engine;
         }

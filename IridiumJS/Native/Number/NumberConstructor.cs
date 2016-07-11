@@ -6,7 +6,7 @@ namespace IridiumJS.Native.Number
 {
     public sealed class NumberConstructor : FunctionInstance, IConstructor
     {
-        public NumberConstructor(Engine engine)
+        public NumberConstructor(IridiumJSEngine engine)
             : base(engine, null, null, false)
         {
         }
@@ -33,7 +33,7 @@ namespace IridiumJS.Native.Number
             return Construct(arguments.Length > 0 ? TypeConverter.ToNumber(arguments[0]) : 0);
         }
 
-        public static NumberConstructor CreateNumberConstructor(Engine engine)
+        public static NumberConstructor CreateNumberConstructor(IridiumJSEngine engine)
         {
             var obj = new NumberConstructor(engine);
             obj.Extensible = true;

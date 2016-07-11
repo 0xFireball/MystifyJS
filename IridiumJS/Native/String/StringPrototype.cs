@@ -22,12 +22,12 @@ namespace IridiumJS.Native.String
         private const char BOM_CHAR = '\uFEFF';
         private const char MONGOLIAN_VOWEL_SEPARATOR = '\u180E';
 
-        private StringPrototype(Engine engine)
+        private StringPrototype(IridiumJSEngine engine)
             : base(engine)
         {
         }
 
-        public static StringPrototype CreatePrototypeObject(Engine engine, StringConstructor stringConstructor)
+        public static StringPrototype CreatePrototypeObject(IridiumJSEngine engine, StringConstructor stringConstructor)
         {
             var obj = new StringPrototype(engine);
             obj.Prototype = engine.Object.PrototypeObject;

@@ -18,7 +18,7 @@ namespace IridiumJS.Native.Date
         public const double MsPerHour = 3600000;
         public const double MsPerDay = 86400000;
 
-        private DatePrototype(Engine engine)
+        private DatePrototype(IridiumJSEngine engine)
             : base(engine)
         {
         }
@@ -28,7 +28,7 @@ namespace IridiumJS.Native.Date
             get { return Engine.Options._LocalTimeZone.BaseUtcOffset.TotalMilliseconds; }
         }
 
-        public static DatePrototype CreatePrototypeObject(Engine engine, DateConstructor dateConstructor)
+        public static DatePrototype CreatePrototypeObject(IridiumJSEngine engine, DateConstructor dateConstructor)
         {
             var obj = new DatePrototype(engine)
             {

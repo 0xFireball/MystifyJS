@@ -19,7 +19,7 @@ namespace IridiumJS.Runtime.Interop
     {
         private readonly string _path;
 
-        public NamespaceReference(Engine engine, string path) : base(engine)
+        public NamespaceReference(IridiumJSEngine engine, string path) : base(engine)
         {
             _path = path;
         }

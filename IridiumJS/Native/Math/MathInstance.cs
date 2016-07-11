@@ -10,7 +10,7 @@ namespace IridiumJS.Native.Math
     {
         private static readonly Random _random = new Random();
 
-        private MathInstance(Engine engine) : base(engine)
+        private MathInstance(IridiumJSEngine engine) : base(engine)
         {
         }
 
@@ -19,7 +19,7 @@ namespace IridiumJS.Native.Math
             get { return "Math"; }
         }
 
-        public static MathInstance CreateMathObject(Engine engine)
+        public static MathInstance CreateMathObject(IridiumJSEngine engine)
         {
             var math = new MathInstance(engine);
             math.Extensible = true;

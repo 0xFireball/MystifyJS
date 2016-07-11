@@ -33,7 +33,7 @@ namespace MystifierLight
 
         private async void ExecuteLoadedCode()
         {
-            var jsEngine = new Engine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
+            var jsEngine = new IridiumJSEngine(cfg => { cfg.AllowClr(ExaJSInit.GetExaJSAssemblies()); });
             var console = new JSConsole(_outputTv, this);
             jsEngine.SetValue("console", console);
             try
