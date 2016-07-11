@@ -10,6 +10,7 @@ using Android.Widget;
 using ExaPhaser.FilePicker;
 using Mystifier.DarkMagic.EditorUtils;
 using MystifierLight.Util;
+using MystifierLight.Fragments;
 
 namespace MystifierLight
 {
@@ -21,6 +22,7 @@ namespace MystifierLight
         private Button _btnBeautify;
         private bool _isUnsaved;
         private Button _btnTools;
+        private EditorFragment _editorFragment;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

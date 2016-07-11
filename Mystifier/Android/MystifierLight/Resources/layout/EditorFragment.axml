@@ -1,0 +1,19 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:ignore="Overdraw"
+      android:id="@+id/jsEditorScroller">
+  <MystifierLightEditor.Controls.IridiumHighlightingEditor
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:typeface="monospace"
+      android:padding="8dp"
+      android:id="@+id/jsEditor"
+      android:background="@android:color/transparent"
+      android:gravity="start|top"
+      android:ellipsize="end"
+      android:imeOptions="flagNoExtractUi"
+      android:inputType="textFilter|textNoSuggestions|textMultiLine|textVisiblePassword" />
+</ScrollView>
