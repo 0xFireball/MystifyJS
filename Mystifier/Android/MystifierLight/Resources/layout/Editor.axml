@@ -7,49 +7,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
-    <fragment
-        android:name="MystifierLight.Fragments.EditorFragment" />
-    <ScrollView
-        tools:ignore="Overdraw"
-        android:id="@+id/jsEditorScroller"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnExecute"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true">
-        <MystifierLightEditor.Controls.IridiumHighlightingEditor
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:typeface="monospace"
-            android:padding="8dp"
-            android:id="@+id/jsEditor"
-            android:background="@android:color/transparent"
-            android:gravity="start|top"
-            android:ellipsize="end"
-            android:imeOptions="flagNoExtractUi"
-            android:inputType="textFilter|textNoSuggestions|textMultiLine|textVisiblePassword" />
-    </ScrollView>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Execute"
-        android:id="@+id/btnExecute"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Beautify"
-        android:id="@+id/btnBeautify"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/btnExecute" />
-    <Button
-        android:id="@+id/btnTools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/jsEditorScroller"
-        android:layout_alignParentBottom="true"
-        android:text="Tools" />
+  <fragment
+      class="MystifierLight.Fragments.EditorFragment"
+      android:id="@+id/jsEditorFragment"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" />
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Execute"
+      android:id="@+id/btnExecute"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentStart="true" />
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Beautify"
+      android:id="@+id/btnBeautify"
+      android:layout_alignParentBottom="true"
+      android:layout_toEndOf="@+id/btnExecute" />
+  <Button
+      android:id="@+id/btnTools"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignEnd="@+id/jsEditorFragment"
+      android:layout_alignParentBottom="true"
+      android:text="Tools" />
 </RelativeLayout>

@@ -11,13 +11,14 @@ using ExaPhaser.FilePicker;
 using Mystifier.DarkMagic.EditorUtils;
 using MystifierLight.Fragments;
 using MystifierLight.Util;
+using MystifierLightEditor.Controls;
 
 namespace MystifierLight.Activities
 {
     [Activity(Label = "Editor", Icon = "@drawable/icon")]
     public class EditorActivity : Activity
     {
-        private EditText _jsEditor;
+        private IridiumHighlightingEditor _jsEditor;
         private Button _btnExecute;
         private Button _btnBeautify;
         private bool _isUnsaved;
@@ -29,7 +30,7 @@ namespace MystifierLight.Activities
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Editor);
-
+            
             InitializeComponent();
             WireEvents();
         }
@@ -164,7 +165,8 @@ namespace MystifierLight.Activities
 
         private void InitializeComponent()
         {
-            _jsEditor = FindViewById<EditText>(Resource.Id.jsEditor);
+            _editorFragment = FragmentManager.FindFragmentById<EditorFragment>(Resource.Id.jsEditorFragment);
+            _jsEditor = _editorFragment.Editor;
             _btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
             _btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
             _btnTools = FindViewById<Button>(Resource.Id.btnTools);
