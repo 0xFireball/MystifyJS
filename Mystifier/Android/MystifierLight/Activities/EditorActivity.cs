@@ -30,7 +30,7 @@ namespace MystifierLight.Activities
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Editor);
-            
+
             InitializeComponent();
             WireEvents();
         }
@@ -166,7 +166,7 @@ namespace MystifierLight.Activities
         private void InitializeComponent()
         {
             _editorFragment = FragmentManager.FindFragmentById<EditorFragment>(Resource.Id.jsEditorFragment);
-            _jsEditor = _editorFragment.Editor;
+            _jsEditor = FindViewById<IridiumHighlightingEditor>(Resource.Id.jsEditor);
             _btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
             _btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
             _btnTools = FindViewById<Button>(Resource.Id.btnTools);
