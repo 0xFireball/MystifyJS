@@ -43,11 +43,12 @@
       android:layout_below="@+id/infoTv"
       android:layout_alignParentStart="true" />
 
-<Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="View Help and Documentation"
-      android:id="@+id/btnViewDocs"
-      android:layout_below="@+id/infoTv"
-      android:layout_alignParentStart="true" />
+  <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Help and Documentation"
+        android:id="@+id/btnViewDocs"
+        android:layout_below="@+id/btnLaunchEditor"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
