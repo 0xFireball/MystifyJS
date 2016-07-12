@@ -3,7 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 
-namespace MystifierLight
+namespace MystifierLight.Activities
 {
     [Activity(Label = "MystifierLight", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MystifyJS.Splash")]
     public class SplashScreenActivity : Activity

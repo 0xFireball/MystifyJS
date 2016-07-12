@@ -3,7 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Widget;
 
-namespace MystifierLight
+namespace MystifierLight.Activities
 {
     [Activity(Label = "MystifierLight", Icon = "@drawable/icon")]
     public class IntroActivity : Activity

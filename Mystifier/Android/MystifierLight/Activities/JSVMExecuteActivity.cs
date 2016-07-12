@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Widget;
 using IridiumJS;
@@ -10,7 +9,7 @@ using IridiumJS.Runtime;
 using Mystifier.DarkMagic.JSVM;
 using MystifierLight.Util;
 
-namespace MystifierLight
+namespace MystifierLight.Activities
 {
     [Activity(Label = "Execute JavaScript")]
     public class JsvmExecuteActivity : Activity

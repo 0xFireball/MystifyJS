@@ -13,7 +13,7 @@ namespace MystifierLightEditor.Controls
         }
 
         public IridiumHighlightingEditor(Context context, IAttributeSet attrs) : base(context, attrs)
-        {
+        {   
         }
     }
 }

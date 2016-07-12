@@ -9,10 +9,10 @@ using Android.Runtime;
 using Android.Widget;
 using ExaPhaser.FilePicker;
 using Mystifier.DarkMagic.EditorUtils;
-using MystifierLight.Util;
 using MystifierLight.Fragments;
+using MystifierLight.Util;
 
-namespace MystifierLight
+namespace MystifierLight.Activities
 {
     [Activity(Label = "Editor", Icon = "@drawable/icon")]
     public class EditorActivity : Activity
