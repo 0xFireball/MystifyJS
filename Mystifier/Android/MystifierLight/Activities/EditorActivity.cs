@@ -153,11 +153,6 @@ namespace MystifierLight.Activities
         {
             //Execute code
             var msg = new AlertDialog.Builder(this);
-            /* Not Implemented
-            msg.SetTitle("Coming soon");
-            msg.SetMessage("This feature has not yet been implemented. Thank you for using Mystifier.");
-            msg.Show();
-            */
             var executeIntent = new Intent(this, typeof(JsvmExecuteActivity));
             executeIntent.PutExtra("code", _jsEditor.Text);
             StartActivity(executeIntent);
