@@ -246,8 +246,8 @@ namespace MystifierLight
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f090019
-			public const int btnBackToEditor = 2131296281;
+			// aapt resource value: 0x7f09001a
+			public const int btnBackToEditor = 2131296282;
 			
 			// aapt resource value: 0x7f090003
 			public const int btnBeautify = 2131296259;
@@ -261,14 +261,14 @@ namespace MystifierLight
 			// aapt resource value: 0x7f09000e
 			public const int btnCreateFolder2 = 2131296270;
 			
-			// aapt resource value: 0x7f09001c
-			public const int btnEdToolsOpenFile = 2131296284;
-			
 			// aapt resource value: 0x7f09001d
-			public const int btnEdToolsOpenFromUrl = 2131296285;
+			public const int btnEdToolsOpenFile = 2131296285;
 			
-			// aapt resource value: 0x7f09001b
-			public const int btnEdToolsSaveFile = 2131296283;
+			// aapt resource value: 0x7f09001e
+			public const int btnEdToolsOpenFromUrl = 2131296286;
+			
+			// aapt resource value: 0x7f09001c
+			public const int btnEdToolsSaveFile = 2131296284;
 			
 			// aapt resource value: 0x7f090001
 			public const int btnExecute = 2131296257;
@@ -281,6 +281,9 @@ namespace MystifierLight
 			
 			// aapt resource value: 0x7f090004
 			public const int btnTools = 2131296260;
+			
+			// aapt resource value: 0x7f090018
+			public const int btnViewDocs = 2131296280;
 			
 			// aapt resource value: 0x7f09000a
 			public const int directoryInfo = 2131296266;
@@ -300,8 +303,8 @@ namespace MystifierLight
 			// aapt resource value: 0x7f090013
 			public const int filepicker_main = 2131296275;
 			
-			// aapt resource value: 0x7f09001e
-			public const int filepicker_new_folder_item = 2131296286;
+			// aapt resource value: 0x7f09001f
+			public const int filepicker_new_folder_item = 2131296287;
 			
 			// aapt resource value: 0x7f090005
 			public const int folderName = 2131296261;
@@ -321,11 +324,11 @@ namespace MystifierLight
 			// aapt resource value: 0x7f090000
 			public const int jsEditorScroller = 2131296256;
 			
-			// aapt resource value: 0x7f090018
-			public const int logTxViewScrollView = 2131296280;
+			// aapt resource value: 0x7f090019
+			public const int logTxViewScrollView = 2131296281;
 			
-			// aapt resource value: 0x7f09001a
-			public const int outputTxView = 2131296282;
+			// aapt resource value: 0x7f09001b
+			public const int outputTxView = 2131296283;
 			
 			// aapt resource value: 0x7f090014
 			public const int textView = 2131296276;
@@ -356,25 +359,28 @@ namespace MystifierLight
 			public const int Editor = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int filepicker_createfolder = 2130903041;
+			public const int EditorFragment = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int filepicker_fragment = 2130903042;
+			public const int filepicker_createfolder = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int filepicker_listitem = 2130903043;
+			public const int filepicker_fragment = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int filepicker_mainactivity = 2130903044;
+			public const int filepicker_listitem = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int Intro = 2130903045;
+			public const int filepicker_mainactivity = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int JExecute = 2130903046;
+			public const int Intro = 2130903046;
 			
 			// aapt resource value: 0x7f030007
-			public const int SplashScreen = 2130903047;
+			public const int JExecute = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int SplashScreen = 2130903048;
 			
 			static Layout()
 			{
