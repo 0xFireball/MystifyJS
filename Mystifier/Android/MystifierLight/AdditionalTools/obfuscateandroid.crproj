@@ -2,9 +2,8 @@
   <module path="ExaPhaser.FilePicker.dll" />
   <module path="IridiumJS.dll" />
   <module path="MystifierLightEditor.dll">
-	<rule pattern="true" inherit="false">
+    <rule pattern="true" inherit="false">
       <protection id="anti ildasm" />
-      <protection id="rename" />
       <protection id="ref proxy" />
       <protection id="ctrl flow" />
     </rule>
@@ -19,7 +18,6 @@
   <module path="MystifierLight.dll">
     <rule pattern="true" inherit="false">
       <protection id="anti ildasm" />
-      <protection id="rename" />
       <protection id="ref proxy" />
       <protection id="ctrl flow" />
     </rule>
