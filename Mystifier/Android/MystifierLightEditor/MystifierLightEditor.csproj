@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Internal\EditorTextWatcher.cs" />
+    <Compile Include="Controls\Internal\NewlineInputFilter.cs" />
+    <Compile Include="Controls\Internal\TabWidthSpan.cs" />
     <Compile Include="Controls\IridiumHighlightingEditor.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

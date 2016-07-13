@@ -1,6 +1,5 @@
 using System;
 using Android.Content;
-using Android.Graphics;
 using Android.OS;
 using Android.Text;
 using Android.Text.Style;
@@ -8,104 +7,13 @@ using Android.Util;
 using Android.Widget;
 using Java.Lang;
 using Java.Util.Regex;
+using MystifierLightEditor.Controls.Internal;
 using MystifierLightEditor.SyntaxHighlighting;
 
 namespace MystifierLightEditor.Controls
 {
     public class IridiumHighlightingEditor : EditText
     {
-        private class EditorTextWatcher : Java.Lang.Object, ITextWatcher
-        {
-            private int twstart = 0;
-            private int twcount = 0;
-            private IridiumHighlightingEditor _editor;
-
-            public EditorTextWatcher(IridiumHighlightingEditor editor)
-            {
-                _editor = editor;
-            }
-
-            public void AfterTextChanged(IEditable ed)
-            {
-                _editor.CancelUpdate();
-                _editor.ConvertTabs(ed, twstart, twcount);
-
-                if (!_editor.Modified)
-                    return;
-
-                _editor.Dirty = true;
-                _editor.UpdateHandler.PostDelayed(
-                    _editor.UpdateRunnable,
-                    _editor.UpdateDelay);
-            }
-
-            public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
-            {
-            }
-
-            public void OnTextChanged(ICharSequence s, int start, int before, int count)
-            {
-                this.twstart = start;
-                this.twcount = count;
-            }
-        }
-
-        private class NewlineInputFilter : Java.Lang.Object, IInputFilter
-        {
-            private IridiumHighlightingEditor _editor;
-
-            public NewlineInputFilter(IridiumHighlightingEditor editor)
-            {
-                _editor = editor;
-            }
-
-            public ICharSequence FilterFormatted(ICharSequence source, int start, int end, ISpanned dest, int dstart, int dend)
-            {
-                if (_editor.Modified && end - start == 1 && start < source.Length() && dstart < dest.Length())
-                {
-                    var c = source.CharAt(start);
-                    if (c == '\n')
-                    {
-                        return _editor.AutoIndent(source, dest, dstart, dend);
-                    }
-                }
-                return source;
-            }
-        }
-
-        private class TabWidthSpan : ReplacementSpan
-        {
-            private IridiumHighlightingEditor _editor;
-
-            public TabWidthSpan(IridiumHighlightingEditor editor)
-            {
-                _editor = editor;
-            }
-
-            public override int GetSize(
-                Paint paint,
-                ICharSequence text,
-                int start,
-                int end,
-                Paint.FontMetricsInt fm)
-            {
-                return _editor.TabWidth;
-            }
-
-            public override void Draw(
-                Canvas canvas,
-                ICharSequence text,
-                int start,
-                int end,
-                float x,
-                int top,
-                int y,
-                int bottom,
-                Paint paint)
-            {
-            }
-        }
-
         private IOnTextChangedListener onTextChangedListener;
 
         public PatternBasedHighlightingDefinition HighlightingDefinition { get; set; }
@@ -234,7 +142,7 @@ namespace MystifierLightEditor.Controls
                 e.RemoveSpan(spans[n]);
         }
 
-        private ICharSequence AutoIndent(
+        internal ICharSequence AutoIndent(
             ICharSequence source,
             ISpanned dest,
             int dstart,
@@ -319,7 +227,7 @@ namespace MystifierLightEditor.Controls
             return new Java.Lang.String(source.ToString() + new Java.Lang.String(indent));
         }
 
-        private void ConvertTabs(IEditable e, int start, int count)
+        internal void ConvertTabs(IEditable e, int start, int count)
         {
             if (TabWidth < 1)
                 return;
