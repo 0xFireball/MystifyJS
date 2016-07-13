@@ -1,17 +1,15 @@
-﻿<menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
-      android:id="@+id/btnEdToolsSaveFile"
-      android:title="Save File" />
-
-  <item
-      android:id="@+id/btnEdToolsOpenFile"
-      android:title="Open File" />
-
-  <item
-      android:id="@+id/btnEdToolsOpenFromUrl"
-      android:title="Open from URL" />
-
- <item
-      android:id="@+id/btnObfuscateSource"
-      android:title="Obfuscate Source" />
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/btnFileMenuContainer" android:title="File">
+    <menu>
+      <item android:id="@+id/btnEdToolsSaveFile" android:title="Save File" />
+      <item android:id="@+id/btnEdToolsOpenFile" android:title="Open File" />
+      <item android:id="@+id/btnEdToolsOpenFromUrl" android:title="Open from URL" />
+    </menu>
+  </item>
+  <item android:id="@+id/btnDarkMagic" android:title="DarkMagic">
+    <menu>
+      <item android:id="@+id/btnObfuscateSource" android:title="Obfuscate Source" />
+    </menu>
+  </item>
 </menu>

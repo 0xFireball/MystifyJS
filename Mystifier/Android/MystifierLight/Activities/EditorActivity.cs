@@ -26,6 +26,7 @@ namespace MystifierLight.Activities
         private Button _btnExecute;
         private Button _btnBeautify;
         private bool _isUnsaved;
+        private string _currentFile;
         private Button _btnTools;
         private EditorFragment _editorFragment;
 
@@ -75,6 +76,7 @@ namespace MystifierLight.Activities
                                     File.WriteAllText(selectedFile, editorCnt);
                                     break;
                             }
+                            _currentFile = selectedFile;
                             break;
 
                         default:
@@ -90,18 +92,26 @@ namespace MystifierLight.Activities
             popup.MenuInflater.Inflate(Resource.Menu.EditorToolsMenu, popup.Menu);
             popup.MenuItemClick += (s, args) =>
             {
-                var selectedItem = args.Item.TitleFormatted.ToString();
+                var selectedItem = args.Item.ItemId;
                 var filePickerIntent = new Intent(this, typeof(FilePickerActivity));
                 switch (selectedItem)
                 {
-                    case "Save File":
-                        filePickerIntent.PutExtra(FilePickerActivity.ExtraMode, (int)FilePickerMode.File);
-                        filePickerIntent.PutExtra(FilePickerActivity.RequestDescriptor, "saveFile");
-                        filePickerIntent.PutExtra(FilePickerActivity.DialogTitle, "Save File");
-                        StartActivityForResult(filePickerIntent, FilePickerActivity.ResultCodeDirSelected);
+                    case Resource.Id.btnEdToolsSaveFile:
+                        if (_currentFile == null)
+                        {
+                            filePickerIntent.PutExtra(FilePickerActivity.ExtraMode, (int)FilePickerMode.File);
+                            filePickerIntent.PutExtra(FilePickerActivity.RequestDescriptor, "saveFile");
+                            filePickerIntent.PutExtra(FilePickerActivity.DialogTitle, "Save File");
+                            StartActivityForResult(filePickerIntent, FilePickerActivity.ResultCodeDirSelected);
+                        }
+                        else
+                        {
+                            var editorCnt = _jsEditor.Text;
+                            File.WriteAllText(_currentFile, editorCnt);
+                        }
                         break;
 
-                    case "Open File":
+                    case Resource.Id.btnEdToolsOpenFile:
                         filePickerIntent.PutExtra(FilePickerActivity.ExtraMode, (int)FilePickerMode.File);
 
                         filePickerIntent.PutExtra(FilePickerActivity.RequestDescriptor, "openFile");
@@ -109,7 +119,7 @@ namespace MystifierLight.Activities
                         StartActivityForResult(filePickerIntent, FilePickerActivity.ResultCodeDirSelected);
                         break;
 
-                    case "Open from URL":
+                    case Resource.Id.btnEdToolsOpenFromUrl:
                         DialogUtil.ShowInputDialog(this, "Enter URL", async (dlUrl) =>
                         {
                             try
@@ -122,6 +132,7 @@ namespace MystifierLight.Activities
                                     dlToast.Show();
                                     var dlContents = await wc.DownloadStringTaskAsync(dlUrl);
                                     _jsEditor.Text = dlContents;
+                                    _currentFile = null;
                                     var notifToast = Toast.MakeText(this, "Downloaded", ToastLength.Short);
                                     notifToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, getYOffset(this));
                                     notifToast.Show();
@@ -139,7 +150,7 @@ namespace MystifierLight.Activities
 
                         break;
 
-                    case "Obfuscate Source":
+                    case Resource.Id.btnObfuscateSource:
                         //Coming soon!
                         break;
                 }

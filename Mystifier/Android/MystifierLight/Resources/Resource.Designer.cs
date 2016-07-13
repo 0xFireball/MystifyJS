@@ -261,17 +261,23 @@ namespace MystifierLight
 			// aapt resource value: 0x7f09000f
 			public const int btnCreateFolder2 = 2131296271;
 			
-			// aapt resource value: 0x7f09001e
-			public const int btnEdToolsOpenFile = 2131296286;
+			// aapt resource value: 0x7f090021
+			public const int btnDarkMagic = 2131296289;
 			
 			// aapt resource value: 0x7f09001f
-			public const int btnEdToolsOpenFromUrl = 2131296287;
+			public const int btnEdToolsOpenFile = 2131296287;
 			
-			// aapt resource value: 0x7f09001d
-			public const int btnEdToolsSaveFile = 2131296285;
+			// aapt resource value: 0x7f090020
+			public const int btnEdToolsOpenFromUrl = 2131296288;
+			
+			// aapt resource value: 0x7f09001e
+			public const int btnEdToolsSaveFile = 2131296286;
 			
 			// aapt resource value: 0x7f090001
 			public const int btnExecute = 2131296257;
+			
+			// aapt resource value: 0x7f09001d
+			public const int btnFileMenuContainer = 2131296285;
 			
 			// aapt resource value: 0x7f090018
 			public const int btnLaunchEditor = 2131296280;
@@ -279,8 +285,8 @@ namespace MystifierLight
 			// aapt resource value: 0x7f09000c
 			public const int btnNavUp = 2131296268;
 			
-			// aapt resource value: 0x7f090020
-			public const int btnObfuscateSource = 2131296288;
+			// aapt resource value: 0x7f090022
+			public const int btnObfuscateSource = 2131296290;
 			
 			// aapt resource value: 0x7f090003
 			public const int btnTools = 2131296259;
@@ -306,8 +312,8 @@ namespace MystifierLight
 			// aapt resource value: 0x7f090014
 			public const int filepicker_main = 2131296276;
 			
-			// aapt resource value: 0x7f090021
-			public const int filepicker_new_folder_item = 2131296289;
+			// aapt resource value: 0x7f090023
+			public const int filepicker_new_folder_item = 2131296291;
 			
 			// aapt resource value: 0x7f090006
 			public const int folderName = 2131296262;
