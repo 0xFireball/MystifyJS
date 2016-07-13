@@ -12,11 +12,6 @@ using MystifierLightEditor.SyntaxHighlighting;
 
 namespace MystifierLightEditor.Controls
 {
-    public interface IOnTextChangedListener
-    {
-        void OnTextChanged(string text);
-    }
-
     public class IridiumHighlightingEditor : EditText
     {
         private class EditorTextWatcher : Java.Lang.Object, ITextWatcher
@@ -151,7 +146,6 @@ namespace MystifierLightEditor.Controls
         {
             UpdateHandler.RemoveCallbacks(UpdateRunnable);
         }
-
 
         private void HighlightWithoutChange(IEditable ed)
         {
@@ -324,7 +318,6 @@ namespace MystifierLightEditor.Controls
             // append white space of previous line and new indent
             return new Java.Lang.String(source.ToString() + new Java.Lang.String(indent));
         }
-
 
         private void ConvertTabs(IEditable e, int start, int count)
         {

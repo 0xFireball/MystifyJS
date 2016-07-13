@@ -12,6 +12,7 @@ using Mystifier.DarkMagic.EditorUtils;
 using MystifierLight.Fragments;
 using MystifierLight.Util;
 using MystifierLightEditor.Controls;
+using MystifierLightEditor.SyntaxHighlighting;
 
 namespace MystifierLight.Activities
 {

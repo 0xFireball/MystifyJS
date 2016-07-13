@@ -1,4 +1,4 @@
-<project outputDir="..\obj\Release\android\assets" baseDir="..\obj\Release\android\assets" xmlns="http://confuser.codeplex.com">
+<project outputDir="." baseDir="..\obj\Release\android\assets" xmlns="http://confuser.codeplex.com">
   <module path="ExaPhaser.FilePicker.dll" />
   <module path="IridiumJS.dll" />
   <module path="MystifierLightEditor.dll">

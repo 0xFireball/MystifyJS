@@ -2,12 +2,14 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using MystifierLightEditor.Controls;
+using MystifierLightEditor.SyntaxHighlighting;
 
 namespace MystifierLight.Fragments
 {
     public class EditorFragment : Fragment
     {
         private IridiumHighlightingEditor _editor;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
