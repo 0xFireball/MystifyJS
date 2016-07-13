@@ -16,7 +16,7 @@ using MystifierLightEditor.Controls;
 namespace MystifierLight.Activities
 {
     [Activity(Label = "Editor", Icon = "@drawable/icon")]
-    public class EditorActivity : Activity
+    public class EditorActivity : Activity, IOnTextChangedListener
     {
         private IridiumHighlightingEditor _jsEditor;
         private Button _btnExecute;
@@ -165,6 +165,11 @@ namespace MystifierLight.Activities
             _btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
             _btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
             _btnTools = FindViewById<Button>(Resource.Id.btnTools);
+        }
+
+        public void OnTextChanged(string text)
+        {
+            //Handle text change
         }
     }
 }
