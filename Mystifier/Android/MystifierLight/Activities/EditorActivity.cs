@@ -38,6 +38,12 @@ namespace MystifierLight.Activities
 
             InitializeComponent();
             WireEvents();
+
+            var preloadFile = Intent.GetStringExtra("preloadFile");
+            if (preloadFile != null)
+            {
+                _jsEditor.Text = File.ReadAllText(preloadFile);
+            }
         }
 
         private void WireEvents()

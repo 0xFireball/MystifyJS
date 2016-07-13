@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mystifier"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="About Mystifier Studio" Height="207.693" Width="289.14" Icon="icon.ico" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
     <Grid>

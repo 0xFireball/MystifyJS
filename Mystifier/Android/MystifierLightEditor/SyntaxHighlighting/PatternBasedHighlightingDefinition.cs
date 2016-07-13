@@ -7,12 +7,12 @@ namespace MystifierLightEditor.SyntaxHighlighting
     {
         public Pattern LinePattern { get; set; } = Pattern.Compile(".*\\n");
         public Pattern NumbersPattern { get; set; } = Pattern.Compile("\\b(\\d*[.]?\\d+)\\b");
-        public Pattern StringPattern { get; set; } = Pattern.Compile("(\")(.*?)\\1");
+        public Pattern StringPattern { get; set; } = Pattern.Compile("(\"|')(.*?)\\1");
 
         public Pattern KeywordPattern { get; set; } = Pattern.Compile("\\b(let|var|try|catch|break|continue|" +
-        "do|for|while|if|else|in|out|inout|float|int|void|bool|true|false|)\\b");
+        "do|for|while|if|else|in|out|inout|float|int|void|bool|true|false|new)\\b");
 
-        public Pattern BuiltinsPattern { get; set; } = Pattern.Compile("\\b(radians|degrees|sin|cos|tan|asin|acos|atan|pow|JSON|document|window|location)\\b");
+        public Pattern BuiltinsPattern { get; set; } = Pattern.Compile("\\b(radians|degrees|sin|cos|tan|asin|acos|atan|pow|JSON|document|window|location|console)\\b");
         public Pattern CommentsPattern { get; set; } = Pattern.Compile("/\\*(?:.|[\\n\\r])*?\\*/|//.*");
 
         public Color ErrorColor { get; set; } = Color.ParseColor("#FF0000");

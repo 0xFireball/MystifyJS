@@ -13,6 +13,36 @@ namespace MystifierLight.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Intro);
 
+            string startFile = null;
+            var incomingIntent = Intent;
+            if (incomingIntent != null)
+            {
+                Android.Net.Uri inputFileUri = incomingIntent.Data;
+                if (inputFileUri != null)
+                {
+                    try
+                    {
+                        startFile = ExtractFileFromUri(inputFileUri);
+                    }
+                    catch (Java.Lang.Exception ex)
+                    {
+                        Toast.MakeText(this, "Error:\n" + ex.Message, ToastLength.Long).Show();
+                        return;
+                    }
+                    if (startFile == null)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (startFile != null)
+            {
+                var edLauncher = new Intent(Application.Context, typeof(EditorActivity));
+                edLauncher.PutExtra("preloadFile", startFile);
+                StartActivity(edLauncher);
+            }
+
             var btnOpenEditor = FindViewById<Button>(Resource.Id.btnLaunchEditor);
             btnOpenEditor.Click += (sender, args) => StartActivity(new Intent(Application.Context, typeof(EditorActivity)));
 
@@ -23,6 +53,16 @@ namespace MystifierLight.Activities
                 var launchBrowserInt = new Intent(Intent.ActionView, uri);
                 StartActivity(launchBrowserInt);
             };
+        }
+
+        private string ExtractFileFromUri(Android.Net.Uri inputFileUri)
+        {
+            string fileName = null;
+            if (inputFileUri.Scheme == "file")
+            {
+                fileName = inputFileUri.LastPathSegment;
+            }
+            return fileName;
         }
     }
 }
