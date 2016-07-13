@@ -1,21 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.exaphaser.MystifierLight" android:versionName="1.5-alpha0" android:installLocation="preferExternal" android:versionCode="186">
-  <uses-sdk android:minSdkVersion="21" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.INTERNET" />
-  <application android:label="MystifierLight" android:icon="@drawable/Icon"></application>
-  
-  <intent-filter>
-    <action android:name="android.intent.action.VIEW" />
-    <action android:name="android.intent.action.EDIT" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="http" />
-    <data android:scheme="https" />
-    <data android:scheme="file" />
-    <data
-      android:mimeType="application/javascript"
-      android:host="*"
-      android:pathPattern=".*\\.js" />
-  </intent-filter>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.exaphaser.MystifierLight" android:versionName="1.5-beta2" android:installLocation="preferExternal" android:versionCode="187">
+	<uses-sdk android:minSdkVersion="21" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<application android:label="MystifierLight" android:icon="@drawable/Icon"></application>
+	<intent-filter>
+		<action android:name="android.intent.action.VIEW" />
+		<action android:name="android.intent.action.EDIT" />
+		<category android:name="android.intent.category.DEFAULT" />
+		<category android:name="android.intent.category.BROWSABLE" />
+		<data android:mimeType="application/javascript" android:host="*" />
+		<data android:mimeType="text/plain" android:host="*" />
+	</intent-filter>
 </manifest>
