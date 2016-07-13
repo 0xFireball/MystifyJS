@@ -11,13 +11,15 @@ using ExaPhaser.FilePicker;
 using Mystifier.DarkMagic.EditorUtils;
 using MystifierLight.Fragments;
 using MystifierLight.Util;
+using MystifierLightEditor.Controls;
+using MystifierLightEditor.SyntaxHighlighting;
 
 namespace MystifierLight.Activities
 {
     [Activity(Label = "Editor", Icon = "@drawable/icon")]
-    public class EditorActivity : Activity
+    public class EditorActivity : Activity, IOnTextChangedListener
     {
-        private EditText _jsEditor;
+        private IridiumHighlightingEditor _jsEditor;
         private Button _btnExecute;
         private Button _btnBeautify;
         private bool _isUnsaved;
@@ -152,11 +154,6 @@ namespace MystifierLight.Activities
         {
             //Execute code
             var msg = new AlertDialog.Builder(this);
-            /* Not Implemented
-            msg.SetTitle("Coming soon");
-            msg.SetMessage("This feature has not yet been implemented. Thank you for using Mystifier.");
-            msg.Show();
-            */
             var executeIntent = new Intent(this, typeof(JsvmExecuteActivity));
             executeIntent.PutExtra("code", _jsEditor.Text);
             StartActivity(executeIntent);
@@ -164,10 +161,16 @@ namespace MystifierLight.Activities
 
         private void InitializeComponent()
         {
-            _jsEditor = FindViewById<EditText>(Resource.Id.jsEditor);
+            _editorFragment = FragmentManager.FindFragmentById<EditorFragment>(Resource.Id.jsEditorFragment);
+            _jsEditor = FindViewById<IridiumHighlightingEditor>(Resource.Id.jsEditor);
             _btnExecute = FindViewById<Button>(Resource.Id.btnExecute);
             _btnBeautify = FindViewById<Button>(Resource.Id.btnBeautify);
             _btnTools = FindViewById<Button>(Resource.Id.btnTools);
+        }
+
+        public void OnTextChanged(string text)
+        {
+            //Handle text change
         }
     }
 }

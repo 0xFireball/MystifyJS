@@ -246,101 +246,104 @@ namespace MystifierLight
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f09001a
-			public const int btnBackToEditor = 2131296282;
+			// aapt resource value: 0x7f09001b
+			public const int btnBackToEditor = 2131296283;
 			
-			// aapt resource value: 0x7f090003
-			public const int btnBeautify = 2131296259;
-			
-			// aapt resource value: 0x7f090008
-			public const int btnCancel = 2131296264;
+			// aapt resource value: 0x7f090002
+			public const int btnBeautify = 2131296258;
 			
 			// aapt resource value: 0x7f090009
-			public const int btnConfirm = 2131296265;
+			public const int btnCancel = 2131296265;
 			
-			// aapt resource value: 0x7f09000e
-			public const int btnCreateFolder2 = 2131296270;
+			// aapt resource value: 0x7f09000a
+			public const int btnConfirm = 2131296266;
 			
-			// aapt resource value: 0x7f09001d
-			public const int btnEdToolsOpenFile = 2131296285;
+			// aapt resource value: 0x7f09000f
+			public const int btnCreateFolder2 = 2131296271;
 			
 			// aapt resource value: 0x7f09001e
-			public const int btnEdToolsOpenFromUrl = 2131296286;
+			public const int btnEdToolsOpenFile = 2131296286;
 			
-			// aapt resource value: 0x7f09001c
-			public const int btnEdToolsSaveFile = 2131296284;
+			// aapt resource value: 0x7f09001f
+			public const int btnEdToolsOpenFromUrl = 2131296287;
+			
+			// aapt resource value: 0x7f09001d
+			public const int btnEdToolsSaveFile = 2131296285;
 			
 			// aapt resource value: 0x7f090001
 			public const int btnExecute = 2131296257;
 			
-			// aapt resource value: 0x7f090017
-			public const int btnLaunchEditor = 2131296279;
-			
-			// aapt resource value: 0x7f09000b
-			public const int btnNavUp = 2131296267;
-			
-			// aapt resource value: 0x7f090004
-			public const int btnTools = 2131296260;
-			
 			// aapt resource value: 0x7f090018
-			public const int btnViewDocs = 2131296280;
-			
-			// aapt resource value: 0x7f09000a
-			public const int directoryInfo = 2131296266;
-			
-			// aapt resource value: 0x7f090010
-			public const int directoryList = 2131296272;
-			
-			// aapt resource value: 0x7f09000f
-			public const int divider = 2131296271;
-			
-			// aapt resource value: 0x7f090011
-			public const int file_picker_image = 2131296273;
-			
-			// aapt resource value: 0x7f090012
-			public const int file_picker_text = 2131296274;
-			
-			// aapt resource value: 0x7f090013
-			public const int filepicker_main = 2131296275;
-			
-			// aapt resource value: 0x7f09001f
-			public const int filepicker_new_folder_item = 2131296287;
-			
-			// aapt resource value: 0x7f090005
-			public const int folderName = 2131296261;
-			
-			// aapt resource value: 0x7f090006
-			public const int footer = 2131296262;
-			
-			// aapt resource value: 0x7f090007
-			public const int horizontalDivider = 2131296263;
-			
-			// aapt resource value: 0x7f090016
-			public const int infoTv = 2131296278;
-			
-			// aapt resource value: 0x7f090002
-			public const int jsEditor = 2131296258;
-			
-			// aapt resource value: 0x7f090000
-			public const int jsEditorScroller = 2131296256;
-			
-			// aapt resource value: 0x7f090019
-			public const int logTxViewScrollView = 2131296281;
-			
-			// aapt resource value: 0x7f09001b
-			public const int outputTxView = 2131296283;
-			
-			// aapt resource value: 0x7f090014
-			public const int textView = 2131296276;
-			
-			// aapt resource value: 0x7f090015
-			public const int textView2 = 2131296277;
-			
-			// aapt resource value: 0x7f09000d
-			public const int txtvSelectedFolder = 2131296269;
+			public const int btnLaunchEditor = 2131296280;
 			
 			// aapt resource value: 0x7f09000c
-			public const int txtvSelectedFolderLabel = 2131296268;
+			public const int btnNavUp = 2131296268;
+			
+			// aapt resource value: 0x7f090003
+			public const int btnTools = 2131296259;
+			
+			// aapt resource value: 0x7f090019
+			public const int btnViewDocs = 2131296281;
+			
+			// aapt resource value: 0x7f09000b
+			public const int directoryInfo = 2131296267;
+			
+			// aapt resource value: 0x7f090011
+			public const int directoryList = 2131296273;
+			
+			// aapt resource value: 0x7f090010
+			public const int divider = 2131296272;
+			
+			// aapt resource value: 0x7f090012
+			public const int file_picker_image = 2131296274;
+			
+			// aapt resource value: 0x7f090013
+			public const int file_picker_text = 2131296275;
+			
+			// aapt resource value: 0x7f090014
+			public const int filepicker_main = 2131296276;
+			
+			// aapt resource value: 0x7f090020
+			public const int filepicker_new_folder_item = 2131296288;
+			
+			// aapt resource value: 0x7f090006
+			public const int folderName = 2131296262;
+			
+			// aapt resource value: 0x7f090007
+			public const int footer = 2131296263;
+			
+			// aapt resource value: 0x7f090008
+			public const int horizontalDivider = 2131296264;
+			
+			// aapt resource value: 0x7f090017
+			public const int infoTv = 2131296279;
+			
+			// aapt resource value: 0x7f090005
+			public const int jsEditor = 2131296261;
+			
+			// aapt resource value: 0x7f090000
+			public const int jsEditorFragment = 2131296256;
+			
+			// aapt resource value: 0x7f090004
+			public const int jsEditorScroller = 2131296260;
+			
+			// aapt resource value: 0x7f09001a
+			public const int logTxViewScrollView = 2131296282;
+			
+			// aapt resource value: 0x7f09001c
+			public const int outputTxView = 2131296284;
+			
+			// aapt resource value: 0x7f090015
+			public const int textView = 2131296277;
+			
+			// aapt resource value: 0x7f090016
+			public const int textView2 = 2131296278;
+			
+			// aapt resource value: 0x7f09000e
+			public const int txtvSelectedFolder = 2131296270;
+			
+			// aapt resource value: 0x7f09000d
+			public const int txtvSelectedFolderLabel = 2131296269;
 			
 			static Id()
 			{
