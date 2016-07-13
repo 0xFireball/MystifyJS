@@ -7,10 +7,13 @@ namespace MystifierLightEditor.SyntaxHighlighting
     {
         public Pattern LinePattern { get; set; } = Pattern.Compile(".*\\n");
         public Pattern NumbersPattern { get; set; } = Pattern.Compile("\\b(\\d*[.]?\\d+)\\b");
-        public Pattern StringPattern { get; set; } = Pattern.Compile(@"/("")(.*?)\1/g");
-        public Pattern KeywordPattern { get; set; } = Pattern.Compile(@"/\b(export|default|from|var|let)\b/g");
-        public Pattern BuiltinsPattern { get; set; } = Pattern.Compile(@"/\b(window|document)\b/g");
-        public Pattern CommentsPattern { get; set; } = Pattern.Compile(@"/\/\*[\s\S]*?\*\/|(\/\/)[\s\S]*?$/gm");
+        public Pattern StringPattern { get; set; } = Pattern.Compile("(\")(.*?)\\1");
+
+        public Pattern KeywordPattern { get; set; } = Pattern.Compile("\\b(let|var|try|catch|break|continue|" +
+        "do|for|while|if|else|in|out|inout|float|int|void|bool|true|false|)\\b");
+
+        public Pattern BuiltinsPattern { get; set; } = Pattern.Compile("\\b(radians|degrees|sin|cos|tan|asin|acos|atan|pow|JSON|document|window|location)\\b");
+        public Pattern CommentsPattern { get; set; } = Pattern.Compile("/\\*(?:.|[\\n\\r])*?\\*/|//.*");
 
         public Color ErrorColor { get; set; } = Color.ParseColor("#FF0000");
         public Color NumberColor { get; set; } = Color.ParseColor("#AE81FF");

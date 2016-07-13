@@ -10,4 +10,8 @@
   <item
       android:id="@+id/btnEdToolsOpenFromUrl"
       android:title="Open from URL" />
+
+ <item
+      android:id="@+id/btnObfuscateSource"
+      android:title="Obfuscate Source" />
 </menu>

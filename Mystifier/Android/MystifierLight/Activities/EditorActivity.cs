@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Android.Runtime;
 using Android.Widget;
 using ExaPhaser.FilePicker;
 using Mystifier.DarkMagic.EditorUtils;
+using Mystifier.DarkMagic.Obfuscators;
 using MystifierLight.Fragments;
 using MystifierLight.Util;
 using MystifierLightEditor.Controls;
@@ -131,6 +133,10 @@ namespace MystifierLight.Activities
                         });
 
                         break;
+
+                    case "Obfuscate Source":
+                        //Coming soon!
+                        break;
                 }
             };
             //Wire popup events
@@ -171,6 +177,23 @@ namespace MystifierLight.Activities
         public void OnTextChanged(string text)
         {
             //Handle text change
+        }
+
+        private static string ObfuscateJsSource(string inputSource)
+        {
+            var obfuscatedSource = inputSource;
+            var obfuscators = new List<BaseObfuscator>
+            {
+                new RenamingScrambler(),
+                new PackingScrambler(),
+                new UnicodeEncodingScrambler()
+            };
+            foreach (var obfuscationEngine in obfuscators)
+            {
+                obfuscationEngine.LoadCode(obfuscatedSource);
+                obfuscatedSource = obfuscationEngine.ObfuscateCode();
+            }
+            return obfuscatedSource;
         }
     }
 }
