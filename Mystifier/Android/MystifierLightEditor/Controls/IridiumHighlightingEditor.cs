@@ -131,6 +131,16 @@ namespace MystifierLightEditor.Controls
             return e;
         }
 
+        public void SetErrorLine(int line)
+        {
+            ErrorLine = line;
+        }
+
+        public void Refresh()
+        {
+            HighlightWithoutChange(EditableText);
+        }
+
         public void ClearSpans(IEditable e)
         {
             // remove foreground color spans
@@ -227,6 +237,25 @@ namespace MystifierLightEditor.Controls
             return new Java.Lang.String(source.ToString() + new Java.Lang.String(indent));
         }
 
+        public void SetTextHighlighted(ICharSequence text)
+        {
+            if (text == null)
+                text = new Java.Lang.String("");
+
+            CancelUpdate();
+
+            ErrorLine = 0;
+            Dirty = false;
+
+            Modified = false;
+            //This isn't totally working
+            Text = Highlight(new SpannableStringBuilder(text)).ToString();
+            Modified = true;
+
+            if (onTextChangedListener != null)
+                onTextChangedListener.OnTextChanged(text.ToString());
+        }
+
         internal void ConvertTabs(IEditable e, int start, int count)
         {
             if (TabWidth < 1)
@@ -244,11 +273,6 @@ namespace MystifierLightEditor.Controls
                     start,
                     start + 1,
                     SpanTypes.ExclusiveExclusive);
-        }
-
-        public void SetErrorLine(int line)
-        {
-
         }
 
         public void LoadHighlightingDefinition(PatternBasedHighlightingDefinition highlightingDefinition)

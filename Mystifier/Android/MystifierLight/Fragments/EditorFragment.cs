@@ -1,6 +1,8 @@
 using Android.App;
 using Android.OS;
 using Android.Views;
+using Android.Widget;
+using Java.Lang;
 using MystifierLightEditor.Controls;
 using MystifierLightEditor.SyntaxHighlighting;
 
@@ -21,6 +23,52 @@ namespace MystifierLight.Fragments
             _editor = fragmentLayoutView.FindViewById<IridiumHighlightingEditor>(Resource.Id.jsEditor);
             _editor.SetOnTextChangedListener((IOnTextChangedListener)Activity);
             return fragmentLayoutView;
+        }
+
+        public void HideError()
+        {
+            _editor.SetErrorLine(0);
+        }
+
+        public void ShowError(string errorText, int errorLine)
+        {
+            _editor.SetErrorLine(errorLine);
+
+            Toast errorToast = Toast.MakeText(
+            Activity,
+            errorText,
+            ToastLength.Short);
+
+            errorToast.SetGravity(
+                GravityFlags.Top | GravityFlags.CenterHorizontal,
+                0,
+                GetYOffset(Activity));
+            errorToast.Show();
+        }
+
+        private int GetYOffset(Activity activity)
+        {
+            int yOffset = 0;
+            if (yOffset == 0)
+            {
+                float dp = Resources.DisplayMetrics.Density;
+
+                try
+                {
+                    ActionBar actionBar = activity.ActionBar;
+
+                    if (actionBar != null)
+                        yOffset = actionBar.Height;
+                }
+                catch (ClassCastException e)
+                {
+                    yOffset = Java.Lang.Math.Round(48f * dp);
+                }
+
+                yOffset += Java.Lang.Math.Round(16f * dp);
+            }
+
+            return yOffset;
         }
     }
 }

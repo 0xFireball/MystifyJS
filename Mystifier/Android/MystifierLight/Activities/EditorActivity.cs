@@ -143,13 +143,13 @@ namespace MystifierLight.Activities
                                 {
                                     var wc = new WebClient();
                                     var dlToast = Toast.MakeText(this, "Downloading...", ToastLength.Short);
-                                    dlToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, getYOffset(this));
+                                    dlToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, GetYOffset(this));
                                     dlToast.Show();
                                     var dlContents = await wc.DownloadStringTaskAsync(dlUrl);
                                     _jsEditor.Text = dlContents;
                                     _currentFile = null;
                                     var notifToast = Toast.MakeText(this, "Downloaded", ToastLength.Short);
-                                    notifToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, getYOffset(this));
+                                    notifToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, GetYOffset(this));
                                     notifToast.Show();
                                 }
                                 else
@@ -174,7 +174,7 @@ namespace MystifierLight.Activities
             popup.Show();
         }
 
-        private int getYOffset(Activity activity)
+        private int GetYOffset(Activity activity)
         {
             int yOffset = 0;
             if (yOffset == 0)
@@ -269,5 +269,6 @@ namespace MystifierLight.Activities
                 base.OnBackPressed();
             }
         }
+
     }
 }
