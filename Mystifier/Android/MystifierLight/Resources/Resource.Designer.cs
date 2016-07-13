@@ -279,6 +279,9 @@ namespace MystifierLight
 			// aapt resource value: 0x7f09000c
 			public const int btnNavUp = 2131296268;
 			
+			// aapt resource value: 0x7f090020
+			public const int btnObfuscateSource = 2131296288;
+			
 			// aapt resource value: 0x7f090003
 			public const int btnTools = 2131296259;
 			
@@ -303,8 +306,8 @@ namespace MystifierLight
 			// aapt resource value: 0x7f090014
 			public const int filepicker_main = 2131296276;
 			
-			// aapt resource value: 0x7f090020
-			public const int filepicker_new_folder_item = 2131296288;
+			// aapt resource value: 0x7f090021
+			public const int filepicker_new_folder_item = 2131296289;
 			
 			// aapt resource value: 0x7f090006
 			public const int folderName = 2131296262;

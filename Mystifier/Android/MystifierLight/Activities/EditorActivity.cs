@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Widget;
 using ExaPhaser.FilePicker;
+using Java.Lang;
 using Mystifier.DarkMagic.EditorUtils;
 using Mystifier.DarkMagic.Obfuscators;
 using MystifierLight.Fragments;
@@ -116,17 +117,21 @@ namespace MystifierLight.Activities
                                 if (dlUrl != null)
                                 {
                                     var wc = new WebClient();
-                                    Toast.MakeText(this, "Downloading...", ToastLength.Short);
+                                    var dlToast = Toast.MakeText(this, "Downloading...", ToastLength.Short);
+                                    dlToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, getYOffset(this));
+                                    dlToast.Show();
                                     var dlContents = await wc.DownloadStringTaskAsync(dlUrl);
                                     _jsEditor.Text = dlContents;
-                                    Toast.MakeText(this, "Downloaded", ToastLength.Short);
+                                    var notifToast = Toast.MakeText(this, "Downloaded", ToastLength.Short);
+                                    notifToast.SetGravity(Android.Views.GravityFlags.Bottom | Android.Views.GravityFlags.CenterHorizontal, 0, getYOffset(this));
+                                    notifToast.Show();
                                 }
                                 else
                                 {
                                     Toast.MakeText(this, "Canceled", ToastLength.Short);
                                 }
                             }
-                            catch (Exception ex)
+                            catch (System.Exception ex)
                             {
                                 Toast.MakeText(this, $"Error downloading: {ex.Message}", ToastLength.Short);
                             }
@@ -141,6 +146,31 @@ namespace MystifierLight.Activities
             };
             //Wire popup events
             popup.Show();
+        }
+
+        private int getYOffset(Activity activity)
+        {
+            int yOffset = 0;
+            if (yOffset == 0)
+            {
+                float dp = Resources.DisplayMetrics.Density;
+
+                try
+                {
+                    ActionBar actionBar = this.ActionBar;
+
+                    if (actionBar != null)
+                        yOffset = actionBar.Height;
+                }
+                catch (ClassCastException e)
+                {
+                    yOffset = Java.Lang.Math.Round(48f * dp);
+                }
+
+                yOffset += Java.Lang.Math.Round(16f * dp);
+            }
+
+            return yOffset;
         }
 
         private async void BtnBeautifyOnClick(object sender, EventArgs eventArgs)
@@ -177,7 +207,6 @@ namespace MystifierLight.Activities
         public void OnTextChanged(string text)
         {
             //Handle text change
-
         }
 
         private static string ObfuscateJsSource(string inputSource)
