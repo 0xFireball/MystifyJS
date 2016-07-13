@@ -246,6 +246,11 @@ namespace MystifierLightEditor.Controls
                     SpanTypes.ExclusiveExclusive);
         }
 
+        public void SetErrorLine(int line)
+        {
+
+        }
+
         public void LoadHighlightingDefinition(PatternBasedHighlightingDefinition highlightingDefinition)
         {
             HighlightingDefinition = highlightingDefinition;

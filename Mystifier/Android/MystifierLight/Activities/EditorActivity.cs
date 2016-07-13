@@ -80,6 +80,7 @@ namespace MystifierLight.Activities
                                 case "saveFile":
                                     var editorCnt = _jsEditor.Text;
                                     File.WriteAllText(selectedFile, editorCnt);
+                                    _isUnsaved = false;
                                     break;
                             }
                             _currentFile = selectedFile;
@@ -114,7 +115,15 @@ namespace MystifierLight.Activities
                         {
                             var editorCnt = _jsEditor.Text;
                             File.WriteAllText(_currentFile, editorCnt);
+                            _isUnsaved = false;
                         }
+                        break;
+
+                    case Resource.Id.btnEdToolsSaveFileAs:
+                        filePickerIntent.PutExtra(FilePickerActivity.ExtraMode, (int)FilePickerMode.File);
+                        filePickerIntent.PutExtra(FilePickerActivity.RequestDescriptor, "saveFile");
+                        filePickerIntent.PutExtra(FilePickerActivity.DialogTitle, "Save File");
+                        StartActivityForResult(filePickerIntent, FilePickerActivity.ResultCodeDirSelected);
                         break;
 
                     case Resource.Id.btnEdToolsOpenFile:
@@ -224,6 +233,7 @@ namespace MystifierLight.Activities
         public void OnTextChanged(string text)
         {
             //Handle text change
+            _isUnsaved = true;
         }
 
         private static string ObfuscateJsSource(string inputSource)
@@ -241,6 +251,23 @@ namespace MystifierLight.Activities
                 obfuscatedSource = obfuscationEngine.ObfuscateCode();
             }
             return obfuscatedSource;
+        }
+
+        public override void OnBackPressed()
+        {
+            if (_isUnsaved)
+            {
+                var builder = new AlertDialog.Builder(this);
+                builder.SetTitle("Alert");
+                builder.SetMessage("You have unsaved changes. Are you sure you want to exit?");
+                builder.SetPositiveButton("OK", (s, e) => { base.OnBackPressed(); });
+                builder.SetNegativeButton("Cancel", (s, e) => { /* don't do anything */ });
+                builder.Create().Show();
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
         }
     }
 }

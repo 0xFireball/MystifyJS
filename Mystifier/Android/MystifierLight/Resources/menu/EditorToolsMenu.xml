@@ -3,6 +3,7 @@
   <item android:id="@+id/btnFileMenuContainer" android:title="File">
     <menu>
       <item android:id="@+id/btnEdToolsSaveFile" android:title="Save File" />
+      <item android:id="@+id/btnEdToolsSaveFileAs" android:title="Save File As" />
       <item android:id="@+id/btnEdToolsOpenFile" android:title="Open File" />
       <item android:id="@+id/btnEdToolsOpenFromUrl" android:title="Open from URL" />
     </menu>
