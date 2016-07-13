@@ -32,7 +32,7 @@ namespace IridiumJS.Native.Function
 
             try
             {
-                var parser = new JavaScriptParser(StrictModeScope.IsStrictModeCode);
+                var parser = new IridiumJSParser(StrictModeScope.IsStrictModeCode);
                 var program = parser.Parse(code);
                 using (new StrictModeScope(program.Strict))
                 {

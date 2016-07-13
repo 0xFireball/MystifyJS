@@ -177,6 +177,7 @@ namespace MystifierLight.Activities
         public void OnTextChanged(string text)
         {
             //Handle text change
+
         }
 
         private static string ObfuscateJsSource(string inputSource)

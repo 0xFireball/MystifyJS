@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace IridiumJS.Parser.Ast
 {
-    public class Program : Statement, IVariableScope, IFunctionScope
+    public class CompiledProgram : Statement, IVariableScope, IFunctionScope
     {
         public ICollection<Statement> Body;
 
@@ -11,7 +11,7 @@ namespace IridiumJS.Parser.Ast
         public bool Strict;
         public List<Token> Tokens;
 
-        public Program()
+        public CompiledProgram()
         {
             VariableDeclarations = new List<VariableDeclaration>();
         }

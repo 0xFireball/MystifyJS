@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.exaphaser.MystifierLight" android:versionName="1.4-beta3" android:installLocation="preferExternal" android:versionCode="185">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.exaphaser.MystifierLight" android:versionName="1.5-alpha0" android:installLocation="preferExternal" android:versionCode="186">
 	<uses-sdk android:minSdkVersion="21" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.INTERNET" />

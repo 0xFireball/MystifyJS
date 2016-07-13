@@ -63,7 +63,7 @@ namespace IridiumJS.Native.Function
             }
 
             var parameters = ParseArgumentNames(p);
-            var parser = new JavaScriptParser();
+            var parser = new IridiumJSParser();
             FunctionExpression function;
             try
             {

@@ -1,0 +1,4 @@
+July 12, 2016:
+MystifierLight - improve integration with MystifierLightEditor
+MystifierLightEditor - implement syntax highlighting based on ShaderEditor (thanks!)
+Planned improvements: add a static analyzer/syntax checker next, see ShaderEditor too!

@@ -246,17 +246,17 @@ namespace IridiumJS
 
         public IridiumJSEngine Execute(string source)
         {
-            var parser = new JavaScriptParser();
+            var parser = new IridiumJSParser();
             return Execute(parser.Parse(source));
         }
 
         public IridiumJSEngine Execute(string source, ParserOptions parserOptions)
         {
-            var parser = new JavaScriptParser();
+            var parser = new IridiumJSParser();
             return Execute(parser.Parse(source, parserOptions));
         }
 
-        public IridiumJSEngine Execute(Program program)
+        public IridiumJSEngine Execute(CompiledProgram program)
         {
             ResetStatementsCount();
             ResetTimeoutTicks();
@@ -376,7 +376,7 @@ namespace IridiumJS
                     return _statements.ExecuteWithStatement(statement.As<WithStatement>());
 
                 case SyntaxNodes.Program:
-                    return _statements.ExecuteProgram(statement.As<Program>());
+                    return _statements.ExecuteProgram(statement.As<CompiledProgram>());
 
                 default:
                     throw new ArgumentOutOfRangeException();

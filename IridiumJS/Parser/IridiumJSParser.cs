@@ -9,7 +9,7 @@ using IridiumJS.Parser.Ast;
 
 namespace IridiumJS.Parser
 {
-    public class JavaScriptParser
+    public class IridiumJSParser
     {
         private static readonly HashSet<string> Keywords = new HashSet<string>
         {
@@ -90,12 +90,11 @@ namespace IridiumJS.Parser
         private State _state;
         private bool _strict;
 
-
-        public JavaScriptParser()
+        public IridiumJSParser()
         {
         }
 
-        public JavaScriptParser(bool strict)
+        public IridiumJSParser(bool strict)
         {
             _strict = strict;
         }
@@ -118,7 +117,6 @@ namespace IridiumJS.Parser
         {
             return ch >= '0' && ch <= '7';
         }
-
 
         // 7.2 White Space
 
@@ -226,7 +224,7 @@ namespace IridiumJS.Parser
 
             if (_extra.Range != null)
             {
-                comment.Range = new[] {start, end};
+                comment.Range = new[] { start, end };
             }
             if (_extra.Loc.HasValue)
             {
@@ -431,7 +429,6 @@ namespace IridiumJS.Parser
             }
         }
 
-
         private bool ScanHexEscape(char prefix, out char result)
         {
             int code = char.MinValue;
@@ -442,7 +439,7 @@ namespace IridiumJS.Parser
                 if (_index < _length && IsHexDigit(_source.CharCodeAt(_index)))
                 {
                     var ch = _source.CharCodeAt(_index++);
-                    code = code*16 +
+                    code = code * 16 +
                            "0123456789abcdef".IndexOf(ch.ToString(),
                                StringComparison.OrdinalIgnoreCase);
                 }
@@ -453,7 +450,7 @@ namespace IridiumJS.Parser
                 }
             }
 
-            result = (char) code;
+            result = (char)code;
             return true;
         }
 
@@ -486,7 +483,6 @@ namespace IridiumJS.Parser
                     break;
                 }
                 ++_index;
-
 
                 // '\u' (char #92, char #117) denotes an escaped character.
                 if (ch == 92)
@@ -574,10 +570,9 @@ namespace IridiumJS.Parser
                 Value = id,
                 LineNumber = _lineNumber,
                 LineStart = _lineStart,
-                Range = new[] {start, _index}
+                Range = new[] { start, _index }
             };
         }
-
 
         // 7.7 Punctuators
 
@@ -587,7 +582,7 @@ namespace IridiumJS.Parser
             var code = _source.CharCodeAt(_index);
             var ch1 = _source.CharCodeAt(_index);
 
-            switch ((int) code)
+            switch ((int)code)
             {
                 // Check for most common single-character punctuators.
                 case 46: // . dot
@@ -610,7 +605,7 @@ namespace IridiumJS.Parser
                         Value = code.ToString(),
                         LineNumber = _lineNumber,
                         LineStart = _lineStart,
-                        Range = new[] {start, _index}
+                        Range = new[] { start, _index }
                     };
 
                 default:
@@ -619,7 +614,7 @@ namespace IridiumJS.Parser
                     // '=' (char #61) marks an assignment or comparison operator.
                     if (code2 == 61)
                     {
-                        switch ((int) code)
+                        switch ((int)code)
                         {
                             case 37: // %
                             case 38: // &
@@ -640,7 +635,7 @@ namespace IridiumJS.Parser
                                         code2.ToString(),
                                     LineNumber = _lineNumber,
                                     LineStart = _lineStart,
-                                    Range = new[] {start, _index}
+                                    Range = new[] { start, _index }
                                 };
 
                             case 33: // !
@@ -658,7 +653,7 @@ namespace IridiumJS.Parser
                                     Value = _source.Slice(start, _index),
                                     LineNumber = _lineNumber,
                                     LineStart = _lineStart,
-                                    Range = new[] {start, _index}
+                                    Range = new[] { start, _index }
                                 };
                         }
                     }
@@ -684,7 +679,7 @@ namespace IridiumJS.Parser
                         Value = ">>>=",
                         LineNumber = _lineNumber,
                         LineStart = _lineStart,
-                        Range = new[] {start, _index}
+                        Range = new[] { start, _index }
                     };
                 }
             }
@@ -700,7 +695,7 @@ namespace IridiumJS.Parser
                     Value = ">>>",
                     LineNumber = _lineNumber,
                     LineStart = _lineStart,
-                    Range = new[] {start, _index}
+                    Range = new[] { start, _index }
                 };
             }
 
@@ -713,7 +708,7 @@ namespace IridiumJS.Parser
                     Value = "<<=",
                     LineNumber = _lineNumber,
                     LineStart = _lineStart,
-                    Range = new[] {start, _index}
+                    Range = new[] { start, _index }
                 };
             }
 
@@ -726,7 +721,7 @@ namespace IridiumJS.Parser
                     Value = ">>=",
                     LineNumber = _lineNumber,
                     LineStart = _lineStart,
-                    Range = new[] {start, _index}
+                    Range = new[] { start, _index }
                 };
             }
 
@@ -741,7 +736,7 @@ namespace IridiumJS.Parser
                     Value = ch1 + ch2.ToString(),
                     LineNumber = _lineNumber,
                     LineStart = _lineStart,
-                    Range = new[] {start, _index}
+                    Range = new[] { start, _index }
                 };
             }
 
@@ -754,7 +749,7 @@ namespace IridiumJS.Parser
                     Value = ch1.ToString(),
                     LineNumber = _lineNumber,
                     LineStart = _lineStart,
-                    Range = new[] {start, _index}
+                    Range = new[] { start, _index }
                 };
             }
 
@@ -794,7 +789,7 @@ namespace IridiumJS.Parser
                 Value = Convert.ToInt64(number, 16),
                 LineNumber = _lineNumber,
                 LineStart = _lineStart,
-                Range = new[] {start, _index}
+                Range = new[] { start, _index }
             };
         }
 
@@ -822,7 +817,7 @@ namespace IridiumJS.Parser
                 Octal = true,
                 LineNumber = _lineNumber,
                 LineStart = _lineStart,
-                Range = new[] {start, _index}
+                Range = new[] { start, _index }
             };
         }
 
@@ -932,7 +927,7 @@ namespace IridiumJS.Parser
                 Value = n,
                 LineNumber = _lineNumber,
                 LineStart = _lineStart,
-                Range = new[] {start, _index}
+                Range = new[] { start, _index }
             };
         }
 
@@ -970,12 +965,15 @@ namespace IridiumJS.Parser
                             case 'n':
                                 str.Append('\n');
                                 break;
+
                             case 'r':
                                 str.Append('\r');
                                 break;
+
                             case 't':
                                 str.Append('\t');
                                 break;
+
                             case 'u':
                             case 'x':
                                 var restore = _index;
@@ -990,12 +988,15 @@ namespace IridiumJS.Parser
                                     str.Append(ch);
                                 }
                                 break;
+
                             case 'b':
                                 str.Append("\b");
                                 break;
+
                             case 'f':
                                 str.Append("\f");
                                 break;
+
                             case 'v':
                                 str.Append("\x0B");
                                 break;
@@ -1014,7 +1015,7 @@ namespace IridiumJS.Parser
                                     if (_index < _length && IsOctalDigit(_source.CharCodeAt(_index)))
                                     {
                                         octal = true;
-                                        code = code*8 + "01234567".IndexOf(_source.CharCodeAt(_index++));
+                                        code = code * 8 + "01234567".IndexOf(_source.CharCodeAt(_index++));
 
                                         // 3 digits are only allowed when string starts
                                         // with 0, 1, 2, 3
@@ -1022,10 +1023,10 @@ namespace IridiumJS.Parser
                                             _index < _length &&
                                             IsOctalDigit(_source.CharCodeAt(_index)))
                                         {
-                                            code = code*8 + "01234567".IndexOf(_source.CharCodeAt(_index++));
+                                            code = code * 8 + "01234567".IndexOf(_source.CharCodeAt(_index++));
                                         }
                                     }
-                                    str.Append((char) code);
+                                    str.Append((char)code);
                                 }
                                 else
                                 {
@@ -1066,7 +1067,7 @@ namespace IridiumJS.Parser
                 Octal = octal,
                 LineNumber = _lineNumber,
                 LineStart = _lineStart,
-                Range = new[] {start, _index}
+                Range = new[] { start, _index }
             };
         }
 
@@ -1182,7 +1183,7 @@ namespace IridiumJS.Parser
                 Type = Tokens.RegularExpression,
                 Literal = str.ToString(),
                 Value = pattern + flags,
-                Range = new[] {start, _index}
+                Range = new[] { start, _index }
             };
         }
 
@@ -1223,7 +1224,7 @@ namespace IridiumJS.Parser
                 {
                     Type = Tokens.RegularExpression,
                     Value = regex.Literal,
-                    Range = new[] {pos, _index},
+                    Range = new[] { pos, _index },
                     Location = loc
                 });
             }
@@ -1250,7 +1251,7 @@ namespace IridiumJS.Parser
                     Type = Tokens.EOF,
                     LineNumber = _lineNumber,
                     LineStart = _lineStart,
-                    Range = new[] {_index, _index}
+                    Range = new[] { _index, _index }
                 };
             }
 
@@ -1313,7 +1314,7 @@ namespace IridiumJS.Parser
 
             if (token.Type != Tokens.EOF)
             {
-                var range = new[] {token.Range[0], token.Range[1]};
+                var range = new[] { token.Range[0], token.Range[1] };
                 var value = _source.Slice(token.Range[0], token.Range[1]);
                 _extra.Tokens.Add(new Token
                 {
@@ -1372,7 +1373,7 @@ namespace IridiumJS.Parser
         {
             if (_extra.Range != null)
             {
-                node.Range = new[] {_state.MarkerStack.Pop(), _index};
+                node.Range = new[] { _state.MarkerStack.Pop(), _index };
             }
             if (_extra.Loc.HasValue)
             {
@@ -1447,7 +1448,7 @@ namespace IridiumJS.Parser
         public Expression CreateBinaryExpression(string op, Expression left, Expression right)
         {
             return op == "||" || op == "&&"
-                ? (Expression) new LogicalExpression
+                ? (Expression)new LogicalExpression
                 {
                     Type = SyntaxNodes.LogicalExpression,
                     Operator = LogicalExpression.ParseLogicalOperator(op),
@@ -1714,9 +1715,9 @@ namespace IridiumJS.Parser
             };
         }
 
-        public Program CreateProgram(ICollection<Statement> body, bool strict)
+        public CompiledProgram CreateProgram(ICollection<Statement> body, bool strict)
         {
-            return new Program
+            return new CompiledProgram
             {
                 Type = SyntaxNodes.Program,
                 Body = body,
@@ -1826,7 +1827,6 @@ namespace IridiumJS.Parser
                 Prefix = true
             };
         }
-
 
         public VariableDeclaration CreateVariableDeclaration(IEnumerable<VariableDeclarator> declarations, string kind)
         {
@@ -2147,7 +2147,7 @@ namespace IridiumJS.Parser
                 return MarkEnd(CreateLiteral(token));
             }
 
-            return MarkEnd(CreateIdentifier((string) token.Value));
+            return MarkEnd(CreateIdentifier((string)token.Value));
         }
 
         private Property ParseObjectProperty()
@@ -2180,12 +2180,12 @@ namespace IridiumJS.Parser
                     if (token.Type != Tokens.Identifier)
                     {
                         Expect(")");
-                        ThrowErrorTolerant(token, Messages.UnexpectedToken, (string) token.Value);
+                        ThrowErrorTolerant(token, Messages.UnexpectedToken, (string)token.Value);
                         value = ParsePropertyFunction(new Identifier[0]);
                     }
                     else
                     {
-                        var param = new[] {ParseVariableIdentifier()};
+                        var param = new[] { ParseVariableIdentifier() };
                         Expect(")");
                         value = ParsePropertyFunction(param, token);
                     }
@@ -2280,7 +2280,6 @@ namespace IridiumJS.Parser
             return expr;
         }
 
-
         // 11.1 Primary Expressions
 
         private Expression ParsePrimaryExpression()
@@ -2297,7 +2296,7 @@ namespace IridiumJS.Parser
 
             if (type == Tokens.Identifier)
             {
-                expr = CreateIdentifier((string) Lex().Value);
+                expr = CreateIdentifier((string)Lex().Value);
             }
             else if (type == Tokens.StringLiteral || type == Tokens.NumericLiteral)
             {
@@ -2389,7 +2388,7 @@ namespace IridiumJS.Parser
                 ThrowUnexpected(token);
             }
 
-            return MarkEnd(CreateIdentifier((string) token.Value));
+            return MarkEnd(CreateIdentifier((string)token.Value));
         }
 
         private Identifier ParseNonComputedMember()
@@ -2498,7 +2497,7 @@ namespace IridiumJS.Parser
                 if ((Match("++") || Match("--")) && !PeekLineTerminator())
                 {
                     // 11.3.1, 11.3.2
-                    if (_strict && expr.Type == SyntaxNodes.Identifier && IsRestrictedWord(((Identifier) expr).Name))
+                    if (_strict && expr.Type == SyntaxNodes.Identifier && IsRestrictedWord(((Identifier)expr).Name))
                     {
                         ThrowErrorTolerant(Token.Empty, Messages.StrictLHSPostfix);
                     }
@@ -2509,7 +2508,7 @@ namespace IridiumJS.Parser
                     }
 
                     var token = Lex();
-                    expr = CreatePostfixExpression((string) token.Value, expr);
+                    expr = CreatePostfixExpression((string)token.Value, expr);
                 }
             }
 
@@ -2533,7 +2532,7 @@ namespace IridiumJS.Parser
                 var token = Lex();
                 expr = ParseUnaryExpression();
                 // 11.4.4, 11.4.5
-                if (_strict && expr.Type == SyntaxNodes.Identifier && IsRestrictedWord(((Identifier) expr).Name))
+                if (_strict && expr.Type == SyntaxNodes.Identifier && IsRestrictedWord(((Identifier)expr).Name))
                 {
                     ThrowErrorTolerant(Token.Empty, Messages.StrictLHSPrefix);
                 }
@@ -2543,19 +2542,19 @@ namespace IridiumJS.Parser
                     ThrowErrorTolerant(Token.Empty, Messages.InvalidLHSInAssignment);
                 }
 
-                expr = CreateUnaryExpression((string) token.Value, expr);
+                expr = CreateUnaryExpression((string)token.Value, expr);
             }
             else if (Match("+") || Match("-") || Match("~") || Match("!"))
             {
                 var token = Lex();
                 expr = ParseUnaryExpression();
-                expr = CreateUnaryExpression((string) token.Value, expr);
+                expr = CreateUnaryExpression((string)token.Value, expr);
             }
             else if (MatchKeyword("delete") || MatchKeyword("void") || MatchKeyword("typeof"))
             {
                 var token = Lex();
                 expr = ParseUnaryExpression();
-                var unaryExpr = CreateUnaryExpression((string) token.Value, expr);
+                var unaryExpr = CreateUnaryExpression((string)token.Value, expr);
                 if (_strict && unaryExpr.Operator == UnaryOperator.Delete &&
                     unaryExpr.Argument.Type == SyntaxNodes.Identifier)
                 {
@@ -2580,7 +2579,7 @@ namespace IridiumJS.Parser
                 return 0;
             }
 
-            switch ((string) token.Value)
+            switch ((string)token.Value)
             {
                 case "||":
                     prec = 1;
@@ -2666,19 +2665,19 @@ namespace IridiumJS.Parser
             token.Precedence = prec;
             Lex();
 
-            var markers = new Stack<LocationMarker>(new[] {marker, CreateLocationMarker()});
+            var markers = new Stack<LocationMarker>(new[] { marker, CreateLocationMarker() });
             var right = ParseUnaryExpression();
 
-            var stack = new List<object>(new object[] {left, token, right});
+            var stack = new List<object>(new object[] { left, token, right });
 
             while ((prec = binaryPrecedence(_lookahead, _state.AllowIn)) > 0)
             {
                 // Reduce: make a binary expression from the three topmost entries.
-                while ((stack.Count > 2) && (prec <= ((Token) stack[stack.Count - 2]).Precedence))
+                while ((stack.Count > 2) && (prec <= ((Token)stack[stack.Count - 2]).Precedence))
                 {
-                    right = (Expression) stack.Pop();
-                    var op = (string) ((Token) stack.Pop()).Value;
-                    left = (Expression) stack.Pop();
+                    right = (Expression)stack.Pop();
+                    var op = (string)((Token)stack.Pop()).Value;
+                    left = (Expression)stack.Pop();
                     expr = CreateBinaryExpression(op, left, right);
                     markers.Pop();
                     marker = markers.Pop();
@@ -2702,11 +2701,11 @@ namespace IridiumJS.Parser
 
             // Final reduce to clean-up the stack.
             var i = stack.Count - 1;
-            expr = (Expression) stack[i];
+            expr = (Expression)stack[i];
             markers.Pop();
             while (i > 1)
             {
-                expr = CreateBinaryExpression((string) ((Token) stack[i - 1]).Value, (Expression) stack[i - 2], expr);
+                expr = CreateBinaryExpression((string)((Token)stack[i - 1]).Value, (Expression)stack[i - 2], expr);
                 i -= 2;
                 marker = markers.Pop();
                 if (marker != null)
@@ -2718,7 +2717,6 @@ namespace IridiumJS.Parser
 
             return expr;
         }
-
 
         // 11.12 Conditional Operator
 
@@ -2768,14 +2766,14 @@ namespace IridiumJS.Parser
                 //}
 
                 // 11.13.1
-                if (_strict && left.Type == SyntaxNodes.Identifier && IsRestrictedWord(((Identifier) left).Name))
+                if (_strict && left.Type == SyntaxNodes.Identifier && IsRestrictedWord(((Identifier)left).Name))
                 {
                     ThrowErrorTolerant(token, Messages.StrictLHSAssignment);
                 }
 
                 token = Lex();
                 var right = ParseAssignmentExpression();
-                expr = CreateAssignmentExpression((string) token.Value, left, right);
+                expr = CreateAssignmentExpression((string)token.Value, left, right);
             }
 
             return MarkEndIf(expr);
@@ -2790,7 +2788,7 @@ namespace IridiumJS.Parser
 
             if (Match(","))
             {
-                expr = CreateSequenceExpression(new List<Expression> {expr});
+                expr = CreateSequenceExpression(new List<Expression> { expr });
 
                 while (_index < _length)
                 {
@@ -2799,7 +2797,7 @@ namespace IridiumJS.Parser
                         break;
                     }
                     Lex();
-                    ((SequenceExpression) expr).Expressions.Add(ParseAssignmentExpression());
+                    ((SequenceExpression)expr).Expressions.Add(ParseAssignmentExpression());
                 }
             }
 
@@ -2853,7 +2851,7 @@ namespace IridiumJS.Parser
                 ThrowUnexpected(token);
             }
 
-            return MarkEnd(CreateIdentifier((string) token.Value));
+            return MarkEnd(CreateIdentifier((string)token.Value));
         }
 
         private VariableDeclarator ParseVariableDeclaration(string kind)
@@ -3029,7 +3027,7 @@ namespace IridiumJS.Parser
             var token = Lex();
             var declarations = ParseVariableDeclarationList(null);
 
-            return MarkEnd(CreateVariableDeclaration(declarations, (string) token.Value));
+            return MarkEnd(CreateVariableDeclaration(declarations, (string)token.Value));
         }
 
         private Statement ParseForStatement()
@@ -3071,7 +3069,7 @@ namespace IridiumJS.Parser
                     if (MatchKeyword("in"))
                     {
                         // LeftHandSideExpression
-                        if (!isLeftHandSide((Expression) init))
+                        if (!isLeftHandSide((Expression)init))
                         {
                             ThrowErrorTolerant(Token.Empty, Messages.InvalidLHSInForIn);
                         }
@@ -3113,7 +3111,7 @@ namespace IridiumJS.Parser
             _state.InIteration = oldInIteration;
 
             return left == null
-                ? (Statement) CreateForStatement(init, test, update, body)
+                ? (Statement)CreateForStatement(init, test, update, body)
                 : CreateForInStatement(left, right, body);
         }
 
@@ -3464,12 +3462,14 @@ namespace IridiumJS.Parser
 
             if (type == Tokens.Punctuator)
             {
-                switch ((string) _lookahead.Value)
+                switch ((string)_lookahead.Value)
                 {
                     case ";":
                         return MarkEnd(ParseEmptyStatement());
+
                     case "{":
                         return MarkEnd(ParseBlock());
+
                     case "(":
                         return MarkEnd(ParseExpressionStatement());
                 }
@@ -3477,34 +3477,47 @@ namespace IridiumJS.Parser
 
             if (type == Tokens.Keyword)
             {
-                switch ((string) _lookahead.Value)
+                switch ((string)_lookahead.Value)
                 {
                     case "break":
                         return MarkEnd(ParseBreakStatement());
+
                     case "continue":
                         return MarkEnd(ParseContinueStatement());
+
                     case "debugger":
                         return MarkEnd(ParseDebuggerStatement());
+
                     case "do":
                         return MarkEnd(ParseDoWhileStatement());
+
                     case "for":
                         return MarkEnd(ParseForStatement());
+
                     case "function":
                         return MarkEnd(ParseFunctionDeclaration());
+
                     case "if":
                         return MarkEnd(ParseIfStatement());
+
                     case "return":
                         return MarkEnd(ParseReturnStatement());
+
                     case "switch":
                         return MarkEnd(ParseSwitchStatement());
+
                     case "throw":
                         return MarkEnd(ParseThrowStatement());
+
                     case "try":
                         return MarkEnd(ParseTryStatement());
+
                     case "var":
                         return MarkEnd(ParseVariableStatement());
+
                     case "while":
                         return MarkEnd(ParseWhileStatement());
+
                     case "with":
                         return MarkEnd(ParseWithStatement());
                 }
@@ -3517,16 +3530,16 @@ namespace IridiumJS.Parser
             {
                 Lex();
 
-                var key = "$" + ((Identifier) expr).Name;
+                var key = "$" + ((Identifier)expr).Name;
                 if (_state.LabelSet.Contains(key))
                 {
-                    ThrowError(Token.Empty, Messages.Redeclaration, "Label", ((Identifier) expr).Name);
+                    ThrowError(Token.Empty, Messages.Redeclaration, "Label", ((Identifier)expr).Name);
                 }
 
                 _state.LabelSet.Add(key);
                 var labeledBody = ParseStatement();
                 _state.LabelSet.Remove(key);
-                return MarkEnd(CreateLabeledStatement((Identifier) expr, labeledBody));
+                return MarkEnd(CreateLabeledStatement((Identifier)expr, labeledBody));
             }
 
             ConsumeSemicolon();
@@ -3555,7 +3568,7 @@ namespace IridiumJS.Parser
 
                 var sourceElement = ParseSourceElement();
                 sourceElements.Add(sourceElement);
-                if (((ExpressionStatement) sourceElement).Expression.Type != SyntaxNodes.Literal)
+                if (((ExpressionStatement)sourceElement).Expression.Type != SyntaxNodes.Literal)
                 {
                     // this is not directive
                     break;
@@ -3627,10 +3640,10 @@ namespace IridiumJS.Parser
                 {
                     var token = _lookahead;
                     var param = ParseVariableIdentifier();
-                    var key = '$' + (string) token.Value;
+                    var key = '$' + (string)token.Value;
                     if (_strict)
                     {
-                        if (IsRestrictedWord((string) token.Value))
+                        if (IsRestrictedWord((string)token.Value))
                         {
                             stricted = token;
                             message = Messages.StrictParamName;
@@ -3643,12 +3656,12 @@ namespace IridiumJS.Parser
                     }
                     else if (firstRestricted == Token.Empty)
                     {
-                        if (IsRestrictedWord((string) token.Value))
+                        if (IsRestrictedWord((string)token.Value))
                         {
                             firstRestricted = token;
                             message = Messages.StrictParamName;
                         }
-                        else if (IsStrictModeReservedWord((string) token.Value))
+                        else if (IsStrictModeReservedWord((string)token.Value))
                         {
                             firstRestricted = token;
                             message = Messages.StrictReservedWord;
@@ -3695,19 +3708,19 @@ namespace IridiumJS.Parser
             var id = ParseVariableIdentifier();
             if (_strict)
             {
-                if (IsRestrictedWord((string) token.Value))
+                if (IsRestrictedWord((string)token.Value))
                 {
                     ThrowErrorTolerant(token, Messages.StrictFunctionName);
                 }
             }
             else
             {
-                if (IsRestrictedWord((string) token.Value))
+                if (IsRestrictedWord((string)token.Value))
                 {
                     firstRestricted = token;
                     message = Messages.StrictFunctionName;
                 }
-                else if (IsStrictModeReservedWord((string) token.Value))
+                else if (IsStrictModeReservedWord((string)token.Value))
                 {
                     firstRestricted = token;
                     message = Messages.StrictReservedWord;
@@ -3777,19 +3790,19 @@ namespace IridiumJS.Parser
                 id = ParseVariableIdentifier();
                 if (_strict)
                 {
-                    if (IsRestrictedWord((string) token.Value))
+                    if (IsRestrictedWord((string)token.Value))
                     {
                         ThrowErrorTolerant(token, Messages.StrictFunctionName);
                     }
                 }
                 else
                 {
-                    if (IsRestrictedWord((string) token.Value))
+                    if (IsRestrictedWord((string)token.Value))
                     {
                         firstRestricted = token;
                         message = Messages.StrictFunctionName;
                     }
-                    else if (IsStrictModeReservedWord((string) token.Value))
+                    else if (IsStrictModeReservedWord((string)token.Value))
                     {
                         firstRestricted = token;
                         message = Messages.StrictReservedWord;
@@ -3828,13 +3841,15 @@ namespace IridiumJS.Parser
         {
             if (_lookahead.Type == Tokens.Keyword)
             {
-                switch ((string) _lookahead.Value)
+                switch ((string)_lookahead.Value)
                 {
                     case "const":
                     case "let":
-                        return ParseConstLetDeclaration((string) _lookahead.Value);
+                        return ParseConstLetDeclaration((string)_lookahead.Value);
+
                     case "function":
                         return ParseFunctionDeclaration();
+
                     default:
                         return ParseStatement();
                 }
@@ -3864,7 +3879,7 @@ namespace IridiumJS.Parser
 
                 sourceElement = ParseSourceElement();
                 sourceElements.Add(sourceElement);
-                if (((ExpressionStatement) sourceElement).Expression.Type != SyntaxNodes.Literal)
+                if (((ExpressionStatement)sourceElement).Expression.Type != SyntaxNodes.Literal)
                 {
                     // this is not directive
                     break;
@@ -3899,7 +3914,7 @@ namespace IridiumJS.Parser
             return sourceElements;
         }
 
-        private Program ParseProgram()
+        private CompiledProgram ParseProgram()
         {
             EnterVariableScope();
             EnterFunctionScope();
@@ -3922,14 +3937,14 @@ namespace IridiumJS.Parser
             return new LocationMarker(_index, _lineNumber, _lineStart);
         }
 
-        public Program Parse(string code)
+        public CompiledProgram Parse(string code)
         {
             return Parse(code, null);
         }
 
-        public Program Parse(string code, ParserOptions options)
+        public CompiledProgram Parse(string code, ParserOptions options)
         {
-            Program program;
+            CompiledProgram program;
 
             _source = code;
             _index = 0;
@@ -4050,7 +4065,7 @@ namespace IridiumJS.Parser
 
             public LocationMarker(int index, int lineNumber, int lineStart)
             {
-                _marker = new[] {index, lineNumber, index - lineStart, 0, 0, 0};
+                _marker = new[] { index, lineNumber, index - lineStart, 0, 0, 0 };
             }
 
             public void End(int index, int lineNumber, int lineStart)
@@ -4064,7 +4079,7 @@ namespace IridiumJS.Parser
             {
                 if (extra.Range.Length > 0)
                 {
-                    node.Range = new[] {_marker[0], _marker[3]};
+                    node.Range = new[] { _marker[0], _marker[3] };
                 }
                 if (extra.Loc.HasValue)
                 {

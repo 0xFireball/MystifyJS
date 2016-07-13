@@ -496,7 +496,7 @@ namespace IridiumJS.Runtime
             return b;
         }
 
-        public Completion ExecuteProgram(Program program)
+        public Completion ExecuteProgram(CompiledProgram program)
         {
             return ExecuteStatementList(program.Body);
         }
