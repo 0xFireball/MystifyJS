@@ -125,6 +125,7 @@ namespace MystifierLightEditor.Controls
         public IridiumHighlightingEditor(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             Initialize(context);
+            HighlightingDefinition = new PatternBasedHighlightingDefinition();
         }
 
         public void SetOnTextChangedListener(IOnTextChangedListener listener)
@@ -183,6 +184,14 @@ namespace MystifierLightEditor.Controls
                 m.Find();)
                     e.SetSpan(
                         new ForegroundColorSpan(HighlightingDefinition.NumberColor),
+                        m.Start(),
+                        m.End(),
+                        SpanTypes.ExclusiveExclusive);
+
+                for (Matcher m = HighlightingDefinition.StringPattern.Matcher(e);
+                m.Find();)
+                    e.SetSpan(
+                        new ForegroundColorSpan(HighlightingDefinition.StringColor),
                         m.Start(),
                         m.End(),
                         SpanTypes.ExclusiveExclusive);
