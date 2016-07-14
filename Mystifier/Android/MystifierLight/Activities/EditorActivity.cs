@@ -7,8 +7,10 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Views;
 using Android.Widget;
 using ExaPhaser.FilePicker;
+using IridiumJS.Parser;
 using Java.Lang;
 using Mystifier.DarkMagic.EditorUtils;
 using Mystifier.DarkMagic.Obfuscators;
@@ -168,6 +170,7 @@ namespace MystifierLight.Activities
                     case Resource.Id.btnEdToolsPrefs:
 
                         break;
+
                     case Resource.Id.btnObfuscateSource:
                         //Coming soon!
                         break;
@@ -209,7 +212,7 @@ namespace MystifierLight.Activities
             var beautifiedSource = editorSource;
             await Task.Run(() =>
             {
-                var beautifier = Beautifier.CreateDefault();
+                var beautifier = Beautifier.CreateDefaultNoTabs();
                 beautifiedSource = beautifier.Beautify(editorSource);
             });
             _jsEditor.Text = beautifiedSource;
@@ -233,10 +236,52 @@ namespace MystifierLight.Activities
             _btnTools = FindViewById<Button>(Resource.Id.btnTools);
         }
 
-        public void OnTextChanged(string text)
+        public async void OnTextChanged(string text)
         {
             //Handle text change
             _isUnsaved = true;
+
+            //Run static analyzer
+            await Task.Run((Action)RunStaticAnalyzer);
+        }
+
+        private void RunStaticAnalyzer()
+        {
+            var jsSrc = _jsEditor.Text;
+            var jsParser = new IridiumJSParser(true);
+            try
+            {
+                jsParser.Parse(jsSrc);
+                HideError();
+            }
+            catch (ParserException pEx)
+            {
+                RunOnUiThread(() =>
+                {
+                    ShowError(pEx.Description, pEx.LineNumber, pEx.Column);
+                });
+            }
+        }
+
+        public void HideError()
+        {
+            _jsEditor.SetErrorLine(0);
+        }
+
+        public void ShowError(string errorText, int errorLine, int errorColumn)
+        {
+            _jsEditor.SetErrorLine(errorLine);
+
+            Toast errorToast = Toast.MakeText(
+            this,
+            $"({errorLine}, {errorColumn}) " + errorText,
+            ToastLength.Short);
+
+            errorToast.SetGravity(
+                GravityFlags.Top | GravityFlags.CenterHorizontal,
+                0,
+                GetYOffset(this));
+            errorToast.Show();
         }
 
         private static string ObfuscateJsSource(string inputSource)
@@ -272,6 +317,5 @@ namespace MystifierLight.Activities
                 base.OnBackPressed();
             }
         }
-
     }
 }

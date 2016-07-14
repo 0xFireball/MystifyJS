@@ -73,7 +73,9 @@ namespace MystifierLightEditor.Controls
                 {
                     Matcher m = HighlightingDefinition.LinePattern.Matcher(e);
                     for (int n = ErrorLine;
-                    n-- > 0 && m.Find();) ;
+                    n-- > 0 && m.Find();)
+                    {
+                    }
 
                     e.SetSpan(
                         new BackgroundColorSpan(HighlightingDefinition.ErrorColor),

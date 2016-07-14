@@ -25,27 +25,6 @@ namespace MystifierLight.Fragments
             return fragmentLayoutView;
         }
 
-        public void HideError()
-        {
-            _editor.SetErrorLine(0);
-        }
-
-        public void ShowError(string errorText, int errorLine)
-        {
-            _editor.SetErrorLine(errorLine);
-
-            Toast errorToast = Toast.MakeText(
-            Activity,
-            errorText,
-            ToastLength.Short);
-
-            errorToast.SetGravity(
-                GravityFlags.Top | GravityFlags.CenterHorizontal,
-                0,
-                GetYOffset(Activity));
-            errorToast.Show();
-        }
-
         private int GetYOffset(Activity activity)
         {
             int yOffset = 0;

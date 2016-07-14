@@ -124,7 +124,7 @@ namespace Mystifier.DarkMagic.EditorUtils
                     IndentWithTabs = true,
                     JslintHappy = false,
                     KeepArrayIndentation = false,
-                    PreserveNewlines = false,
+                    PreserveNewlines = true,
                     BraceStyle = JSBeautifier.BraceStyle.Collapse,
                     //BreakChainedMethods = true,
                     KeepFunctionIndentation = false,
@@ -137,6 +137,31 @@ namespace Mystifier.DarkMagic.EditorUtils
             };
             return defaultBeautifier;
         }
+
+        public static Beautifier CreateDefaultNoTabs()
+        {
+            var defaultBeautifier = new Beautifier()
+            {
+                Opts = new JSBeautifier.BeautifierOptions()
+                {
+                    IndentWithTabs = false,
+                    IndentSize = 4,
+                    JslintHappy = false,
+                    KeepArrayIndentation = false,
+                    PreserveNewlines = true,
+                    BraceStyle = JSBeautifier.BraceStyle.Collapse,
+                    //BreakChainedMethods = true,
+                    KeepFunctionIndentation = false,
+                    EvalCode = true,
+                },
+                Flags = new JSBeautifier.BeautifierFlags("BLOCK")
+                {
+                    IndentationLevel = 0,
+                }
+            };
+            return defaultBeautifier;
+        }
+
         public Beautifier()
             : this(new JSBeautifier.BeautifierOptions())
         {
@@ -202,7 +227,7 @@ namespace Mystifier.DarkMagic.EditorUtils
             if (Opts.IndentWithTabs)
                 IndentString = "\t";
             else
-                IndentString = new string(Opts.IndentChar, (int) Opts.IndentSize);
+                IndentString = new string(Opts.IndentChar, (int)Opts.IndentSize);
 
             PreindentString = "";
             LastWord = ""; // last TK_WORD seen
@@ -211,7 +236,7 @@ namespace Mystifier.DarkMagic.EditorUtils
             LastLastText = ""; // pre-last token text
             Input = null;
             Output = new List<string>(); // formatted javascript gets built here
-            Whitespace = new[] {'\n', '\r', '\t', ' '};
+            Whitespace = new[] { '\n', '\r', '\t', ' ' };
             Wordchar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$";
             Digits = "0123456789";
             Punct =
@@ -388,7 +413,6 @@ namespace Mystifier.DarkMagic.EditorUtils
                 // make sure only single space gets drawn
                 if (Flags.EatNextSpace)
                     Flags.EatNextSpace = false;
-
                 else if (Output.Count != 0 &&
                          Output[Output.Count - 1] != " " &&
                          Output[Output.Count - 1] != "\n" &&
@@ -658,9 +682,9 @@ namespace Mystifier.DarkMagic.EditorUtils
                                 {
                                     // FIXME
                                     resultingString = new string(resultingString.Take(2 + esc2).ToArray());
-                                    if ((char) esc1 == sep || (char) esc1 == '\\')
+                                    if ((char)esc1 == sep || (char)esc1 == '\\')
                                         resultingString += '\\';
-                                    resultingString += (char) esc1;
+                                    resultingString += (char)esc1;
                                 }
                                 esc1 = 0;
                             }
