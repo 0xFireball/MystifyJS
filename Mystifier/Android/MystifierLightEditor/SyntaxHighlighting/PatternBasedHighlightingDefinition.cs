@@ -15,7 +15,7 @@ namespace MystifierLightEditor.SyntaxHighlighting
         public Pattern BuiltinsPattern { get; set; } = Pattern.Compile("\\b(radians|degrees|sin|cos|tan|asin|acos|atan|pow|JSON|document|window|location|console)\\b");
         public Pattern CommentsPattern { get; set; } = Pattern.Compile("/\\*(?:.|[\\n\\r])*?\\*/|//.*");
 
-        public Color ErrorColor { get; set; } = Color.ParseColor("#FF0000");
+        public Color ErrorColor { get; set; } = Color.ParseColor("#FF6666");
         public Color NumberColor { get; set; } = Color.ParseColor("#AE81FF");
         public Color StringColor { get; set; } = Color.ParseColor("#E6DB74");
         public Color KeywordColor { get; set; } = Color.ParseColor("#F92672");
