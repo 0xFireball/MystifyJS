@@ -6,6 +6,7 @@
       <item android:id="@+id/btnEdToolsSaveFileAs" android:title="Save File As" />
       <item android:id="@+id/btnEdToolsOpenFile" android:title="Open File" />
       <item android:id="@+id/btnEdToolsOpenFromUrl" android:title="Open from URL" />
+      <item android:id="@+id/btnEdToolsPrefs" android:title="Preferences" />
     </menu>
   </item>
   <item android:id="@+id/btnDarkMagic" android:title="DarkMagic">

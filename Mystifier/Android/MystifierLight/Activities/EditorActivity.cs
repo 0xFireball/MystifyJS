@@ -165,6 +165,9 @@ namespace MystifierLight.Activities
 
                         break;
 
+                    case Resource.Id.btnEdToolsPrefs:
+
+                        break;
                     case Resource.Id.btnObfuscateSource:
                         //Coming soon!
                         break;
