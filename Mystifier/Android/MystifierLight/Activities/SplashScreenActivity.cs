@@ -31,8 +31,9 @@ namespace MystifierLight.Activities
                 //Ready to start application:
                 var introIntent = new Intent(Application.Context, typeof(IntroActivity));
                 StartActivity(introIntent);
+                
             }, TaskScheduler.FromCurrentSynchronizationContext());
-
+            Finish();
             startupWork.Start();
         }
     }
