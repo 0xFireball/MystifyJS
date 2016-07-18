@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using JSONPush;
+using System.Threading.Tasks;
 
 namespace MystifierLight.Activities
 {
@@ -21,7 +21,7 @@ namespace MystifierLight.Activities
                 var feedFetchStatus = await pushClient.FetchFeed();
                 if (feedFetchStatus)
                 {
-
+                    pushClient.DisplayPendingMessages(this);
                 }
                 await Task.Delay(100);
             });
