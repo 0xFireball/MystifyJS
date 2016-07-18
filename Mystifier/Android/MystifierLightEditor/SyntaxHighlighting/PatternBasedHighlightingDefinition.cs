@@ -10,7 +10,7 @@ namespace MystifierLightEditor.SyntaxHighlighting
         public Pattern StringPattern { get; set; } = Pattern.Compile("(\"|')(.*?)\\1");
 
         public Pattern KeywordPattern { get; set; } = Pattern.Compile("\\b(let|var|try|catch|break|continue|" +
-        "do|for|while|if|else|in|out|inout|float|int|void|bool|true|false|new)\\b");
+        "do|for|while|if|else|switch|in|out|inout|float|int|void|bool|true|false|new|function)\\b");
 
         public Pattern BuiltinsPattern { get; set; } = Pattern.Compile("\\b(radians|degrees|sin|cos|tan|asin|acos|atan|pow|JSON|document|window|location|console)\\b");
         public Pattern CommentsPattern { get; set; } = Pattern.Compile("/\\*(?:.|[\\n\\r])*?\\*/|//.*");

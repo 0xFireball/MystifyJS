@@ -1,5 +1,3 @@
-using System.Reflection;
-using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
 using Android.Widget;
@@ -8,6 +6,8 @@ using IridiumJS.Parser;
 using IridiumJS.Runtime;
 using Mystifier.DarkMagic.JSVM;
 using MystifierLight.Util;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace MystifierLight.Activities
 {
