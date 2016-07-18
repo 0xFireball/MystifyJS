@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -18,6 +13,11 @@ using MystifierLight.Fragments;
 using MystifierLight.Util;
 using MystifierLightEditor.Controls;
 using MystifierLightEditor.SyntaxHighlighting;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace MystifierLight.Activities
 {
@@ -215,7 +215,10 @@ namespace MystifierLight.Activities
                 var beautifier = Beautifier.CreateDefaultNoTabs();
                 beautifiedSource = beautifier.Beautify(editorSource);
             });
-            _jsEditor.Text = beautifiedSource;
+            RunOnUiThread(() =>
+            {
+                _jsEditor.Text = beautifiedSource;
+            });
         }
 
         private void BtnExecuteOnClick(object sender, EventArgs eventArgs)
@@ -252,6 +255,10 @@ namespace MystifierLight.Activities
             try
             {
                 jsParser.Parse(jsSrc);
+                if (GetErrorLine() > 0)
+                {
+                    BtnBeautifyOnClick(null, null);
+                }
                 HideError();
             }
             catch (ParserException pEx)
@@ -266,6 +273,11 @@ namespace MystifierLight.Activities
         public void HideError()
         {
             _jsEditor.SetErrorLine(0);
+        }
+
+        public int GetErrorLine()
+        {
+            return _jsEditor.ErrorLine;
         }
 
         public void ShowError(string errorText, int errorLine, int errorColumn)

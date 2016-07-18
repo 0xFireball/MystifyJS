@@ -22,11 +22,11 @@ using MahApps.Metro.Controls.Dialogs;
 using Mystifier.DarkMagic.EditorUtils;
 using Mystifier.DarkMagic.JSVM;
 using Mystifier.DarkMagic.Obfuscators;
+using Mystifier.EditorTools;
 using Mystifier.GitHub;
 using Mystifier.IntelliJS.CodeCompletion;
 using Mystifier.JSVM;
 using Octokit;
-using Application = System.Windows.Application;
 
 namespace Mystifier
 {
@@ -54,7 +54,7 @@ namespace Mystifier
         public MainWindow()
         {
             InitializeComponent();
-            Application.Current.DispatcherUnhandledException +=
+            System.Windows.Application.Current.DispatcherUnhandledException +=
                 (sender, args) =>
                 {
                     args.Handled = true;
@@ -111,6 +111,11 @@ namespace Mystifier
             Clipboard.SetText(OutputEditor.Text);
         }
 
+        private void BtnExaPhaser_OnClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://iridiumion.xyz");
+        }
+
         private async void BtnLocalVmExecute_OnClick(object sender, RoutedEventArgs e)
         {
             await Task.Run(() => ExecuteSourceInTextEditor());
@@ -119,11 +124,6 @@ namespace Mystifier
         private void BtnObfuscate_OnClick(object sender, RoutedEventArgs e)
         {
             RunJSObfuscator();
-        }
-
-        private void BtnExaPhaser_OnClick(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://iridiumion.xyz");
         }
 
         private async void CheckGitHubAvailability()
@@ -244,7 +244,13 @@ namespace Mystifier
             TextEditor.TextArea.TextEntered += TextAreaOnTextEntered;
             TextEditor.TextArea.KeyDown += TextAreaOnKeyDown;
             UpdateTitle();
+            InstallEditorComponents();
             Task.Factory.StartNew(CheckGitHubAvailability);
+        }
+
+        private void InstallEditorComponents()
+        {
+            TextEditor.TextArea.LeftMargins.Insert(0, new BreakPointMargin());
         }
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)

@@ -65,6 +65,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -101,6 +102,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EditorTools\BookmarkBase.cs" />
+    <Compile Include="EditorTools\BookmarkManager.cs" />
+    <Compile Include="EditorTools\BreakpointMargin.cs" />
+    <Compile Include="EditorTools\IBookmark.cs" />
+    <Compile Include="EditorTools\Icon.cs" />
     <Compile Include="GitHub\MystifierGitHubAccess.cs" />
     <Compile Include="JSVM\JSConsole.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -176,6 +182,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\defaultbookmark.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

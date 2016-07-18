@@ -23,7 +23,7 @@ namespace MystifierLightEditor.Controls
         public bool Dirty { get; set; } = false;
         public bool Modified { get; set; } = true;
         public int TabWidth { get; set; } = 4;
-        public long UpdateDelay { get; private set; } = 1000;
+        public long UpdateDelay { get; private set; } = 500;
 
         public IridiumHighlightingEditor(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -71,17 +71,24 @@ namespace MystifierLightEditor.Controls
                     return e;
                 if (ErrorLine > 0)
                 {
-                    Matcher m = HighlightingDefinition.LinePattern.Matcher(e);
-                    for (int n = ErrorLine;
-                    n-- > 0 && m.Find();)
+                    try
                     {
-                    }
+                        Matcher m = HighlightingDefinition.LinePattern.Matcher(e);
+                        for (int n = ErrorLine;
+                        n-- > 0 && m.Find();)
+                        {
+                        }
 
-                    e.SetSpan(
-                        new BackgroundColorSpan(HighlightingDefinition.ErrorColor),
-                        m.Start(),
-                        m.End(),
-                        SpanTypes.ExclusiveExclusive);
+                        e.SetSpan(
+                            new BackgroundColorSpan(HighlightingDefinition.ErrorColor),
+                            m.Start(),
+                            m.End(),
+                            SpanTypes.ExclusiveExclusive);
+                    }
+                    catch (Java.Lang.Exception jEx)
+                    {
+
+                    }
                 }
 
                 for (Matcher m = HighlightingDefinition.NumbersPattern.Matcher(e);
