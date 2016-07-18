@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using JSONPush;
 
 namespace MystifierLight.Activities
 {
@@ -13,16 +14,23 @@ namespace MystifierLight.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SplashScreen);
 
-            var startupWork = new Task(() =>
+            var startupWork = new Task(async () =>
             {
                 //TODO: Initialize here
-                Task.Delay(400);
+                var pushClient = new JsonPushClient("https://push.iridiumion.xyz/myslight/push.json");
+                var feedFetchStatus = await pushClient.FetchFeed();
+                if (feedFetchStatus)
+                {
+
+                }
+                await Task.Delay(100);
             });
 
             startupWork.ContinueWith(t =>
             {
                 //Ready to start application:
-                StartActivity(new Intent(Application.Context, typeof(IntroActivity)));
+                var introIntent = new Intent(Application.Context, typeof(IntroActivity));
+                StartActivity(introIntent);
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             startupWork.Start();

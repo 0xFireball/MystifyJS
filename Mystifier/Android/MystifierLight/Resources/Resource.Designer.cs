@@ -85,6 +85,8 @@ namespace MystifierLight
 			global::ExaPhaser.FilePicker.Resource.String.filepicker_selected_file_label = global::MystifierLight.Resource.String.filepicker_selected_file_label;
 			global::ExaPhaser.FilePicker.Resource.String.filepicker_selected_folder_label = global::MystifierLight.Resource.String.filepicker_selected_folder_label;
 			global::ExaPhaser.FilePicker.Resource.String.filepicker_up_label = global::MystifierLight.Resource.String.filepicker_up_label;
+			global::JSONPush.Resource.String.ApplicationName = global::MystifierLight.Resource.String.ApplicationName;
+			global::JSONPush.Resource.String.Hello = global::MystifierLight.Resource.String.Hello;
 			global::MystifierLightEditor.Resource.String.ApplicationName = global::MystifierLight.Resource.String.ApplicationName;
 			global::MystifierLightEditor.Resource.String.Hello = global::MystifierLight.Resource.String.Hello;
 		}

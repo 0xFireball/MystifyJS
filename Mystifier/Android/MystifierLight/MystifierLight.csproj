@@ -117,6 +117,10 @@
       <Project>{678738da-f723-4920-b9e5-cad667104bda}</Project>
       <Name>IridiumJS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\JSONPush\JSONPush.csproj">
+      <Project>{a4a14467-4af4-4f57-a559-5ed81548c29c}</Project>
+      <Name>JSONPush</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mystifier.DarkMagic\Mystifier.DarkMagic.csproj">
       <Project>{692ae1b4-19ec-4ea6-b56f-592813fa4982}</Project>
       <Name>Mystifier.DarkMagic</Name>
