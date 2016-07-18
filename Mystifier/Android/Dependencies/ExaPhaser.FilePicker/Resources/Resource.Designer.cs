@@ -168,6 +168,9 @@ namespace ExaPhaser.FilePicker
 			// aapt resource value: 0x7f07000e
 			public static int filepicker_main = 2131165198;
 			
+			// aapt resource value: 0x7f070010
+			public static int filepicker_new_file_item = 2131165200;
+			
 			// aapt resource value: 0x7f07000f
 			public static int filepicker_new_folder_item = 2131165199;
 			

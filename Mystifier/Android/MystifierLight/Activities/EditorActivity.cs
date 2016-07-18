@@ -156,12 +156,12 @@ namespace MystifierLight.Activities
                                 }
                                 else
                                 {
-                                    Toast.MakeText(this, "Canceled", ToastLength.Short);
+                                    Toast.MakeText(this, "Canceled", ToastLength.Short).Show();
                                 }
                             }
                             catch (System.Exception ex)
                             {
-                                Toast.MakeText(this, $"Error downloading: {ex.Message}", ToastLength.Short);
+                                Toast.MakeText(this, $"Error downloading: {ex.Message}", ToastLength.Short).Show();
                             }
                         });
 

@@ -16,16 +16,16 @@
 // <date>30-04-2014</date>
 // <summary>Contains a simple Point with floating coordinates.</summary>
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Android.App;
 using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Debug = System.Diagnostics.Debug;
 using Enum = System.Enum;
 using Environment = Android.OS.Environment;
@@ -199,12 +199,38 @@ namespace ExaPhaser.FilePicker
         /// <inheritdoc />
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if (item.ItemId != Resource.Id.filepicker_new_folder_item)
+            if (item.ItemId == Resource.Id.filepicker_new_folder_item)
+            {
+                OpenNewFolderDialog();
+            }
+            else if (item.ItemId == Resource.Id.filepicker_new_file_item)
+            {
+                OpenNewFileDialog();
+            }
+            else
             {
                 return base.OnOptionsItemSelected(item);
             }
-            OpenNewFolderDialog();
             return true;
+        }
+
+        private void OpenNewFileDialog()
+        {
+            var builder = new AlertDialog.Builder(Activity);
+            var customView = Activity.LayoutInflater.Inflate(Resource.Layout.filepicker_createfolder, null);
+            var editText = customView.FindViewById<EditText>(Resource.Id.folderName);
+            builder.SetView(customView);
+            builder.SetMessage("Enter file name:");
+            builder.SetPositiveButton(
+                GetString(Resource.String.filepicker_ok),
+                (s, e) =>
+                {
+                    CreateFolder(currentDirectory.FullName, editText.Text);
+                    ((AlertDialog)s).Dismiss();
+                });
+            builder.SetNegativeButton(GetString(Resource.String.filepicker_cancel_label),
+                (s, e) => ((AlertDialog)s).Dismiss());
+            builder.Create().Show();
         }
 
         /// <inheritdoc />
@@ -401,7 +427,7 @@ namespace ExaPhaser.FilePicker
                 GetString(Resource.String.filepicker_ok),
                 (s, e) =>
                 {
-                    CreateFolder(currentDirectory.FullName, editText.Text);
+                    CreateFile(currentDirectory.FullName, editText.Text);
                     ((AlertDialog)s).Dismiss();
                 });
             builder.SetNegativeButton(GetString(Resource.String.filepicker_cancel_label),
@@ -423,6 +449,29 @@ namespace ExaPhaser.FilePicker
                 {
                     Toast.MakeText(Activity, GetString(Resource.String.filepicker_create_folder_error_already_exists),
                         ToastLength.Short).Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Activity, GetString(Resource.String.filepicker_create_folder_error), ToastLength.Short)
+                    .Show();
+                LogError(ex.Message);
+            }
+        }
+
+        private void CreateFile(string baseFolder, string newFile)
+        {
+            try
+            {
+                var path = Path.Combine(baseFolder, newFile);
+                if (!System.IO.File.Exists(path))
+                {
+                    System.IO.File.WriteAllText(path, "");
+                    RefreshFilesList(baseFolder);
+                }
+                else
+                {
+                    Toast.MakeText(Activity, "File already exists", ToastLength.Short).Show();
                 }
             }
             catch (Exception ex)

@@ -7,4 +7,10 @@
 
     android:title="Create folder">
   </item>
+
+  <item
+    android:id="@+id/filepicker_new_file_item"
+
+    android:title="Create file">
+  </item>
 </menu>
