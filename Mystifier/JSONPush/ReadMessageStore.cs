@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -6,7 +7,7 @@ namespace JSONPush
 {
     internal class ReadMessageStore
     {
-        public string PhysicalLocation => Path.Combine(Android.OS.Environment.DataDirectory.AbsolutePath, "readmessages.store");
+        public string PhysicalLocation => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "readmessages.store");
         public List<string> CurrentReadMessageIds;
 
         public void AddReadMessage(PushMessage message)
@@ -22,8 +23,17 @@ namespace JSONPush
 
         private void LoadStore()
         {
-            var serMsgStore = File.ReadAllText(PhysicalLocation);
-            CurrentReadMessageIds = JsonConvert.DeserializeObject<List<string>>(serMsgStore);
+            if (File.Exists(PhysicalLocation))
+            {
+
+                var serMsgStore = File.ReadAllText(PhysicalLocation);
+                CurrentReadMessageIds = JsonConvert.DeserializeObject<List<string>>(serMsgStore);
+            }
+            else
+            {
+                CurrentReadMessageIds = new List<string>();
+                SaveStore();
+            }
         }
 
         private void SaveStore()

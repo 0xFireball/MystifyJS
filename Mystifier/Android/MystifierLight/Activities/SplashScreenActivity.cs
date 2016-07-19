@@ -33,8 +33,9 @@ namespace MystifierLight.Activities
                 StartActivity(introIntent);
                 
             }, TaskScheduler.FromCurrentSynchronizationContext());
-            Finish();
             startupWork.Start();
+            Finish();
+            
         }
     }
 }

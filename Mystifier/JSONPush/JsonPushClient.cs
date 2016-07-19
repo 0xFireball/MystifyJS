@@ -1,7 +1,7 @@
 using Android.App;
-using Android.Content;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -33,21 +33,23 @@ namespace JSONPush
             }
         }
 
-        public void DisplayPendingMessages(Context context)
+        public void DisplayPendingMessages(Activity activity)
         {
             if (DownloadedFeed == null) throw new ArgumentNullException(nameof(DownloadedFeed));
-            foreach (var msg in DownloadedFeed.Information)
+            var downloadedMessageList = DownloadedFeed.Information;
+            var unreadMessages = downloadedMessageList.Where(msg => !ReadMessages.CurrentReadMessageIds.Contains(msg.MessageHash));
+            foreach (var msg in unreadMessages)
             {
-                if (!ReadMessages.CurrentReadMessageIds.Contains(msg.MessageHash))
+                ReadMessages.AddReadMessage(msg);
+                activity.RunOnUiThread(() =>
                 {
-                    ReadMessages.AddReadMessage(msg);
-                    var messageAlert = new AlertDialog.Builder(context);
+                    var messageAlert = new AlertDialog.Builder(activity);
                     messageAlert.SetTitle(msg.Title);
                     messageAlert.SetCancelable(false);
                     messageAlert.SetPositiveButton("Cool", (s, e) => { });
                     var dialog = messageAlert.Create();
                     dialog.Show();
-                }
+                });
             }
         }
     }
