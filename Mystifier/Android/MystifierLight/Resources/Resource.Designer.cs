@@ -60,6 +60,7 @@ namespace MystifierLight
 			global::ExaPhaser.FilePicker.Resource.Id.file_picker_image = global::MystifierLight.Resource.Id.file_picker_image;
 			global::ExaPhaser.FilePicker.Resource.Id.file_picker_text = global::MystifierLight.Resource.Id.file_picker_text;
 			global::ExaPhaser.FilePicker.Resource.Id.filepicker_main = global::MystifierLight.Resource.Id.filepicker_main;
+			global::ExaPhaser.FilePicker.Resource.Id.filepicker_new_file_item = global::MystifierLight.Resource.Id.filepicker_new_file_item;
 			global::ExaPhaser.FilePicker.Resource.Id.filepicker_new_folder_item = global::MystifierLight.Resource.Id.filepicker_new_folder_item;
 			global::ExaPhaser.FilePicker.Resource.Id.folderName = global::MystifierLight.Resource.Id.folderName;
 			global::ExaPhaser.FilePicker.Resource.Id.footer = global::MystifierLight.Resource.Id.footer;
@@ -319,6 +320,9 @@ namespace MystifierLight
 			
 			// aapt resource value: 0x7f090014
 			public const int filepicker_main = 2131296276;
+			
+			// aapt resource value: 0x7f090026
+			public const int filepicker_new_file_item = 2131296294;
 			
 			// aapt resource value: 0x7f090025
 			public const int filepicker_new_folder_item = 2131296293;

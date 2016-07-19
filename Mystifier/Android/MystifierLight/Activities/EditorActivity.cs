@@ -208,6 +208,7 @@ namespace MystifierLight.Activities
         private async void BtnBeautifyOnClick(object sender, EventArgs eventArgs)
         {
             var editorSource = _jsEditor.Text;
+            var cursorPos = _jsEditor.SelectionStart;
             _isUnsaved = true;
             var beautifiedSource = editorSource;
             await Task.Run(() =>
@@ -218,6 +219,7 @@ namespace MystifierLight.Activities
             RunOnUiThread(() =>
             {
                 _jsEditor.Text = beautifiedSource;
+                _jsEditor.SetSelection(cursorPos);
             });
         }
 
