@@ -14,27 +14,29 @@ namespace MystifierLight.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SplashScreen);
 
+            JsonPushClient pushClient = null;
+            bool fetchFeedStatus = false;
             var startupWork = new Task(async () =>
             {
                 //TODO: Initialize here
-                var pushClient = new JsonPushClient("https://push.iridiumion.xyz/myslight/push.json");
-                var feedFetchStatus = await pushClient.FetchFeed();
-                if (feedFetchStatus)
-                {
-                    pushClient.DisplayPendingMessages(this);
-                }
+                pushClient = new JsonPushClient("https://push.iridiumion.xyz/myslight/push.json");
+                fetchFeedStatus = await pushClient.FetchFeed();
                 await Task.Delay(100);
             });
 
             startupWork.ContinueWith(t =>
             {
+                if (fetchFeedStatus)
+                {
+                    pushClient.DisplayPendingMessages(this);
+                }
                 //Ready to start application:
                 var introIntent = new Intent(Application.Context, typeof(IntroActivity));
                 StartActivity(introIntent);
-                
+                Finish();
+
             }, TaskScheduler.FromCurrentSynchronizationContext());
             startupWork.Start();
-            Finish();
             
         }
     }
